@@ -1,0 +1,32 @@
+{
+  "mediaLibraryApp": {
+    "musicRequest": {
+      "home": {
+        "title": "Music Requests",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Music Request",
+        "createOrEditLabel": "Create or edit a Music Request",
+        "search": "Search for Music Request",
+        "notFound": "No Music Requests found"
+      },
+      "created": "A new Music Request is created with identifier {{ param }}",
+      "updated": "A Music Request is updated with identifier {{ param }}",
+      "deleted": "A Music Request is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Music Request {{ id }}?"
+      },
+      "detail": {
+        "title": "Music Request"
+      },
+      "id": "ID",
+      "song": "Song",
+      "artist": "Artist",
+      "album": "Album",
+      "genre": "Genre",
+      "requestedBy": "Requested By",
+      "requestedOn": "Requested On",
+      "url": "Url",
+      "done": "Done"
+    }
+  }
+}

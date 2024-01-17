@@ -1,0 +1,78 @@
+<div class="d-flex justify-content-center infinite-scroll" jhiAutoHeight="70">
+  <div class="w-100">
+    <div *ngIf="business">
+      <h2 data-cy="businessDetailsHeading" class="text-center"><span jhiTranslate="crmApp.business.detail.title">Business</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ business.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="crmApp.business.name">Name</span></dt>
+        <dd>
+          <span>{{ business.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="crmApp.business.address">Address</span></dt>
+        <dd>
+          <span>{{ business.address }}</span>
+        </dd>
+        <dt><span jhiTranslate="crmApp.business.owner">Owner</span></dt>
+        <dd>
+          <span>{{ business.owner }}</span>
+        </dd>
+        <dt><span jhiTranslate="crmApp.business.contact">Contact</span></dt>
+        <dd>
+          <span>{{ business.contact }}</span>
+        </dd>
+        <dt><span jhiTranslate="crmApp.business.phone">Phone</span></dt>
+        <dd>
+          <span>{{ business.phone }}</span>
+        </dd>
+      </dl>
+
+      <ul class="nav nav-tabs nav-fill mb-3" id="ex1" role="tablist">
+        <li class="nav-item" role="presentation">
+          <a
+            class="nav-link active"
+            id="ex2-tab-1"
+            data-mdb-toggle="tab"
+            [routerLink]="['products']"
+            role="tab"
+            aria-controls="ex2-tabs-1"
+            aria-selected="true"
+            >Products</a
+          >
+        </li>
+
+        <li class="nav-item" role="presentation">
+          <a
+            class="nav-link"
+            id="ex2-tab-3"
+            data-mdb-toggle="tab"
+            [routerLink]="['events']"
+            role="tab"
+            aria-controls="ex2-tabs-3"
+            aria-selected="false"
+            >Events</a
+          >
+        </li>
+      </ul>
+
+      <router-outlet></router-outlet>
+      <!-- 
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/business', business.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button> -->
+    </div>
+  </div>
+</div>

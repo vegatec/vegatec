@@ -1,0 +1,337 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-track-heading" data-cy="TrackCreateUpdateHeading" jhiTranslate="mediaLibraryApp.track.home.createOrEditLabel">
+        Create or edit a Track
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.track.filePath" for="field_filePath">File Path</label>
+          <input type="text" class="form-control" name="filePath" id="field_filePath" data-cy="filePath" formControlName="filePath" />
+          @if (editForm.get('filePath')!.invalid && (editForm.get('filePath')!.dirty || editForm.get('filePath')!.touched)) {
+            <div>
+              @if (editForm.get('filePath')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.track.subfolder" for="field_subfolder">Subfolder</label>
+          <input type="text" class="form-control" name="subfolder" id="field_subfolder" data-cy="subfolder" formControlName="subfolder" />
+          @if (editForm.get('subfolder')!.invalid && (editForm.get('subfolder')!.dirty || editForm.get('subfolder')!.touched)) {
+            <div>
+              @if (editForm.get('subfolder')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.track.name" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          @if (editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)) {
+            <div>
+              @if (editForm.get('name')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.track.sortName" for="field_sortName">Sort Name</label>
+          <input type="text" class="form-control" name="sortName" id="field_sortName" data-cy="sortName" formControlName="sortName" />
+          @if (editForm.get('sortName')!.invalid && (editForm.get('sortName')!.dirty || editForm.get('sortName')!.touched)) {
+            <div>
+              @if (editForm.get('sortName')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.track.artistName" for="field_artistName">Artist Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="artistName"
+            id="field_artistName"
+            data-cy="artistName"
+            formControlName="artistName"
+          />
+          @if (editForm.get('artistName')!.invalid && (editForm.get('artistName')!.dirty || editForm.get('artistName')!.touched)) {
+            <div>
+              @if (editForm.get('artistName')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.track.artistSortName" for="field_artistSortName">Artist Sort Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="artistSortName"
+            id="field_artistSortName"
+            data-cy="artistSortName"
+            formControlName="artistSortName"
+          />
+          @if (
+            editForm.get('artistSortName')!.invalid && (editForm.get('artistSortName')!.dirty || editForm.get('artistSortName')!.touched)
+          ) {
+            <div>
+              @if (editForm.get('artistSortName')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.track.albumName" for="field_albumName">Album Name</label>
+          <input type="text" class="form-control" name="albumName" id="field_albumName" data-cy="albumName" formControlName="albumName" />
+          @if (editForm.get('albumName')!.invalid && (editForm.get('albumName')!.dirty || editForm.get('albumName')!.touched)) {
+            <div>
+              @if (editForm.get('albumName')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.track.albumSortName" for="field_albumSortName">Album Sort Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="albumSortName"
+            id="field_albumSortName"
+            data-cy="albumSortName"
+            formControlName="albumSortName"
+          />
+          @if (editForm.get('albumSortName')!.invalid && (editForm.get('albumSortName')!.dirty || editForm.get('albumSortName')!.touched)) {
+            <div>
+              @if (editForm.get('albumSortName')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.track.albumArtistName" for="field_albumArtistName"
+            >Album Artist Name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="albumArtistName"
+            id="field_albumArtistName"
+            data-cy="albumArtistName"
+            formControlName="albumArtistName"
+          />
+          @if (
+            editForm.get('albumArtistName')!.invalid && (editForm.get('albumArtistName')!.dirty || editForm.get('albumArtistName')!.touched)
+          ) {
+            <div>
+              @if (editForm.get('albumArtistName')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.track.albumArtistSortName" for="field_albumArtistSortName"
+            >Album Artist Sort Name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="albumArtistSortName"
+            id="field_albumArtistSortName"
+            data-cy="albumArtistSortName"
+            formControlName="albumArtistSortName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.track.albumReleasedYear" for="field_albumReleasedYear"
+            >Album Released Year</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="albumReleasedYear"
+            id="field_albumReleasedYear"
+            data-cy="albumReleasedYear"
+            formControlName="albumReleasedYear"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.track.genreName" for="field_genreName">Genre Name</label>
+          <input type="text" class="form-control" name="genreName" id="field_genreName" data-cy="genreName" formControlName="genreName" />
+          @if (editForm.get('genreName')!.invalid && (editForm.get('genreName')!.dirty || editForm.get('genreName')!.touched)) {
+            <div>
+              @if (editForm.get('genreName')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.track.genreSortName" for="field_genreSortName">Genre Sort Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="genreSortName"
+            id="field_genreSortName"
+            data-cy="genreSortName"
+            formControlName="genreSortName"
+          />
+          @if (editForm.get('genreSortName')!.invalid && (editForm.get('genreSortName')!.dirty || editForm.get('genreSortName')!.touched)) {
+            <div>
+              @if (editForm.get('genreSortName')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.track.trackNumber" for="field_trackNumber">Track Number</label>
+          <input
+            type="number"
+            class="form-control"
+            name="trackNumber"
+            id="field_trackNumber"
+            data-cy="trackNumber"
+            formControlName="trackNumber"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.track.playbackLength" for="field_playbackLength">Playback Length</label>
+          <input
+            type="number"
+            class="form-control"
+            name="playbackLength"
+            id="field_playbackLength"
+            data-cy="playbackLength"
+            formControlName="playbackLength"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.track.bitRate" for="field_bitRate">Bit Rate</label>
+          <input type="number" class="form-control" name="bitRate" id="field_bitRate" data-cy="bitRate" formControlName="bitRate" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.track.createdOn" for="field_createdOn">Created On</label>
+          <div class="d-flex">
+            <input
+              id="field_createdOn"
+              data-cy="createdOn"
+              type="datetime-local"
+              class="form-control"
+              name="createdOn"
+              formControlName="createdOn"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (editForm.get('createdOn')!.invalid && (editForm.get('createdOn')!.dirty || editForm.get('createdOn')!.touched)) {
+            <div>
+              @if (editForm.get('createdOn')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('createdOn')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >This field should be a date and time.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.track.tagVersion1" for="field_tagVersion1">Tag Version 1</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="tagVersion1"
+            id="field_tagVersion1"
+            data-cy="tagVersion1"
+            formControlName="tagVersion1"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.track.tagVersion2" for="field_tagVersion2">Tag Version 2</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="tagVersion2"
+            id="field_tagVersion2"
+            data-cy="tagVersion2"
+            formControlName="tagVersion2"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.track.type" for="field_type">Type</label>
+          <select class="form-control" id="field_type" data-cy="type" name="type" formControlName="type" [compareWith]="compareTrackType">
+            @if (!editForm.get('type')!.value) {
+              <option [ngValue]="null" selected></option>
+            }
+            @for (trackTypeOption of trackTypesSharedCollection; track $index) {
+              <option [ngValue]="trackTypeOption">{{ trackTypeOption.name }}</option>
+            }
+          </select>
+        </div>
+        @if (editForm.get(['type'])!.invalid && (editForm.get(['type'])!.dirty || editForm.get(['type'])!.touched)) {
+          <div>
+            @if (editForm.get(['type'])?.errors?.required) {
+              <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+            }
+          </div>
+        }
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

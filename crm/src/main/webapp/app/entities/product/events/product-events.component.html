@@ -1,0 +1,38 @@
+<div>
+  <!-- <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert> -->
+
+  <div class="alert alert-warning" id="no-result" *ngIf="events?.length === 0">
+    <span jhiTranslate="crmApp.event.home.notFound">No events found</span>
+  </div>
+  <button id="jh-create-entity" data-cy="entityCreateButton" class="btn btn-primary jh-create-entity create-business ms-1">
+    <fa-icon icon="plus"></fa-icon>
+    <!-- <span jhiTranslate="crmApp.business.home.createLabel">Create a new Business</span> -->
+  </button>
+  <div
+    class="p-0 infinite-scroll list-group"
+    jhiAutoHeight="420"
+    infinite-scroll
+    (scrolled)="loadPage(page + 1)"
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50"
+    [scrollWindow]="false"
+    [infiniteScrollDisabled]="page >= links['last']"
+  >
+    <div *ngFor="let event of events; eventBy: eventId" class="p-1 border-0 list-group-item">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card bg-light">
+            <div class="card-body">
+              <h5 class="card-title">{{ event.name }}</h5>
+
+              <a href="#" class="btn btn-primary" [routerLink]="['/event', event.id, 'view']">View</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+cat /proc/sys/fs/inotify/max_user_watches

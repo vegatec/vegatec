@@ -1,0 +1,29 @@
+{
+  "crmApp": {
+    "business": {
+      "home": {
+        "title": "Businesses",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Business",
+        "createOrEditLabel": "Crear o editar Business",
+        "notFound": "Ningún Businesses encontrado"
+      },
+      "created": "Un nuevo Business ha sido creado con el identificador {{ param }}",
+      "updated": "Un Business ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Business ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Business {{ id }}?"
+      },
+      "detail": {
+        "title": "Business"
+      },
+      "id": "ID",
+      "name": "Name",
+      "address": "Address",
+      "owner": "Owner",
+      "contact": "Contact",
+      "phone": "Phone",
+      "products": "Products"
+    }
+  }
+}

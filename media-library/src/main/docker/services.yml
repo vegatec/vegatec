@@ -1,0 +1,23 @@
+# This configuration is intended for development purpose, it's **your** responsibility to harden it for production
+name: medialibrary
+services:
+  mysql:
+    extends:
+      file: ./mysql.yml
+      service: mysql
+  elasticsearch:
+    extends:
+      file: ./elasticsearch.yml
+      service: elasticsearch
+  keycloak:
+    extends:
+      file: ./keycloak.yml
+      service: keycloak
+  kafka:
+    extends:
+      file: ./kafka.yml
+      service: kafka
+  zookeeper:
+    extends:
+      file: ./kafka.yml
+      service: zookeeper

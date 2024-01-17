@@ -1,0 +1,80 @@
+<div class="card">
+  <h6 id="page-heading" data-cy="TrackHeading" class="card-header text-center">
+    <span jhiTranslate="mediaLibraryApp.track.home.title">Tracks</span>
+  </h6>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="card-body p-0">
+    <!-- @if (store.tracks()?.length === 0) {
+      <div class="alert alert-warning" id="no-result">
+        <span jhiTranslate="mediaLibraryApp.track.home.notFound">No Tracks found</span>
+      </div>
+    } -->
+
+    @if (store.tracks() && store.tracks().length > 0) {
+      <div
+        class="p-0 infinite-scroll"
+        jhiAutoHeight="150"
+        infinite-scroll
+        (scrolled)="loadPage(store.pagingOptions.page() + 1)"
+        [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="50"
+        [scrollWindow]="false"
+      >
+        @for (track of store.tracks(); track trackId) {
+          <div class="card bg-light">
+            <div
+              class="card-body d-flex p-2"
+              [ngClass]="{
+                outbox: track.subfolder === 'outbox',
+                inbox: track.subfolder === 'inbox',
+                trash: track.subfolder === 'trash'
+              }"
+            >
+              <span class="checkbox float-left p-3">
+                <label>
+                  <input type="checkbox" />
+                  <i class="input-helper"></i>
+                </label>
+              </span>
+              <div class="float-left">
+                <img
+                  src="/{{ track?.artworkPath }}/thumbnail.jpg"
+                  alt=""
+                  onerror="this.src='/content/images/music-cd.png';"
+                  class="nonDraggableImage artwork-thumbnail"
+                />
+              </div>
+              <div class="no-select p-l-5 p-r-0 m-r-0 m-l-0 w-100">
+                <div class="d-flex f-16">
+                  <div class="text-truncate col-md-11 font-weight-bold">{{ track.name }}</div>
+                  <div class="ellipsis float-right">{{ track?.playbackLength! * 1000 | date: 'mm:ss' }}</div>
+                </div>
+                <div class="row f-14 c-gray w-100">
+                  <div class="col-md-11 p-l-4 d-flex">
+                    <fa-icon icon="music" [fixedWidth]="true"></fa-icon>
+                    <span class="font-weight-normal px-2"> {{ track?.genre?.name }}</span>
+                    <fa-icon icon="compact-disc" [fixedWidth]="true"></fa-icon>
+                    <div class="font-weight-normal px-2">{{ track?.artist?.name }}</div>
+                    <fa-icon icon="microphone" [fixedWidth]="true"></fa-icon>
+                    <div class="font-weight-normal px-2">{{ track?.album?.name }}</div>
+                  </div>
+                </div>
+              </div>
+              <button class="btn btn-sm p-0" (click)="play(track)">
+                <fa-icon icon="play-circle" size="2x" [fixedWidth]="true"></fa-icon>
+              </button>
+            </div>
+          </div>
+        } @empty {
+          <div class="alert alert-warning" id="no-result">
+            <span jhiTranslate="mediaLibraryApp.track.home.notFound">No Tracks found</span>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

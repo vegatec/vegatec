@@ -1,0 +1,25 @@
+{
+  "crmApp": {
+    "productType": {
+      "home": {
+        "title": "Product Types",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Product Type",
+        "createOrEditLabel": "Crear o editar Product Type",
+        "notFound": "Ningún Product Types encontrado"
+      },
+      "created": "Un nuevo Product Type ha sido creado con el identificador {{ param }}",
+      "updated": "Un Product Type ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Product Type ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Product Type {{ id }}?"
+      },
+      "detail": {
+        "title": "Product Type"
+      },
+      "id": "ID",
+      "name": "Name",
+      "logo": "Logo"
+    }
+  }
+}

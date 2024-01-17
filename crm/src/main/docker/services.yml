@@ -1,0 +1,19 @@
+# This configuration is intended for development purpose, it's **your** responsibility to harden it for production
+name: crm
+services:
+  mysql:
+    extends:
+      file: ./mysql.yml
+      service: mysql
+  keycloak:
+    extends:
+      file: ./keycloak.yml
+      service: keycloak
+  kafka:
+    extends:
+      file: ./kafka.yml
+      service: kafka
+  zookeeper:
+    extends:
+      file: ./kafka.yml
+      service: zookeeper

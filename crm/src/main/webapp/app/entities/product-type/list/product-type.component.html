@@ -1,0 +1,70 @@
+<div>
+  <h2 id="page-heading" data-cy="ProductTypeHeading" class="text-center">
+    <span jhiTranslate="crmApp.productType.home.title">Product Types</span>
+    <!-- 
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="crmApp.productType.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-product-type"
+        [routerLink]="['/product-type/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="crmApp.productType.home.createLabel">Create a new Product Type</span>
+      </button>
+    </div> -->
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (productTypes?.length === 0) {
+    <div class="alert alert-info centered" id="no-result">
+      <span jhiTranslate="crmApp.productType.home.notFound">No Product Types found</span>
+    </div>
+  }
+
+  @if (productTypes && productTypes.length > 0) {
+    <div
+      class="p-0 infinite-scroll l"
+      jhiAutoHeight="150"
+      infinite-scroll
+      [infiniteScrollDistance]="2"
+      [infiniteScrollThrottle]="50"
+      [scrollWindow]="false"
+    >
+      <div class="row">
+        <div>
+          @for (productType of productTypes; track trackId) {
+            <div class="card bg-light">
+              <div class="card-body d-flex p-3">
+                <img
+                  [src]="'data:' + productType!.logoContentType + ';base64,' + productType!.logo"
+                  width="64px"
+                  height="64px"
+                  alt="product image"
+                  class=""
+                />
+                <div class="w-100">
+                  <div class="d-flex">
+                    <h5 class="card-title">{{ productType.name }}</h5>
+                    <span class="m-auto"></span>
+                    <a href="#" class="float-end" [routerLink]="['/product-type', productType.id, 'view']">
+                      <fa-icon icon="eye"></fa-icon>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</div>

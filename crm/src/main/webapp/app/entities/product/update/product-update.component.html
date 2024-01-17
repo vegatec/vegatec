@@ -1,0 +1,159 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-product-heading" data-cy="ProductCreateUpdateHeading" jhiTranslate="crmApp.product.home.createOrEditLabel">
+        Create or edit a Product
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.product.name" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          @if (editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)) {
+            <div>
+              @if (editForm.get('name')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.product.model" for="field_model">Model</label>
+          <input type="text" class="form-control" name="model" id="field_model" data-cy="model" formControlName="model" />
+          @if (editForm.get('model')!.invalid && (editForm.get('model')!.dirty || editForm.get('model')!.touched)) {
+            <div>
+              @if (editForm.get('model')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.product.serialNumber" for="field_serialNumber">Serial Number</label>
+          <input
+            type="text"
+            class="form-control"
+            name="serialNumber"
+            id="field_serialNumber"
+            data-cy="serialNumber"
+            formControlName="serialNumber"
+          />
+          @if (editForm.get('serialNumber')!.invalid && (editForm.get('serialNumber')!.dirty || editForm.get('serialNumber')!.touched)) {
+            <div>
+              @if (editForm.get('serialNumber')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.product.manufacturer" for="field_manufacturer">Manufacturer</label>
+          <input
+            type="text"
+            class="form-control"
+            name="manufacturer"
+            id="field_manufacturer"
+            data-cy="manufacturer"
+            formControlName="manufacturer"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.product.createdOn" for="field_createdOn">Created On</label>
+          <div class="input-group">
+            <input
+              id="field_createdOn"
+              data-cy="createdOn"
+              type="text"
+              class="form-control"
+              name="createdOn"
+              ngbDatepicker
+              #createdOnDp="ngbDatepicker"
+              formControlName="createdOn"
+            />
+            <button type="button" class="btn btn-secondary" (click)="createdOnDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+          </div>
+          @if (editForm.get('createdOn')!.invalid && (editForm.get('createdOn')!.dirty || editForm.get('createdOn')!.touched)) {
+            <div>
+              @if (editForm.get('createdOn')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.product.type" for="field_type">Type</label>
+          <select class="form-control" id="field_type" data-cy="type" name="type" formControlName="type" [compareWith]="compareProductType">
+            <option [ngValue]="null"></option>
+            @for (productTypeOption of productTypesSharedCollection; track $index) {
+              <option [ngValue]="productTypeOption">{{ productTypeOption.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.product.locatedAt" for="field_locatedAt">Located At</label>
+          <select
+            class="form-control"
+            id="field_locatedAt"
+            data-cy="locatedAt"
+            name="locatedAt"
+            formControlName="locatedAt"
+            [compareWith]="compareBusiness"
+          >
+            <option [ngValue]="null"></option>
+            @for (businessOption of businessesSharedCollection; track $index) {
+              <option [ngValue]="businessOption">{{ businessOption.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.product.componentOf" for="field_componentOf">Component Of</label>
+          <select
+            class="form-control"
+            id="field_componentOf"
+            data-cy="componentOf"
+            name="componentOf"
+            formControlName="componentOf"
+            [compareWith]="compareProduct"
+          >
+            <option [ngValue]="null"></option>
+            @for (productOption of productsSharedCollection; track $index) {
+              <option [ngValue]="productOption">{{ productOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

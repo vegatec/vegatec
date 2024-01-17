@@ -1,0 +1,49 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (productType) {
+      <div>
+        <h2 data-cy="productTypeDetailsHeading"><span jhiTranslate="crmApp.productType.detail.title">Product Type</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ productType.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.productType.name">Name</span></dt>
+          <dd>
+            <span>{{ productType.name }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.productType.logo">Logo</span></dt>
+          <dd>
+            @if (productType.logo) {
+              <div>
+                <a (click)="openFile(productType.logo, productType.logoContentType)">
+                  <img
+                    [src]="'data:' + productType.logoContentType + ';base64,' + productType.logo"
+                    style="max-width: 100%"
+                    alt="productType image"
+                  />
+                </a>
+                {{ productType.logoContentType }}, {{ byteSize(productType.logo) }}
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/product-type', productType.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

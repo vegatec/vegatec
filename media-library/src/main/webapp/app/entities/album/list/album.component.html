@@ -1,0 +1,106 @@
+<div class="card">
+  <h6 id="page-heading" data-cy="AlbumHeading" class="card-header text-center">
+    <span jhiTranslate="mediaLibraryApp.album.home.title">Albums</span>
+  </h6>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="card-body p-0">
+    @if (store.groupedAlbums() | async; as groupedAlbums) {
+      @if (groupedAlbums.length === 0) {
+        <div class="alert alert-warning" id="no-result">
+          <span jhiTranslate="mediaLibraryApp.album.home.notFound">No Albums found</span>
+        </div>
+      } @else {
+        <div
+          class="p-0 infinite-scroll"
+          jhiAutoHeight="100"
+          infinite-scroll
+          (scrolled)="store.load(store.pagingOptions.page() + 1)"
+          [infiniteScrollDistance]="2"
+          [infiniteScrollThrottle]="50"
+          [scrollWindow]="false"
+        >
+          @for (g of groupedAlbums; track albumId) {
+            <div class="card bg-light border-1">
+              <div
+                class="card-header text-center border-1"
+                [routerLink]="[
+                  '/library',
+                  {
+                    outlets: {
+                      tracks: [
+                        'tracks',
+                        {
+                          artistName: g[0]!,
+                          albumArtistName: g[0]!,
+
+                          addedSince: store.searchCriteria()?.addedSince,
+                          releasedSince: store.searchCriteria()?.releasedSince,
+                          trackName: store.searchCriteria()?.trackName,
+                          filter: store.searchCriteria()?.filter
+                        }
+                      ]
+                    }
+                  }
+                ]"
+                [ngClass]="{ selected: store.isSelected(g[0]!) }"
+                (click)="$event.stopPropagation(); store.select(g[0]!)"
+              >
+                <h6 class="w-100">{{ g[0]! }}</h6>
+              </div>
+              <div class="card-body p-0 m-0 bg-white">
+                @for (album of g[1]; track albumId) {
+                  <div
+                    class="d-flex p-1"
+                    [routerLink]="[
+                      '/library',
+                      {
+                        outlets: {
+                          tracks: [
+                            'tracks',
+                            {
+                              albumName: album.name,
+                              albumArtistName: album.artist?.name,
+                              artistName: store.searchCriteria()?.artistName,
+                              releasedYear: album?.releasedYear,
+                              addedSince: store.searchCriteria()?.addedSince,
+                              releasedSince: store.searchCriteria()?.releasedSince,
+                              trackName: store.searchCriteria()?.trackName,
+                              filter: store.searchCriteria()?.filter
+                            }
+                          ]
+                        }
+                      }
+                    ]"
+                    routerLinkActive="router-link-active"
+                    [ngClass]="{ selected: store.isSelected(album) }"
+                    (click)="store.select(album)"
+                    class="d-flex p-1"
+                    style="border: none"
+                  >
+                    <img
+                      src="/{{ album?.artworkPath }}/thumbnail.jpg"
+                      alt=""
+                      onerror="this.src='/content/images/music-cd.png';"
+                      class="nonDraggableImage artwork-thumbnail"
+                    />
+                    <div class="w-100 p-2">
+                      <h6 class="card-title">{{ album.name }}</h6>
+
+                      <p class="card-subtitle">
+                        {{ album.releasedYear }}
+                      </p>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+    }
+  </div>
+</div>

@@ -1,0 +1,48 @@
+{
+  "annotations": {
+    "changelogDate": "20210626160820"
+  },
+  "changelogDate": "20210626160820",
+  "dto": "no",
+  "entityTableName": "music_request",
+  "fields": [
+    {
+      "fieldName": "song",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "artist",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "album",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "genre",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "requestedBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "requestedOn",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "url",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "done",
+      "fieldType": "Boolean"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "MusicRequest",
+  "pagination": "infinite-scroll",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceClass"
+}

@@ -1,0 +1,37 @@
+@import 'bootstrap/scss/functions';
+@import 'bootswatch/dist/flatly/variables';
+@import 'bootstrap/scss/variables';
+
+/* ==========================================================================
+Sidebar
+========================================================================== */
+
+.navbar-expand-md .navbar-nav {
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.navbar {
+  padding: 0.2rem 1rem;
+  background-color: rgb(129, 146, 151);
+  // position: absolute;
+  // height: 100%;
+
+  ul.navbar-nav {
+    .nav-item {
+      margin-left: 0.5em;
+    }
+  }
+
+  a.nav-link {
+    font-weight: 400;
+  }
+
+  ul.sub-menu {
+    padding-left: 0px;
+  }
+
+  .dropdown-item {
+    color: lightgray;
+  }
+}

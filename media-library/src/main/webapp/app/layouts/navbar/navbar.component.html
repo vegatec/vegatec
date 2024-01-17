@@ -1,0 +1,14 @@
+<nav data-cy="navbar" class="navbar navbar-dark navbar-expand-md bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand logo" routerLink="/">
+      <span class="logo-img"></span>
+      <span jhiTranslate="global.title" class="navbar-title">MediaLibrary</span>
+      <!-- <span class="navbar-version">{{ version }}</span> -->
+    </a>
+    <div class="m-auto"></div>
+    <div class="justify-content-center m-1 w-50">
+      <input type="search" class="form-control" placeholder="Search" aria-label="Search" (keyup)="search($event)" />
+    </div>
+    <div class="m-auto"></div>
+  </div>
+</nav>

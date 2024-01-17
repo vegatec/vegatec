@@ -1,0 +1,3 @@
+org.springframework.test.context.ContextCustomizerFactory = net.vegatec.crm.\
+    config.SqlTestContainersSpringContextCustomizerFactory,net.vegatec.crm.\
+    config.KafkaTestContainersSpringContextCustomizerFactory

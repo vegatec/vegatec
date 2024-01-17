@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity Track.
+    -->
+    <changeSet id="20210701112027-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="type_id"
+                                 baseTableName="track"
+                                 constraintName="fk_track__type_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="track_type"
+                                 />
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,30 @@
+{
+  "annotations": {
+    "changelogDate": "20210626152406"
+  },
+  "changelogDate": "20210626152406",
+  "dto": "mapstruct",
+  "entityTableName": "track_type",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "creditsNeeded",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "vipCreditsNeeded",
+      "fieldType": "Integer",
+      "fieldValidateRules": []
+    }
+  ],
+  "jpaMetamodelFiltering": false,
+  "name": "TrackType",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceClass"
+}

@@ -1,0 +1,131 @@
+<div>
+  <h2 id="page-heading" data-cy="TrackTypeHeading">
+    <span jhiTranslate="mediaLibraryApp.trackType.home.title">Track Types</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="mediaLibraryApp.trackType.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-track-type"
+        [routerLink]="['/track-type/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span class="hidden-sm-down" jhiTranslate="mediaLibraryApp.trackType.home.createLabel">Create a new Track Type</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <form name="searchForm" class="row row-cols-sm-auto align-items-center">
+    <div class="col-sm-12">
+      <div class="input-group w-100 mt-3">
+        <label class="visually-hidden" for="currentSearch" jhiTranslate="mediaLibraryApp.trackType.home.search"
+          >Search for Track Type</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="currentSearch"
+          id="currentSearch"
+          name="currentSearch"
+          placeholder="{{ 'mediaLibraryApp.trackType.home.search' | translate }}"
+        />
+
+        <button class="btn btn-info" (click)="search(currentSearch)">
+          <fa-icon icon="search"></fa-icon>
+        </button>
+
+        @if (currentSearch) {
+          <button class="btn btn-danger" (click)="search('')">
+            <fa-icon icon="trash-alt"></fa-icon>
+          </button>
+        }
+      </div>
+    </div>
+  </form>
+
+  @if (trackTypes?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="mediaLibraryApp.trackType.home.notFound">No Track Types found</span>
+    </div>
+  }
+
+  @if (trackTypes && trackTypes.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="name">
+              <div class="d-flex">
+                <span jhiTranslate="mediaLibraryApp.trackType.name">Name</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="creditsNeeded">
+              <div class="d-flex">
+                <span jhiTranslate="mediaLibraryApp.trackType.creditsNeeded">Credits Needed</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="vipCreditsNeeded">
+              <div class="d-flex">
+                <span jhiTranslate="mediaLibraryApp.trackType.vipCreditsNeeded">Vip Credits Needed</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (trackType of trackTypes; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/track-type', trackType.id, 'view']">{{ trackType.id }}</a>
+              </td>
+              <td>{{ trackType.name }}</td>
+              <td>{{ trackType.creditsNeeded }}</td>
+              <td>{{ trackType.vipCreditsNeeded }}</td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/track-type', trackType.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+
+                  <a [routerLink]="['/track-type', trackType.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(trackType)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

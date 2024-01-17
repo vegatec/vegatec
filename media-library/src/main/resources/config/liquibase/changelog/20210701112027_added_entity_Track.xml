@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity Track.
+    -->
+    <changeSet id="20210701112027-1" author="jhipster">
+        <createTable tableName="track">
+            <column name="id" type="bigint" autoIncrement="true" startWith="1500">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="file_path" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="subfolder" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="sort_name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="artist_name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="artist_sort_name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="album_name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="album_sort_name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="album_artist_name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="album_artist_sort_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="album_released_year" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="genre_name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="genre_sort_name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="track_number" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="playback_length" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="bit_rate" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="created_on" type="${datetimeType}">
+                <constraints nullable="false" />
+            </column>
+            <column name="tag_version_1" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="tag_version_2" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="type_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+        <dropDefaultValue tableName="track" columnName="created_on" columnDataType="${datetimeType}"/>
+    </changeSet>
+
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+
+    <!--
+        Load sample data generated with Faker.js
+        - This data can be easily edited using a CSV editor (or even MS Excel) and
+          is located in the 'src/main/resources/config/liquibase/fake-data' directory
+        - By default this data is applied when running with the JHipster 'dev' profile.
+          This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
+          Spring Boot configuration key.
+    -->
+    <changeSet id="20210701112027-1-data" author="jhipster" context="faker">
+        <loadData
+                  file="config/liquibase/fake-data/track.csv"
+                  separator=";"
+                  tableName="track"
+                  usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="file_path" type="string"/>
+            <column name="subfolder" type="string"/>
+            <column name="name" type="string"/>
+            <column name="sort_name" type="string"/>
+            <column name="artist_name" type="string"/>
+            <column name="artist_sort_name" type="string"/>
+            <column name="album_name" type="string"/>
+            <column name="album_sort_name" type="string"/>
+            <column name="album_artist_name" type="string"/>
+            <column name="album_artist_sort_name" type="string"/>
+            <column name="album_released_year" type="numeric"/>
+            <column name="genre_name" type="string"/>
+            <column name="genre_sort_name" type="string"/>
+            <column name="track_number" type="numeric"/>
+            <column name="playback_length" type="numeric"/>
+            <column name="bit_rate" type="numeric"/>
+            <column name="created_on" type="date"/>
+            <column name="tag_version_1" type="boolean"/>
+            <column name="tag_version_2" type="boolean"/>
+            <column name="type_id" type="numeric"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+        </loadData>
+    </changeSet>
+</databaseChangeLog>

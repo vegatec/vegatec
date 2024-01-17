@@ -1,0 +1,62 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (musicRequest) {
+      <div>
+        <h2 data-cy="musicRequestDetailsHeading"><span jhiTranslate="mediaLibraryApp.musicRequest.detail.title">Music Request</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ musicRequest.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.musicRequest.song">Song</span></dt>
+          <dd>
+            <span>{{ musicRequest.song }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.musicRequest.artist">Artist</span></dt>
+          <dd>
+            <span>{{ musicRequest.artist }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.musicRequest.album">Album</span></dt>
+          <dd>
+            <span>{{ musicRequest.album }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.musicRequest.genre">Genre</span></dt>
+          <dd>
+            <span>{{ musicRequest.genre }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.musicRequest.requestedBy">Requested By</span></dt>
+          <dd>
+            <span>{{ musicRequest.requestedBy }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.musicRequest.requestedOn">Requested On</span></dt>
+          <dd>
+            <span>{{ musicRequest.requestedOn | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.musicRequest.url">Url</span></dt>
+          <dd>
+            <span>{{ musicRequest.url }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.musicRequest.done">Done</span></dt>
+          <dd>
+            <span>{{ musicRequest.done }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/music-request', musicRequest.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

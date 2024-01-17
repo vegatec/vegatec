@@ -1,0 +1,49 @@
+{
+  "annotations": {
+    "changelogDate": "20210806164503"
+  },
+  "changelogDate": "20210806164503",
+  "dto": "mapstruct",
+  "entityTableName": "business",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "address",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "owner",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "contact",
+      "fieldType": "String",
+      "fieldValidateRules": []
+    },
+    {
+      "fieldName": "phone",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": true,
+  "name": "Business",
+  "pagination": "infinite-scroll",
+  "relationships": [
+    {
+      "otherEntityName": "product",
+      "otherEntityRelationshipName": "locatedAt",
+      "relationshipName": "products",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

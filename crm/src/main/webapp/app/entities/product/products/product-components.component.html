@@ -1,0 +1,42 @@
+<div>
+  <div class="alert alert-info vertical-centered" id="no-result" *ngIf="products?.length === 0">
+    <span jhiTranslate="crmApp.product.home.notFound">No Products found</span>
+  </div>
+  <div class="fixed-bottom">
+    <button
+      id="jh-create-entity"
+      data-cy="entityCreateButton"
+      class="btn btn-primary border rounded-circle jh-create-entity create-business m-2 float-end"
+      (click)="addProducts()"
+    >
+      <fa-icon icon="plus"></fa-icon>
+    </button>
+  </div>
+  <div
+    class="p-0 infinite-scroll list-group"
+    jhiAutoHeight="420"
+    infinite-scroll
+    (scrolled)="loadPage(page + 1)"
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50"
+    [scrollWindow]="false"
+    [infiniteScrollDisabled]="page >= links['last']"
+  >
+    <div class="row">
+      <div *ngFor="let product of products; productBy: productId" class="p-1 border-0 col-md-4 col-sm-6 col-xs-12">
+        <div class="card bg-light">
+          <div class="card-body" (swipeLeft)="delete($event, product)">
+            <h5 class="card-title">{{ product.manufacturer }} {{ product.type!.name }}</h5>
+            <h4 class="card-subtitle">
+              model: <b>{{ product.model }}</b>
+            </h4>
+            <h4 class="card-subtitle">
+              serial number: <b>{{ product.serialNumber }}</b>
+            </h4>
+            <a href="#" class="btn btn-primary" [routerLink]="['/product', product.id, 'view']">View</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

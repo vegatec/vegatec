@@ -1,0 +1,5 @@
+org.springframework.test.context.ContextCustomizerFactory = net.vegatec.\
+    media_library.config.TestContainersSpringContextCustomizerFactory,net.\
+    vegatec.media_library.config.\
+    SqlTestContainersSpringContextCustomizerFactory,net.vegatec.media_library.\
+    config.KafkaTestContainersSpringContextCustomizerFactory

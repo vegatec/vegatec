@@ -1,0 +1,73 @@
+<div>
+  <h2 id="page-heading" data-cy="ProductHeading" class="text-center">
+    <span jhiTranslate="crmApp.product.home.title">Products</span>
+
+    <div class="d-flex justify-content-start m-1">
+      <input
+        type="search"
+        class="form-control"
+        placeholder="Search"
+        aria-label="Search"
+        [(ngModel)]="term"
+        (ngModelChange)="search($event)"
+      />
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="fixed-bottom">
+    <button
+      id="jh-create-entity"
+      data-cy="entityCreateButton"
+      class="btn btn-primary border rounded-circle jh-create-entity create-business m-2 float-end"
+      [routerLink]="['/product/new']"
+    >
+      <fa-icon icon="plus"></fa-icon>
+    </button>
+  </div>
+  <div class="alert alert-info centered" id="no-result" *ngIf="products?.length === 0">
+    <span jhiTranslate="crmApp.product.home.notFound">No Products found</span>
+  </div>
+
+  <div
+    class="p-0 infinite-scroll l"
+    jhiAutoHeight="150"
+    infinite-scroll
+    (scrolled)="loadPage(page + 1)"
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50"
+    [scrollWindow]="false"
+    [infiniteScrollDisabled]="page > links['last']"
+  >
+    <div class="row">
+      <div *ngFor="let product of products; productBy: productId" class="p-1 border-0 col-md-4 col-sm-6 col-xs-12">
+        <div class="card bg-light">
+          <div class="card-body d-flex p-3">
+            <img
+              [src]="'data:' + product.type!.logoContentType + ';base64,' + product.type!.logo"
+              width="64px"
+              height="64px"
+              alt="product image"
+              class=""
+            />
+            <div class="w-100">
+              <div class="d-flex">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <span class="m-auto"></span>
+                <a href="#" class="float-end" [routerLink]="['/product', product.id, 'view', 'components']">
+                  <fa-icon icon="eye"></fa-icon>
+                </a>
+              </div>
+              <p class="card-text truncate">
+                <a [routerLink]="['/business', product.locatedAt!.id, 'view']">{{ product.locatedAt!.name }}</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+<div name="addForm" (ngSubmit)="confirmAdd()" class="m-0 p-0">
+  <div class="modal-header">
+    <h4 class="modal-title" data-cy="addProductsDialogHeading" jhiTranslate="entity.delete.title">Select Products</h4>
+
+    <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="cancel()">&times;</button>
+  </div>
+  <div class="row m-2">
+    <input
+      type="search"
+      class="form-control w-100"
+      placeholder="Search"
+      aria-label="Search"
+      [(ngModel)]="term"
+      (ngModelChange)="search($event)"
+    />
+  </div>
+  <div class="modal-body p-1">
+    <div>
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <div class="alert alert-info centered" id="no-result" *ngIf="products?.length === 0">
+        <span jhiTranslate="crmApp.product.home.notFound">No Products found</span>
+      </div>
+
+      <div
+        class="p-0 infinite-scroll list-group"
+        jhiAutoHeight="200"
+        infinite-scroll
+        (scrolled)="loadPage(page + 1)"
+        [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="50"
+        [scrollWindow]="false"
+        [infiniteScrollDisabled]="page > links['last']"
+      >
+        <div *ngFor="let product of products; productBy: productId" class="p-1 border-0 list-group-item">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="card bg-light">
+                <div class="card-body" (click)="toggle(product.id)" [ngClass]="{ 'bg-secondary': isSelected(product.id) }">
+                  <h5 class="card-title">{{ product.name }}</h5>
+                  <span>{{ isSelected(product.id) }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+      <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+    </button>
+
+    <button
+      id="jhi-confirm-delete-business"
+      data-cy="entityConfirmDeleteButton"
+      type="submit"
+      class="btn btn-danger"
+      (click)="confirmAdd()"
+    >
+      <fa-icon icon="plus"></fa-icon>&nbsp;<span>Add</span>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+{
+  "mediaLibraryApp": {
+    "musicRequest": {
+      "home": {
+        "title": "Music Requests",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Music Request",
+        "createOrEditLabel": "Crear o editar Music Request",
+        "search": "Buscar Music Request",
+        "notFound": "Ningún Music Requests encontrado"
+      },
+      "created": "Un nuevo Music Request ha sido creado con el identificador {{ param }}",
+      "updated": "Un Music Request ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Music Request ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Music Request {{ id }}?"
+      },
+      "detail": {
+        "title": "Music Request"
+      },
+      "id": "ID",
+      "song": "Song",
+      "artist": "Artist",
+      "album": "Album",
+      "genre": "Genre",
+      "requestedBy": "Requested By",
+      "requestedOn": "Requested On",
+      "url": "Url",
+      "done": "Done"
+    }
+  }
+}

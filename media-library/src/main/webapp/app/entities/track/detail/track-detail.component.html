@@ -1,0 +1,114 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (track) {
+      <div>
+        <h2 data-cy="trackDetailsHeading"><span jhiTranslate="mediaLibraryApp.track.detail.title">Track</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ track.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.track.filePath">File Path</span></dt>
+          <dd>
+            <span>{{ track.filePath }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.track.subfolder">Subfolder</span></dt>
+          <dd>
+            <span>{{ track.subfolder }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.track.name">Name</span></dt>
+          <dd>
+            <span>{{ track.name }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.track.sortName">Sort Name</span></dt>
+          <dd>
+            <span>{{ track.sortName }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.track.artistName">Artist Name</span></dt>
+          <dd>
+            <span>{{ track.artistName }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.track.artistSortName">Artist Sort Name</span></dt>
+          <dd>
+            <span>{{ track.artistSortName }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.track.albumName">Album Name</span></dt>
+          <dd>
+            <span>{{ track.albumName }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.track.albumSortName">Album Sort Name</span></dt>
+          <dd>
+            <span>{{ track.albumSortName }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.track.albumArtistName">Album Artist Name</span></dt>
+          <dd>
+            <span>{{ track.albumArtistName }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.track.albumArtistSortName">Album Artist Sort Name</span></dt>
+          <dd>
+            <span>{{ track.albumArtistSortName }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.track.albumReleasedYear">Album Released Year</span></dt>
+          <dd>
+            <span>{{ track.albumReleasedYear }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.track.genreName">Genre Name</span></dt>
+          <dd>
+            <span>{{ track.genreName }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.track.genreSortName">Genre Sort Name</span></dt>
+          <dd>
+            <span>{{ track.genreSortName }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.track.trackNumber">Track Number</span></dt>
+          <dd>
+            <span>{{ track.trackNumber }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.track.playbackLength">Playback Length</span></dt>
+          <dd>
+            <span>{{ track.playbackLength }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.track.bitRate">Bit Rate</span></dt>
+          <dd>
+            <span>{{ track.bitRate }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.track.createdOn">Created On</span></dt>
+          <dd>
+            <span>{{ track.createdOn | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.track.tagVersion1">Tag Version 1</span></dt>
+          <dd>
+            <span>{{ track.tagVersion1 }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.track.tagVersion2">Tag Version 2</span></dt>
+          <dd>
+            <span>{{ track.tagVersion2 }}</span>
+          </dd>
+          <dt><span jhiTranslate="mediaLibraryApp.track.type">Type</span></dt>
+          <dd>
+            @if (track.type) {
+              <div>
+                <a [routerLink]="['/track-type', track.type.id, 'view']">{{ track.type.name }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/track', track.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

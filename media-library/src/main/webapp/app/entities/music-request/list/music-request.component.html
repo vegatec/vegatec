@@ -1,0 +1,181 @@
+<div>
+  <h2 id="page-heading" data-cy="MusicRequestHeading">
+    <span jhiTranslate="mediaLibraryApp.musicRequest.home.title">Music Requests</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="mediaLibraryApp.musicRequest.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-music-request"
+        [routerLink]="['/music-request/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span class="hidden-sm-down" jhiTranslate="mediaLibraryApp.musicRequest.home.createLabel">Create a new Music Request</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <form name="searchForm" class="row row-cols-sm-auto align-items-center">
+    <div class="col-sm-12">
+      <div class="input-group w-100 mt-3">
+        <label class="visually-hidden" for="currentSearch" jhiTranslate="mediaLibraryApp.musicRequest.home.search"
+          >Search for Music Request</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="currentSearch"
+          id="currentSearch"
+          name="currentSearch"
+          placeholder="{{ 'mediaLibraryApp.musicRequest.home.search' | translate }}"
+        />
+
+        <button class="btn btn-info" (click)="search(currentSearch)">
+          <fa-icon icon="search"></fa-icon>
+        </button>
+
+        @if (currentSearch) {
+          <button class="btn btn-danger" (click)="search('')">
+            <fa-icon icon="trash-alt"></fa-icon>
+          </button>
+        }
+      </div>
+    </div>
+  </form>
+
+  @if (musicRequests?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="mediaLibraryApp.musicRequest.home.notFound">No Music Requests found</span>
+    </div>
+  }
+
+  @if (musicRequests && musicRequests.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="song">
+              <div class="d-flex">
+                <span jhiTranslate="mediaLibraryApp.musicRequest.song">Song</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="artist">
+              <div class="d-flex">
+                <span jhiTranslate="mediaLibraryApp.musicRequest.artist">Artist</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="album">
+              <div class="d-flex">
+                <span jhiTranslate="mediaLibraryApp.musicRequest.album">Album</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="genre">
+              <div class="d-flex">
+                <span jhiTranslate="mediaLibraryApp.musicRequest.genre">Genre</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="requestedBy">
+              <div class="d-flex">
+                <span jhiTranslate="mediaLibraryApp.musicRequest.requestedBy">Requested By</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="requestedOn">
+              <div class="d-flex">
+                <span jhiTranslate="mediaLibraryApp.musicRequest.requestedOn">Requested On</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="url">
+              <div class="d-flex">
+                <span jhiTranslate="mediaLibraryApp.musicRequest.url">Url</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="done">
+              <div class="d-flex">
+                <span jhiTranslate="mediaLibraryApp.musicRequest.done">Done</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody
+          infinite-scroll
+          (scrolled)="loadPage(page + 1)"
+          [infiniteScrollDisabled]="page - 1 >= links['last']"
+          [infiniteScrollDistance]="0"
+        >
+          @for (musicRequest of musicRequests; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/music-request', musicRequest.id, 'view']">{{ musicRequest.id }}</a>
+              </td>
+              <td>{{ musicRequest.song }}</td>
+              <td>{{ musicRequest.artist }}</td>
+              <td>{{ musicRequest.album }}</td>
+              <td>{{ musicRequest.genre }}</td>
+              <td>{{ musicRequest.requestedBy }}</td>
+              <td>{{ musicRequest.requestedOn | formatMediumDatetime }}</td>
+              <td>{{ musicRequest.url }}</td>
+              <td>{{ musicRequest.done }}</td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/music-request', musicRequest.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+
+                  <a [routerLink]="['/music-request', musicRequest.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(musicRequest)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

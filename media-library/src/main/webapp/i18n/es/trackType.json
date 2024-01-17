@@ -1,0 +1,27 @@
+{
+  "mediaLibraryApp": {
+    "trackType": {
+      "home": {
+        "title": "Track Types",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Track Type",
+        "createOrEditLabel": "Crear o editar Track Type",
+        "search": "Buscar Track Type",
+        "notFound": "Ningún Track Types encontrado"
+      },
+      "created": "Un nuevo Track Type ha sido creado con el identificador {{ param }}",
+      "updated": "Un Track Type ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Track Type ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Track Type {{ id }}?"
+      },
+      "detail": {
+        "title": "Track Type"
+      },
+      "id": "ID",
+      "name": "Name",
+      "creditsNeeded": "Credits Needed",
+      "vipCreditsNeeded": "Vip Credits Needed"
+    }
+  }
+}

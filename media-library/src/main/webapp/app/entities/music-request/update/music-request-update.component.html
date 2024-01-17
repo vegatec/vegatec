@@ -1,0 +1,97 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-music-request-heading"
+        data-cy="MusicRequestCreateUpdateHeading"
+        jhiTranslate="mediaLibraryApp.musicRequest.home.createOrEditLabel"
+      >
+        Create or edit a Music Request
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.musicRequest.song" for="field_song">Song</label>
+          <input type="text" class="form-control" name="song" id="field_song" data-cy="song" formControlName="song" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.musicRequest.artist" for="field_artist">Artist</label>
+          <input type="text" class="form-control" name="artist" id="field_artist" data-cy="artist" formControlName="artist" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.musicRequest.album" for="field_album">Album</label>
+          <input type="text" class="form-control" name="album" id="field_album" data-cy="album" formControlName="album" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.musicRequest.genre" for="field_genre">Genre</label>
+          <input type="text" class="form-control" name="genre" id="field_genre" data-cy="genre" formControlName="genre" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.musicRequest.requestedBy" for="field_requestedBy">Requested By</label>
+          <input
+            type="text"
+            class="form-control"
+            name="requestedBy"
+            id="field_requestedBy"
+            data-cy="requestedBy"
+            formControlName="requestedBy"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.musicRequest.requestedOn" for="field_requestedOn">Requested On</label>
+          <div class="d-flex">
+            <input
+              id="field_requestedOn"
+              data-cy="requestedOn"
+              type="datetime-local"
+              class="form-control"
+              name="requestedOn"
+              formControlName="requestedOn"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.musicRequest.url" for="field_url">Url</label>
+          <input type="text" class="form-control" name="url" id="field_url" data-cy="url" formControlName="url" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mediaLibraryApp.musicRequest.done" for="field_done">Done</label>
+          <input type="checkbox" class="form-check" name="done" id="field_done" data-cy="done" formControlName="done" />
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,111 @@
+<div class="d-flex justify-content-center infinite-scroll" jhiAutoHeight="100">
+  <div class="w-100">
+    <div *ngIf="product">
+      <div class="d-flex">
+        <div></div>
+        <h2 data-cy="productDetailsHeading" class="text-center m-auto"><span jhiTranslate="crmApp.product.detail.title">Product</span></h2>
+
+        <button type="button" [routerLink]="['/product', product.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>
+        </button>
+      </div>
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ product.id }}</span>
+        </dd>
+        <!-- <dt><span jhiTranslate="crmApp.product.name">Name</span></dt>
+        <dd>
+          <span>{{ product.name }}</span>
+        </dd> -->
+
+        <dt><span jhiTranslate="crmApp.product.manufacturer">Manufacturer</span></dt>
+        <dd>
+          <span>{{ product.manufacturer }}</span>
+        </dd>
+
+        <dt><span jhiTranslate="crmApp.product.type">Type</span></dt>
+        <dd>
+          <div *ngIf="product.type">
+            <a [routerLink]="['/product-type', product.type.id, 'view']">{{ product.type.name }}</a>
+          </div>
+        </dd>
+
+        <dt><span jhiTranslate="crmApp.product.model">Model</span></dt>
+        <dd>
+          <span>{{ product.model }}</span>
+        </dd>
+        <dt><span jhiTranslate="crmApp.product.serialNumber">Serial Number</span></dt>
+        <dd>
+          <span>{{ product.serialNumber }}</span>
+        </dd>
+
+        <dt><span jhiTranslate="crmApp.product.createdOn">Created On</span></dt>
+        <dd>
+          <span>{{ product.createdOn | formatMediumDate }}</span>
+        </dd>
+
+        <dt><span jhiTranslate="crmApp.product.locatedAt">Located At</span></dt>
+        <dd>
+          <div *ngIf="product.locatedAt">
+            <a [routerLink]="['/business', product.locatedAt.id, 'view']">{{ product.locatedAt.name }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="crmApp.product.componentOf">Component Of</span></dt>
+        <dd>
+          <div *ngIf="product.componentOf">
+            <a [routerLink]="['/product', product.componentOf.id, 'view']">{{ product.componentOf.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <div class="barcode">VJBV4-0001</div>
+
+      <hr />
+
+      <ul class="nav nav-tabs nav-fill mb-3" id="ex1" role="tablist">
+        <li class="nav-item" role="presentation">
+          <a
+            class="nav-link active"
+            id="ex2-tab-1"
+            data-mdb-toggle="tab"
+            [routerLink]="['components']"
+            role="tab"
+            aria-controls="ex2-tabs-1"
+            aria-selected="true"
+            >Components</a
+          >
+        </li>
+
+        <li class="nav-item" role="presentation">
+          <a
+            class="nav-link"
+            id="ex2-tab-3"
+            data-mdb-toggle="tab"
+            [routerLink]="['/product', product.id, 'view/events']"
+            role="tab"
+            aria-controls="ex2-tabs-3"
+            aria-selected="false"
+            >Events</a
+          >
+        </li>
+      </ul>
+
+      <router-outlet></router-outlet>
+      <!-- 
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/product', product.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button> -->
+    </div>
+  </div>
+</div>

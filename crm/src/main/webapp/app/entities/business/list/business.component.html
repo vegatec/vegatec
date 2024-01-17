@@ -1,0 +1,63 @@
+<div m-0>
+  <h2 id="page-heading" data-cy="BusinessHeading" class="text-center">
+    <span jhiTranslate="crmApp.business.home.title">Businesses</span>
+
+    <div class="d-flex justify-content-start m-1">
+      <input
+        type="search"
+        class="form-control"
+        placeholder="Search"
+        aria-label="Search"
+        [(ngModel)]="term"
+        (ngModelChange)="search($event)"
+      />
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="fixed-bottom">
+    <button
+      id="jh-create-entity"
+      data-cy="entityCreateButton"
+      class="btn btn-primary border rounded-circle jh-create-entity create-business m-2 float-end"
+      [routerLink]="['/business/new']"
+    >
+      <fa-icon icon="plus"></fa-icon>
+    </button>
+  </div>
+  <div class="alert alert-info centered" id="no-result" *ngIf="businesses?.length === 0">
+    <span jhiTranslate="crmApp.business.home.notFound">No Businesses found</span>
+  </div>
+
+  <div
+    class="p-0 infinite-scroll"
+    jhiAutoHeight="170"
+    infinite-scroll
+    (scrolled)="loadPage(page + 1)"
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50"
+    [scrollWindow]="false"
+    [infiniteScrollDisabled]="page > links['last']"
+  >
+    <div class="row">
+      <div *ngFor="let business of businesses; businessBy: businessId" class="p-1 col-md-4">
+        <div class="card bg-light">
+          <div class="card-body">
+            <div class="d-flex">
+              <h5 class="card-title">{{ business.name }}</h5>
+              <span class="m-auto"></span>
+              <a href="#" class="float-end" [routerLink]="['/business', business.id, 'view', 'products']">
+                <fa-icon icon="eye"></fa-icon>
+              </a>
+            </div>
+            <p class="card-text truncate">{{ business.address }}</p>
+            <p class="card-text">{{ business.owner }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
