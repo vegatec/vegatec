@@ -94,7 +94,7 @@ export const AlbumsStore = signalStore(
             albumService.query({ ...store.pagingOptions(), ...store.searchCriteria() }).pipe(
               map(response => response.body ?? []),
               tap(albums => {
-                patchState(store, { albums: [...store.albums()].concat(albums) });
+                patchState(store, { albums: [...store.albums(), ...albums] });
               }),
               catchError(error => of({ error: error.message })),
             ),

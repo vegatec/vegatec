@@ -5,10 +5,30 @@
       <span jhiTranslate="global.title" class="navbar-title">MediaLibrary</span>
       <!-- <span class="navbar-version">{{ version }}</span> -->
     </a>
+
     <div class="m-auto"></div>
     <div class="justify-content-center m-1 w-50">
       <input type="search" class="form-control" placeholder="Search" aria-label="Search" (keyup)="search($event)" />
     </div>
     <div class="m-auto"></div>
+
+    <div class="dropdown dropstart">
+      <button type="button" class="btn  " data-bs-toggle="dropdown" aria-expanded="true">
+        <i><fa-icon icon="bars"></fa-icon></i>  
+      </button>
+      <ul class="dropdown-menu ">
+        <li><a class="dropdown-item" (click)="trackStore.selectAll()" >Select All</a></li>
+        <li><a class="dropdown-item" href="#">Another action</a></li>
+        <li><a class="dropdown-item" href="#">Something else here</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="#">Separated link</a></li>
+      </ul>
+    </div>
+
+    <!-- {{trackStore.selected() |json}} -->
+
+
+
+    
   </div>
 </nav>

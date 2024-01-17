@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -15,6 +15,7 @@ import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
 import ActiveMenuDirective from './active-menu.directive';
 import NavbarItem from './navbar-item.model';
 import { NavbarService } from './navbar.service';
+import { TracksStore } from 'app/store/tracks-store';
 
 @Component({
   standalone: true,
@@ -24,6 +25,9 @@ import { NavbarService } from './navbar.service';
   imports: [RouterModule, SharedModule, HasAnyAuthorityDirective, ActiveMenuDirective],
 })
 export default class NavbarComponent {
+
+  trackStore= inject(TracksStore);
+
   constructor(public navbarService: NavbarService) {}
 
   search(event: KeyboardEvent): void {

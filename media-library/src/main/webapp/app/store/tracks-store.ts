@@ -26,7 +26,7 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 
 export interface TracksState {
   tracks: Track[];
-  selected: Track | string | null;
+  selected: Track[];
 
   pagingOptions: PagingOptions;
   searchCriteria: SearchCriteria;
@@ -44,7 +44,7 @@ export const TracksStore = signalStore(
   withState<TracksState>({
     tracks: [],
 
-    selected: null,
+    selected: [],
     pagingOptions: {
       itemsPerPage: ITEMS_PER_PAGE,
       page: 0,
@@ -78,6 +78,7 @@ export const TracksStore = signalStore(
               pagingOptions: { ...store.pagingOptions(), page: 0 },
               searchCriteria: criteria,
               tracks: [],
+              selected: []
             });
           }),
           debounceTime(500),
@@ -112,13 +113,25 @@ export const TracksStore = signalStore(
           ),
         ),
       ),
-      select: (item: Track | string | null) => {
-        const result = store.selected() === item ? null : item;
 
-        patchState(store, { selected: result });
+      select: (item: Track) => {
+        const isSelected = store.selected().findIndex( i => i === item) !== -1
+
+        if (isSelected)
+          patchState(store, { selected: store.selected().filter(i=> i !== item) });
+        else 
+         patchState(store, { selected: [...store.selected(), item] });
       },
 
-      isSelected: (item: Track | string) => store.selected() === item,
+      isSelected: (item: Track | string) => store.selected().findIndex( i => i === item) !== -1,
+
+      selectAll() {
+        if (store.selected().length === 0)
+          patchState(store, {selected: store.tracks()});
+        else
+        patchState(store, {selected: []});
+
+      }
     };
   }),
   withHooks({
@@ -127,3 +140,9 @@ export const TracksStore = signalStore(
     },
   }),
 );
+
+
+// function isSelected(item: string | Track | null) {
+//   throw new Error('Function not implemented.');
+// }
+
