@@ -1,0 +1,24 @@
+{
+  "generator-jhipster": {
+    "authenticationType": "oauth2",
+    "baseName": "jukeboxPwa",
+    "clientFramework": "angular",
+    "clientTestFrameworks": [],
+    "clientTheme": "flatly",
+    "clientThemeVariant": "light",
+    "creationTimestamp": 1706373895261,
+    "devServerPort": 4200,
+    "enableTranslation": true,
+    "entities": [],
+    "jhipsterVersion": "8.1.0",
+    "languages": ["en", "es"],
+    "microfrontend": null,
+    "microfrontends": [],
+    "monorepository": true,
+    "nativeLanguage": "en",
+    "skipCommitHook": true,
+    "skipServer": true,
+    "testFrameworks": [],
+    "withAdminUi": false
+  }
+}
