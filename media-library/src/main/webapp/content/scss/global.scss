@@ -802,3 +802,25 @@ li.borderless {
 .card-body {
   background-color: white;
 }
+
+
+
+.checkbox-lg .form-check-input{
+  top: .8rem;
+  scale: 1.4;
+  margin-right: 0.7rem;
+  }
+ 
+ .checkbox-lg .form-check-label {
+  padding-top: 13px;
+  }
+ 
+ .checkbox-xl .form-check-input {
+  top: 1.2rem;
+  scale: 1.7;
+  margin-right: 0.8rem;
+  }
+ 
+ .checkbox-xl .form-check-label {
+  padding-top: 19px;
+  }

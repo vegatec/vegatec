@@ -57,7 +57,7 @@ export const TracksStore = signalStore(
     error: '',
   }),
 
-  withComputed(({ tracks }) => ({
+  withComputed(({ tracks, selected }) => ({
     groupedTracks: computed(() =>
       of(tracks()).pipe(
         concatMap(tracks => tracks),
@@ -66,6 +66,7 @@ export const TracksStore = signalStore(
         toArray(),
       ),
     ),
+    hasSelections: computed(() => selected.length > 0)
   })),
 
   withMethods(store => {
