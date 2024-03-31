@@ -28,7 +28,7 @@
     "webapp:build:dev": "ng build --configuration development",
     "webapp:build:prod": "ng build --configuration production",
     "webapp:dev": "ng serve",
-    "webapp:dev-ssl": "ng serve --ssl",
+    "webapp:dev-ssl": "ng serve --ssl --host 0.0.0.0  --ssl-key certs/cert-key.pem --ssl-cert certs/fullchain.pem",
     "webapp:dev-verbose": "ng serve --verbose",
     "webapp:prod": "npm run clean-www && npm run webapp:build:prod",
     "webapp:test": "npm run test --"
@@ -65,7 +65,7 @@
     "@angular-builders/jest": "17.0.0",
     "@angular-devkit/build-angular": "17.0.6",
     "@angular-eslint/eslint-plugin": "17.1.1",
-    "@angular/cli": "17.0.6",
+    "@angular/cli": "^17.1.1",
     "@angular/compiler-cli": "17.0.6",
     "@angular/service-worker": "17.0.6",
     "@types/jest": "29.5.11",

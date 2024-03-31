@@ -15,6 +15,7 @@ import { Account } from 'app/core/auth/account.model';
 })
 export default class HomeComponent implements OnInit {
   account: Account | null = null;
+  data!: any;
 
   constructor(
     private accountService: AccountService,
@@ -23,6 +24,11 @@ export default class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => (this.account = account));
+    navigator.serviceWorker.addEventListener('message', (event: MessageEvent) => {
+      console.log("Got message \n" + JSON.stringify(event.data));
+      this.data=JSON.stringify(event.data);
+
+    });
   }
 
   login(): void {

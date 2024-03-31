@@ -25,7 +25,17 @@
   ],
   "theme_color": "#000000",
   "background_color": "#e0e0e0",
-  "start_url": ".",
-  "display": "standalone",
-  "orientation": "portrait"
+  "start_url": "/",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "share_target": {
+    "action": "/receive-url",
+    "method": "GET",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
 }

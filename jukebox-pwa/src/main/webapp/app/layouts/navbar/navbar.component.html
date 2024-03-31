@@ -20,7 +20,7 @@
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
+          <a class="nav-link"  (click)="collapseNavbar()">
             <span>
               <fa-icon icon="home"></fa-icon>
               <span jhiTranslate="global.menu.home">Home</span>
@@ -116,6 +116,12 @@
             }
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="account-menu">
+            <li>
+              <a class="dropdown-item" routerLink="/receive-url" >
+
+                <span >Recive URL</span>
+              </a>
+            </li>
             @if (account !== null) {
               <li>
                 <a class="dropdown-item" (click)="logout()" id="logout" data-cy="logout">

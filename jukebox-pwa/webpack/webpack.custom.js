@@ -40,6 +40,8 @@ module.exports = async (config, options, targetOptions) => {
   const tls = Boolean(config.devServer && config.devServer.https);
   if (config.devServer) {
     config.devServer.proxy = proxyConfig({ tls });
+    // important to be accessible from nginx reverse proxy manager
+    config.devServer.allowedHosts='all';
   }
 
   if (targetOptions.target === 'serve' || config.watch) {

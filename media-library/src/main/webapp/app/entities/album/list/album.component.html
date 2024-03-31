@@ -37,10 +37,10 @@
                           artistName: g[0]!,
                           albumArtistName: g[0]!,
 
-                          addedSince: store.searchCriteria()?.addedSince,
-                          releasedSince: store.searchCriteria()?.releasedSince,
-                          trackName: store.searchCriteria()?.trackName,
-                          filter: store.searchCriteria()?.filter
+                          addedSince: store.searchCriteria().addedSince!,
+                          releasedSince: store.searchCriteria().releasedSince!,
+                          trackName: store.searchCriteria().trackName!,
+                          filter: store.searchCriteria().filter!
                         }
                       ]
                     }
@@ -64,12 +64,12 @@
                             {
                               albumName: album.name,
                               albumArtistName: album.artist?.name,
-                              artistName: store.searchCriteria()?.artistName,
+                              artistName: store.searchCriteria().artistName,
                               releasedYear: album?.releasedYear,
-                              addedSince: store.searchCriteria()?.addedSince,
-                              releasedSince: store.searchCriteria()?.releasedSince,
-                              trackName: store.searchCriteria()?.trackName,
-                              filter: store.searchCriteria()?.filter
+                              addedSince: store.searchCriteria().addedSince,
+                              releasedSince: store.searchCriteria().releasedSince,
+                              trackName: store.searchCriteria().trackName,
+                              filter: store.searchCriteria().filter
                             }
                           ]
                         }
