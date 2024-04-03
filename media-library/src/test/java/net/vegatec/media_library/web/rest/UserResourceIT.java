@@ -1,21 +1,19 @@
 package net.vegatec.media_library.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.util.*;
 import java.util.function.Consumer;
 import net.vegatec.media_library.IntegrationTest;
-import net.vegatec.media_library.domain.Authority;
-import net.vegatec.media_library.domain.User;
-import net.vegatec.media_library.repository.UserRepository;
-import net.vegatec.media_library.repository.search.UserSearchRepository;
+import net.vegatec.media_library.query.domain.Authority;
+import net.vegatec.media_library.query.domain.User;
+import net.vegatec.media_library.query.repository.UserRepository;
+import net.vegatec.media_library.query.repository.search.UserSearchRepository;
 import net.vegatec.media_library.security.AuthoritiesConstants;
-import net.vegatec.media_library.service.dto.AdminUserDTO;
-import net.vegatec.media_library.service.mapper.UserMapper;
+import net.vegatec.media_library.query.service.dto.AdminUserDTO;
+import net.vegatec.media_library.query.service.mapper.UserMapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

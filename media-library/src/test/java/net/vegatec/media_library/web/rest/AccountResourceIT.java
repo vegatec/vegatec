@@ -3,11 +3,11 @@ package net.vegatec.media_library.web.rest;
 import static net.vegatec.media_library.test.util.OAuth2TestUtil.TEST_USER_LOGIN;
 import static net.vegatec.media_library.test.util.OAuth2TestUtil.registerAuthenticationToken;
 import static net.vegatec.media_library.test.util.OAuth2TestUtil.testAuthenticationToken;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import net.vegatec.media_library.IntegrationTest;
+import net.vegatec.media_library.query.web.rest.AccountResource;
 import net.vegatec.media_library.security.AuthoritiesConstants;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

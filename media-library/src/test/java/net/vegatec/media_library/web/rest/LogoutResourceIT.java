@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import net.vegatec.media_library.IntegrationTest;
+import net.vegatec.media_library.query.web.rest.LogoutResource;
 import net.vegatec.media_library.security.AuthoritiesConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

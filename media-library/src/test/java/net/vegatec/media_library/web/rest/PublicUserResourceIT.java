@@ -7,9 +7,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import jakarta.persistence.EntityManager;
 import net.vegatec.media_library.IntegrationTest;
-import net.vegatec.media_library.domain.User;
-import net.vegatec.media_library.repository.UserRepository;
-import net.vegatec.media_library.repository.search.UserSearchRepository;
+import net.vegatec.media_library.query.domain.User;
+import net.vegatec.media_library.query.repository.UserRepository;
+import net.vegatec.media_library.query.repository.search.UserSearchRepository;
+import net.vegatec.media_library.query.web.rest.PublicUserResource;
 import net.vegatec.media_library.security.AuthoritiesConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,9 +36,9 @@ class PublicUserResourceIT {
     private UserRepository userRepository;
 
     /**
-     * This repository is mocked in the net.vegatec.media_library.repository.search test package.
+     * This repository is mocked in the net.vegatec.media_library.query.repository.search test package.
      *
-     * @see net.vegatec.media_library.repository.search.UserSearchRepositoryMockConfiguration
+     * @see net.vegatec.media_library.query.repository.search.UserSearchRepositoryMockConfiguration
      */
     @Autowired
     private UserSearchRepository mockUserSearchRepository;

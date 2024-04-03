@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import co.elastic.clients.elasticsearch._types.ElasticsearchException;
 import co.elastic.clients.elasticsearch._types.ErrorCause;
 import co.elastic.clients.elasticsearch._types.ErrorResponse;
+import net.vegatec.media_library.query.web.rest.errors.ElasticsearchExceptionMapper;
+import net.vegatec.media_library.query.web.rest.errors.QuerySyntaxException;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.elasticsearch.UncategorizedElasticsearchException;
 

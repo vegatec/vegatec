@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@EnableJpaRepositories({ "net.vegatec.media_library.repository" })
+@EnableJpaRepositories({ "net.vegatec.media_library.query.repository" })
 @EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")
 @EnableTransactionManagement
-@EnableElasticsearchRepositories("net.vegatec.media_library.repository.search")
+@EnableElasticsearchRepositories("net.vegatec.media_library.query.repository.search")
 public class DatabaseConfiguration {}
