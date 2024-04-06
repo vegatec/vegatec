@@ -1,0 +1,36 @@
+package net.vegatec.media_library.query.domain;
+
+import static net.vegatec.media_library.query.domain.TrackTypeTestSamples.*;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import net.vegatec.media_library.query.web.rest.TestUtil;
+import org.junit.jupiter.api.Test;
+
+class TrackTest {
+
+    @Test
+    void equalsVerifier() throws Exception {
+        TestUtil.equalsVerifier(Track.class);
+        Track track1 = TrackTestSamples.getTrackSample1();
+        Track track2 = new Track();
+        assertThat(track1).isNotEqualTo(track2);
+
+        track2.setId(track1.getId());
+        assertThat(track1).isEqualTo(track2);
+
+        track2 = TrackTestSamples.getTrackSample2();
+        assertThat(track1).isNotEqualTo(track2);
+    }
+
+    @Test
+    void typeTest() throws Exception {
+        Track track = TrackTestSamples.getTrackRandomSampleGenerator();
+        TrackType trackTypeBack = getTrackTypeRandomSampleGenerator();
+
+        track.setType(trackTypeBack);
+        assertThat(track.getType()).isEqualTo(trackTypeBack);
+
+        track.type(null);
+        assertThat(track.getType()).isNull();
+    }
+}

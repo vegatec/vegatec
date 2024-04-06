@@ -13,7 +13,7 @@ import tech.jhipster.config.apidoc.customizer.JHipsterOpenApiCustomizer;
 @Profile(JHipsterConstants.SPRING_PROFILE_API_DOCS)
 public class OpenApiConfiguration {
 
-    public static final String API_FIRST_PACKAGE = "net.vegatec.media_library.web.api";
+    public static final String API_FIRST_PACKAGE = "net.vegatec.media_library.query.web.api";
 
     @Bean
     @ConditionalOnMissingBean(name = "apiFirstGroupedOpenAPI")

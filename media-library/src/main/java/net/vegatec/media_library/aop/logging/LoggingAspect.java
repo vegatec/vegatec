@@ -43,9 +43,9 @@ public class LoggingAspect {
      * Pointcut that matches all Spring beans in the application's main packages.
      */
     @Pointcut(
-        "within(net.vegatec.media_library.repository..*)" +
-        " || within(net.vegatec.media_library.service..*)" +
-        " || within(net.vegatec.media_library.web.rest..*)"
+        "within(net.vegatec.media_library.query.repository..*)" +
+        " || within(net.vegatec.media_library.query.service..*)" +
+        " || within(net.vegatec.media_library.query.web.rest..*)"
     )
     public void applicationPackagePointcut() {
         // Method is empty as this is just a Pointcut, the implementations are in the advices.

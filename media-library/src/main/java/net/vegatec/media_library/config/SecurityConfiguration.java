@@ -9,7 +9,7 @@ import net.vegatec.media_library.security.SecurityUtils;
 import net.vegatec.media_library.security.oauth2.AudienceValidator;
 import net.vegatec.media_library.security.oauth2.CustomClaimConverter;
 import net.vegatec.media_library.security.oauth2.JwtGrantedAuthorityConverter;
-import net.vegatec.media_library.web.filter.SpaWebFilter;
+import net.vegatec.media_library.query.web.filter.SpaWebFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;

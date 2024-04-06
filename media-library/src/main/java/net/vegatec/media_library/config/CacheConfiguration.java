@@ -1,6 +1,9 @@
 package net.vegatec.media_library.config;
 
 import java.time.Duration;
+
+import net.vegatec.media_library.query.domain.*;
+import net.vegatec.media_library.query.repository.UserRepository;
 import org.ehcache.config.builders.*;
 import org.ehcache.jsr107.Eh107Configuration;
 import org.hibernate.cache.jcache.ConfigSettings;
@@ -43,14 +46,14 @@ public class CacheConfiguration {
     @Bean
     public JCacheManagerCustomizer cacheManagerCustomizer() {
         return cm -> {
-            createCache(cm, net.vegatec.media_library.repository.UserRepository.USERS_BY_LOGIN_CACHE);
-            createCache(cm, net.vegatec.media_library.repository.UserRepository.USERS_BY_EMAIL_CACHE);
-            createCache(cm, net.vegatec.media_library.domain.User.class.getName());
-            createCache(cm, net.vegatec.media_library.domain.Authority.class.getName());
-            createCache(cm, net.vegatec.media_library.domain.User.class.getName() + ".authorities");
-            createCache(cm, net.vegatec.media_library.domain.TrackType.class.getName());
-            createCache(cm, net.vegatec.media_library.domain.MusicRequest.class.getName());
-            createCache(cm, net.vegatec.media_library.domain.Track.class.getName());
+            createCache(cm, UserRepository.USERS_BY_LOGIN_CACHE);
+            createCache(cm, UserRepository.USERS_BY_EMAIL_CACHE);
+            createCache(cm, User.class.getName());
+            createCache(cm, Authority.class.getName());
+            createCache(cm, User.class.getName() + ".authorities");
+            createCache(cm, TrackType.class.getName());
+            createCache(cm, MusicRequest.class.getName());
+            createCache(cm, Track.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }
