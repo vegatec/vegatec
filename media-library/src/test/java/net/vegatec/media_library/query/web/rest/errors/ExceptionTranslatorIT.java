@@ -1,4 +1,4 @@
-package net.vegatec.media_library.web.rest.errors;
+package net.vegatec.media_library.query.web.rest.errors;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

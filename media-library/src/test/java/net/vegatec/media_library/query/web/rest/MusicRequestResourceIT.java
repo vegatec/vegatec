@@ -1,4 +1,4 @@
-package net.vegatec.media_library.web.rest;
+package net.vegatec.media_library.query.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
@@ -18,7 +18,6 @@ import net.vegatec.media_library.IntegrationTest;
 import net.vegatec.media_library.query.domain.MusicRequest;
 import net.vegatec.media_library.query.repository.MusicRequestRepository;
 import net.vegatec.media_library.query.repository.search.MusicRequestSearchRepository;
-import net.vegatec.media_library.query.web.rest.MusicRequestResource;
 import org.apache.commons.collections4.IterableUtils;
 import org.assertj.core.util.IterableUtil;
 import org.junit.jupiter.api.AfterEach;

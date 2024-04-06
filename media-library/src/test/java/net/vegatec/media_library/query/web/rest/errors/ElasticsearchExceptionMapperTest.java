@@ -1,4 +1,4 @@
-package net.vegatec.media_library.web.rest.errors;
+package net.vegatec.media_library.query.web.rest.errors;
 
 import static org.junit.jupiter.api.Assertions.*;
 

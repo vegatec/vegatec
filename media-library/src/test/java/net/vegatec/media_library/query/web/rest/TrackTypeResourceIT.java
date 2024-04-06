@@ -1,4 +1,4 @@
-package net.vegatec.media_library.web.rest;
+package net.vegatec.media_library.query.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
@@ -18,7 +18,6 @@ import net.vegatec.media_library.query.repository.TrackTypeRepository;
 import net.vegatec.media_library.query.repository.search.TrackTypeSearchRepository;
 import net.vegatec.media_library.query.service.dto.TrackTypeDTO;
 import net.vegatec.media_library.query.service.mapper.TrackTypeMapper;
-import net.vegatec.media_library.query.web.rest.TrackTypeResource;
 import org.apache.commons.collections4.IterableUtils;
 import org.assertj.core.util.IterableUtil;
 import org.junit.jupiter.api.AfterEach;

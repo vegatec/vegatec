@@ -1,4 +1,4 @@
-package net.vegatec.media_library.web.rest;
+package net.vegatec.media_library.query.web.rest;
 
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
@@ -10,7 +10,6 @@ import net.vegatec.media_library.IntegrationTest;
 import net.vegatec.media_library.query.domain.User;
 import net.vegatec.media_library.query.repository.UserRepository;
 import net.vegatec.media_library.query.repository.search.UserSearchRepository;
-import net.vegatec.media_library.query.web.rest.PublicUserResource;
 import net.vegatec.media_library.security.AuthoritiesConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

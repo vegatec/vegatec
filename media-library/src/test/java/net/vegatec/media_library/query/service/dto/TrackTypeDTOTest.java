@@ -2,8 +2,7 @@ package net.vegatec.media_library.query.service.dto;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import net.vegatec.media_library.query.service.dto.TrackTypeDTO;
-import net.vegatec.media_library.web.rest.TestUtil;
+import net.vegatec.media_library.query.web.rest.TestUtil;
 import org.junit.jupiter.api.Test;
 
 class TrackTypeDTOTest {

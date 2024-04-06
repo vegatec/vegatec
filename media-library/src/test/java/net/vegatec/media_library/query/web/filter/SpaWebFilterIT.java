@@ -1,4 +1,4 @@
-package net.vegatec.media_library.web.filter;
+package net.vegatec.media_library.query.web.filter;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;

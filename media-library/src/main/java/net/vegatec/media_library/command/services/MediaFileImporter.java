@@ -6,18 +6,18 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.file.*;
 
-@Service
+//@Service
 public class MediaFileImporter {
 
-    private final CommandGateway commandGateway;
+   // private final CommandGateway commandGateway;
 
     Path path = Paths.get("/media/robert/data/media/downloaded");
 
     private WatchService watchService;
 
-    public MediaFileImporter(CommandGateway commandGateway) throws IOException, InterruptedException {
+    public MediaFileImporter() throws IOException, InterruptedException {
 
-        this.commandGateway = commandGateway;
+      //  this.commandGateway = commandGateway;
 
 
         watchService = FileSystems.getDefault().newWatchService();

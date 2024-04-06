@@ -1,4 +1,4 @@
-package net.vegatec.media_library.web.rest;
+package net.vegatec.media_library.query.web.rest;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

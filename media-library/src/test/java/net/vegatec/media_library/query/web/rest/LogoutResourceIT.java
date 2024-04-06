@@ -1,4 +1,4 @@
-package net.vegatec.media_library.web.rest;
+package net.vegatec.media_library.query.web.rest;
 
 import static net.vegatec.media_library.test.util.OAuth2TestUtil.ID_TOKEN;
 import static net.vegatec.media_library.test.util.OAuth2TestUtil.authenticationToken;

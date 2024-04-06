@@ -4,7 +4,7 @@ import static net.vegatec.media_library.query.domain.TrackTestSamples.*;
 import static net.vegatec.media_library.query.domain.TrackTypeTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import net.vegatec.media_library.web.rest.TestUtil;
+import net.vegatec.media_library.query.web.rest.TestUtil;
 import org.junit.jupiter.api.Test;
 
 class TrackTest {
