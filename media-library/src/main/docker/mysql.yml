@@ -5,7 +5,7 @@ services:
     image: mysql:8.2.0
     volumes:
       - ./config/mysql:/etc/mysql/conf.d
-    #   - ~/volumes/jhipster/mediaLibrary/mysql/:/var/lib/mysql/
+      - ~/volumes/jhipster/mediaLibrary/mysql/:/var/lib/mysql/
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
       - MYSQL_DATABASE=medialibrary

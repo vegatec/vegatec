@@ -134,7 +134,8 @@ spring:
     open-in-view: false
     properties:
      # hibernate.dialect: org.hibernate.dialect.MySQLDialect
-
+      #required after including axon framework
+#      hibernate.dialect: org.hibernate.dialect.MySQLDialect
 
 
       hibernate.jdbc.time_zone: UTC

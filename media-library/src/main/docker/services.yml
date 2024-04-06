@@ -9,10 +9,10 @@ services:
     extends:
       file: ./elasticsearch.yml
       service: elasticsearch
-  keycloak:
-    extends:
-      file: ./keycloak.yml
-      service: keycloak
+#  keycloak:
+#    extends:
+#      file: ./keycloak.yml
+#      service: keycloak
   kafka:
     extends:
       file: ./kafka.yml
