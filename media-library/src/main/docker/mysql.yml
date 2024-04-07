@@ -2,13 +2,13 @@
 name: medialibrary
 services:
   mysql:
-    image: mysql:8.2.0
+    image: mysql:8.2
     volumes:
       - ./config/mysql:/etc/mysql/conf.d
-      - ~/volumes/jhipster/mediaLibrary/mysql/:/var/lib/mysql/
+      - ~/volumes/jhipster/media-library/mysql/:/var/lib/mysql/
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-      - MYSQL_DATABASE=medialibrary
+      - MYSQL_DATABASE=media-library
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
     ports:

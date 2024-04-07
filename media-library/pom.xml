@@ -79,6 +79,11 @@
 
     <dependencyManagement>
         <dependencies>
+<!--            <dependency>-->
+<!--                <groupId>org.axonframework</groupId>-->
+<!--                <artifactId>axon-bom</artifactId>-->
+<!--                <version>4.9.3</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>tech.jhipster</groupId>
                 <artifactId>jhipster-dependencies</artifactId>
@@ -86,6 +91,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -340,6 +346,35 @@
             <artifactId>testcontainers</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.axonframework</groupId>
+            <artifactId>axon-spring-boot-starter</artifactId>
+            <version>4.9.3</version>
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.axonframework</groupId>-->
+<!--                    <artifactId>axon-server-connector</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.axonframework</groupId>-->
+<!--            <artifactId>axon-test</artifactId>-->
+<!--            <version>4.9.3</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
+
+
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+<!--        <dependency>-->
+<!--            <groupId>org.projectlombok</groupId>-->
+<!--            <artifactId>lombok</artifactId>-->
+<!--            <version>1.18.16</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+
     </dependencies>
 
     <build>
@@ -844,47 +879,47 @@
                         </execution>
                     </executions>
                 </plugin>
-                <plugin>
-                    <groupId>org.liquibase</groupId>
-                    <artifactId>liquibase-maven-plugin</artifactId>
-                    <version>${liquibase.version}</version>
-                    <configuration>
-                        <changeLogFile>config/liquibase/master.xml</changeLogFile>
-                        <diffChangeLogFile>${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
-                        <driver>com.mysql.cj.jdbc.Driver</driver>
-                        <url>${liquibase-plugin.url}</url>
-                        <defaultSchemaName/>
-                        <username>${liquibase-plugin.username}</username>
-                        <password>${liquibase-plugin.password}</password>
-                        <referenceUrl>hibernate:spring:net.vegatec.media_library.query.domain?dialect=org.hibernate.dialect.MySQL8Dialect&amp;hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
-                        <verbose>true</verbose>
-                        <logging>debug</logging>
-                        <contexts>!test</contexts>
-                        <diffExcludeObjects>oauth_access_token, oauth_approvals, oauth_client_details, oauth_client_token, oauth_code, oauth_refresh_token</diffExcludeObjects>
-                    </configuration>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.liquibase</groupId>
-                            <artifactId>liquibase-core</artifactId>
-                            <version>${liquibase.version}</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>org.liquibase.ext</groupId>
-                            <artifactId>liquibase-hibernate6</artifactId>
-                            <version>${liquibase.version}</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>org.springframework.boot</groupId>
-                            <artifactId>spring-boot-starter-data-jpa</artifactId>
-                            <version>${spring-boot.version}</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>jakarta.validation</groupId>
-                            <artifactId>jakarta.validation-api</artifactId>
-                            <version>${validation-api.version}</version>
-                        </dependency>
-                    </dependencies>
-                </plugin>
+<!--                <plugin>-->
+<!--                    <groupId>org.liquibase</groupId>-->
+<!--                    <artifactId>liquibase-maven-plugin</artifactId>-->
+<!--                    <version>${liquibase.version}</version>-->
+<!--                    <configuration>-->
+<!--                        <changeLogFile>config/liquibase/master.xml</changeLogFile>-->
+<!--                        <diffChangeLogFile>${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>-->
+<!--                        <driver>com.mysql.cj.jdbc.Driver</driver>-->
+<!--                        <url>${liquibase-plugin.url}</url>-->
+<!--                        <defaultSchemaName/>-->
+<!--                        <username>${liquibase-plugin.username}</username>-->
+<!--                        <password>${liquibase-plugin.password}</password>-->
+<!--                        <referenceUrl>hibernate:spring:net.vegatec.media_library.query.domain?dialect=org.hibernate.dialect.MySQL8Dialect&amp;hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>-->
+<!--                        <verbose>true</verbose>-->
+<!--                        <logging>debug</logging>-->
+<!--                        <contexts>!test</contexts>-->
+<!--                        <diffExcludeObjects>oauth_access_token, oauth_approvals, oauth_client_details, oauth_client_token, oauth_code, oauth_refresh_token</diffExcludeObjects>-->
+<!--                    </configuration>-->
+<!--                    <dependencies>-->
+<!--                        <dependency>-->
+<!--                            <groupId>org.liquibase</groupId>-->
+<!--                            <artifactId>liquibase-core</artifactId>-->
+<!--                            <version>${liquibase.version}</version>-->
+<!--                        </dependency>-->
+<!--                        <dependency>-->
+<!--                            <groupId>org.liquibase.ext</groupId>-->
+<!--                            <artifactId>liquibase-hibernate6</artifactId>-->
+<!--                            <version>${liquibase.version}</version>-->
+<!--                        </dependency>-->
+<!--                        <dependency>-->
+<!--                            <groupId>org.springframework.boot</groupId>-->
+<!--                            <artifactId>spring-boot-starter-data-jpa</artifactId>-->
+<!--                            <version>${spring-boot.version}</version>-->
+<!--                        </dependency>-->
+<!--                        <dependency>-->
+<!--                            <groupId>jakarta.validation</groupId>-->
+<!--                            <artifactId>jakarta.validation-api</artifactId>-->
+<!--                            <version>${validation-api.version}</version>-->
+<!--                        </dependency>-->
+<!--                    </dependencies>-->
+<!--                </plugin>-->
                 <plugin>
                     <!--
                         Plugin that provides API-first development using openapi-generator-cli to
