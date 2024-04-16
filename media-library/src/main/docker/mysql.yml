@@ -2,7 +2,7 @@
 name: medialibrary
 services:
   mysql:
-    image: mysql:8.2
+    image: mysql:8.0
     volumes:
       - ./config/mysql:/etc/mysql/conf.d
       - ~/volumes/jhipster/media-library/mysql/:/var/lib/mysql/
@@ -12,7 +12,7 @@ services:
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
     ports:
-      - 127.0.0.1:3307:3306
+      - 3307:3306
     command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
     healthcheck:
       test: ['CMD', 'mysql', '-e', 'SHOW DATABASES;']

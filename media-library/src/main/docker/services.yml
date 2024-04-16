@@ -21,6 +21,32 @@ services:
     extends:
       file: ./kafka.yml
       service: zookeeper
+  axon:
+    extends:
+      file: ./axon-server.yml
+      service: axonserver
+
+
+
+volumes:
+  axonserver-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/axon/data
+      o: bind
+  axonserver-events:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/axon/events
+      o: bind
+  axonserver-config:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/axon/config
+      o: bind
 
 
 
