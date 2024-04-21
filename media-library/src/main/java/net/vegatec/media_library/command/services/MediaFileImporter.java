@@ -77,7 +77,7 @@ public class MediaFileImporter implements Runnable {
 
                     Path path= Paths.get(applicationProperties.getMediaFolder(), MediaFileAggregate.DOWNLOADED, filename.toString());
 
-                    CreateMediaFile command= buildCreateMediaFileCommand(UUID.randomUUID().toString(), path.toFile());
+                    CreateMediaFile command= buildCreateMediaFileCommand(java.lang.System.currentTimeMillis(), path.toFile());
 
                     if (command != null)
                         commandGateway.send(command);
@@ -91,7 +91,7 @@ public class MediaFileImporter implements Runnable {
 
 
 
-    protected CreateMediaFile buildCreateMediaFileCommand(String id, File file) {
+    protected CreateMediaFile buildCreateMediaFileCommand(Long id, File file) {
         if(logger.isDebugEnabled())
             logger.debug("buildCreateMediaFileCommand("+ file+ ")");
         try {
@@ -166,11 +166,18 @@ public class MediaFileImporter implements Runnable {
 
                 CreateMediaFile command = new CreateMediaFile(
                     id,
-                    title,
                     MediaFileAggregate.DOWNLOADED,
-                    file.getName()
-
-                );
+                    file.getPath(),
+                    title,
+                    artist,
+                    album,
+                    albumArtist,
+                    releasedYear,
+                    genre,
+                    mp3File.getLengthInSeconds(),
+                    trackNumber,
+                    createdOn
+                    );
 
 //
 //                Path newPath = Paths.get(applicationProperties.getMediaFolder(), event.getPath());

@@ -62,18 +62,18 @@ public class TrackResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new trackDTO, or with status {@code 400 (Bad Request)} if the track has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
-    public ResponseEntity<TrackDTO> createTrack(@Valid @RequestBody TrackDTO trackDTO) throws URISyntaxException {
-        log.debug("REST request to save Track : {}", trackDTO);
-        if (trackDTO.getId() != null) {
-            throw new BadRequestAlertException("A new track cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        TrackDTO result = trackService.save(trackDTO);
-        return ResponseEntity
-            .created(new URI("/api/tracks/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
-    }
+//    @PostMapping("")
+//    public ResponseEntity<TrackDTO> createTrack(@Valid @RequestBody TrackDTO trackDTO) throws URISyntaxException {
+//        log.debug("REST request to save Track : {}", trackDTO);
+//        if (trackDTO.getId() != null) {
+//            throw new BadRequestAlertException("A new track cannot already have an ID", ENTITY_NAME, "idexists");
+//        }
+//        TrackDTO result = trackService.save(trackDTO);
+//        return ResponseEntity
+//            .created(new URI("/api/tracks/" + result.getId()))
+//            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+//            .body(result);
+//    }
 
     /**
      * {@code PUT  /tracks/:id} : Updates an existing track.
@@ -85,29 +85,29 @@ public class TrackResource {
      * or with status {@code 500 (Internal Server Error)} if the trackDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/{id}")
-    public ResponseEntity<TrackDTO> updateTrack(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody TrackDTO trackDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to update Track : {}, {}", id, trackDTO);
-        if (trackDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, trackDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!trackRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        TrackDTO result = trackService.update(trackDTO);
-        return ResponseEntity
-            .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, trackDTO.getId().toString()))
-            .body(result);
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<TrackDTO> updateTrack(
+//        @PathVariable(value = "id", required = false) final Long id,
+//        @Valid @RequestBody TrackDTO trackDTO
+//    ) throws URISyntaxException {
+//        log.debug("REST request to update Track : {}, {}", id, trackDTO);
+//        if (trackDTO.getId() == null) {
+//            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+//        }
+//        if (!Objects.equals(id, trackDTO.getId())) {
+//            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+//        }
+//
+//        if (!trackRepository.existsById(id)) {
+//            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+//        }
+//
+//        TrackDTO result = trackService.update(trackDTO);
+//        return ResponseEntity
+//            .ok()
+//            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, trackDTO.getId().toString()))
+//            .body(result);
+//    }
 
     /**
      * {@code PATCH  /tracks/:id} : Partial updates given fields of an existing track, field will ignore if it is null
@@ -120,30 +120,30 @@ public class TrackResource {
      * or with status {@code 500 (Internal Server Error)} if the trackDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<TrackDTO> partialUpdateTrack(
-        @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody TrackDTO trackDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to partial update Track partially : {}, {}", id, trackDTO);
-        if (trackDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, trackDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!trackRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<TrackDTO> result = trackService.partialUpdate(trackDTO);
-
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, trackDTO.getId().toString())
-        );
-    }
+//    @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+//    public ResponseEntity<TrackDTO> partialUpdateTrack(
+//        @PathVariable(value = "id", required = false) final Long id,
+//        @NotNull @RequestBody TrackDTO trackDTO
+//    ) throws URISyntaxException {
+//        log.debug("REST request to partial update Track partially : {}, {}", id, trackDTO);
+//        if (trackDTO.getId() == null) {
+//            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+//        }
+//        if (!Objects.equals(id, trackDTO.getId())) {
+//            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+//        }
+//
+//        if (!trackRepository.existsById(id)) {
+//            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+//        }
+//
+//        Optional<TrackDTO> result = trackService.partialUpdate(trackDTO);
+//
+//        return ResponseUtil.wrapOrNotFound(
+//            result,
+//            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, trackDTO.getId().toString())
+//        );
+//    }
 
     /**
      * {@code GET  /tracks} : get all the tracks.

@@ -11,7 +11,7 @@ public class TrackTestSamples {
 
     private static final Random random = new Random();
     private static final AtomicLong longCount = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
-    private static final AtomicInteger intCount = new AtomicInteger(random.nextInt() + (2 * Short.MAX_VALUE));
+    private static final AtomicLong intCount = new AtomicLong(random.nextLong() + (2 * Long.MAX_VALUE));
 
     public static Track getTrackSample1() {
         return new Track()
@@ -30,7 +30,7 @@ public class TrackTestSamples {
             //            .genreName("genreName1")
             //            .genreSortName("genreSortName1")
             .trackNumber(1)
-            .playbackLength(1)
+            .playbackLength(1L)
             .bitRate(1);
     }
 
@@ -51,7 +51,7 @@ public class TrackTestSamples {
             //            .genreName("genreName2")
             //            .genreSortName("genreSortName2")
             .trackNumber(2)
-            .playbackLength(2)
+            .playbackLength(2L)
             .bitRate(2);
     }
 
@@ -61,7 +61,7 @@ public class TrackTestSamples {
             .filePath(UUID.randomUUID().toString())
             .subfolder(UUID.randomUUID().toString())
             .name(UUID.randomUUID().toString())
-            .sortName(UUID.randomUUID().toString())
+            .sortName(UUID.randomUUID().toString());
             //            .artistName(UUID.randomUUID().toString())
             //            .artistSortName(UUID.randomUUID().toString())
             //            .albumName(UUID.randomUUID().toString())
@@ -71,8 +71,8 @@ public class TrackTestSamples {
             //            .albumReleasedYear(intCount.incrementAndGet())
             //            .genreName(UUID.randomUUID().toString())
             //            .genreSortName(UUID.randomUUID().toString())
-            .trackNumber(intCount.incrementAndGet())
-            .playbackLength(intCount.incrementAndGet())
-            .bitRate(intCount.incrementAndGet());
+           // .trackNumber(intCount.incrementAndGet())
+//            .playbackLength(longCount.incrementAndGet())
+//            .bitRate(intCount.incrementAndGet());
     }
 }

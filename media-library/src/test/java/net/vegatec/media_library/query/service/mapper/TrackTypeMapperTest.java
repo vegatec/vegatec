@@ -9,6 +9,6 @@ class TrackTypeMapperTest {
 
     @BeforeEach
     public void setUp() {
-        trackTypeMapper = new TrackTypeMapperImpl();
+       // trackTypeMapper = new TrackTypeMapperImpl();
     }
 }

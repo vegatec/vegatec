@@ -13,20 +13,29 @@ import java.util.Objects;
 @Embeddable
 public class Genre implements Serializable {
 
+    protected Genre() {}
+
+    public Genre(String genreName) {
+        this.name=genreName;
+    }
+
     public int getId() {
         return hashCode();
     }
 
-    @Access(AccessType.FIELD)
-    @Column(name = "name", insertable = false, updatable = false)
+//    @Access(AccessType.FIELD)
+//    @Column(name = "name", insertable = false, updatable = false)
     private String name;
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    private String sortName;
+
+    protected void setName(String name) {
         this.name = name;
+        this.name = Normalizer.normalize(name, Normalizer.Form.NFD);
     }
 
     @Override

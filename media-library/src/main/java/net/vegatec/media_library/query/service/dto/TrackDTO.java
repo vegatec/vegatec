@@ -35,7 +35,7 @@ public class TrackDTO implements Serializable {
 
     private Integer trackNumber;
 
-    private Integer playbackLength;
+    private Long playbackLength;
 
     private Integer bitRate;
 
@@ -176,11 +176,11 @@ public class TrackDTO implements Serializable {
         this.trackNumber = trackNumber;
     }
 
-    public Integer getPlaybackLength() {
+    public Long getPlaybackLength() {
         return playbackLength;
     }
 
-    public void setPlaybackLength(Integer playbackLength) {
+    public void setPlaybackLength(Long playbackLength) {
         this.playbackLength = playbackLength;
     }
 

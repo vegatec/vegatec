@@ -40,14 +40,14 @@ public class TrackService {
      * @param trackDTO the entity to save.
      * @return the persisted entity.
      */
-    public TrackDTO save(TrackDTO trackDTO) {
-        log.debug("Request to save Track : {}", trackDTO);
-        Track track = trackMapper.toEntity(trackDTO);
-        track = trackRepository.save(track);
-        TrackDTO result = trackMapper.toDto(track);
-        trackSearchRepository.index(track);
-        return result;
-    }
+//    public TrackDTO save(TrackDTO trackDTO) {
+//        log.debug("Request to save Track : {}", trackDTO);
+//        Track track = trackMapper.toEntity(trackDTO);
+//        track = trackRepository.save(track);
+//        TrackDTO result = trackMapper.toDto(track);
+//        trackSearchRepository.index(track);
+//        return result;
+//    }
 
     /**
      * Update a track.
@@ -55,14 +55,14 @@ public class TrackService {
      * @param trackDTO the entity to save.
      * @return the persisted entity.
      */
-    public TrackDTO update(TrackDTO trackDTO) {
-        log.debug("Request to update Track : {}", trackDTO);
-        Track track = trackMapper.toEntity(trackDTO);
-        track = trackRepository.save(track);
-        TrackDTO result = trackMapper.toDto(track);
-        trackSearchRepository.index(track);
-        return result;
-    }
+//    public TrackDTO update(TrackDTO trackDTO) {
+//        log.debug("Request to update Track : {}", trackDTO);
+//        Track track = trackMapper.toEntity(trackDTO);
+//        track = trackRepository.save(track);
+//        TrackDTO result = trackMapper.toDto(track);
+//        trackSearchRepository.index(track);
+//        return result;
+//    }
 
     /**
      * Partially update a track.
@@ -70,23 +70,23 @@ public class TrackService {
      * @param trackDTO the entity to update partially.
      * @return the persisted entity.
      */
-    public Optional<TrackDTO> partialUpdate(TrackDTO trackDTO) {
-        log.debug("Request to partially update Track : {}", trackDTO);
-
-        return trackRepository
-            .findById(trackDTO.getId())
-            .map(existingTrack -> {
-                trackMapper.partialUpdate(existingTrack, trackDTO);
-
-                return existingTrack;
-            })
-            .map(trackRepository::save)
-            .map(savedTrack -> {
-                trackSearchRepository.index(savedTrack);
-                return savedTrack;
-            })
-            .map(trackMapper::toDto);
-    }
+//    public Optional<TrackDTO> partialUpdate(TrackDTO trackDTO) {
+//        log.debug("Request to partially update Track : {}", trackDTO);
+//
+//        return trackRepository
+//            .findById(trackDTO.getId())
+//            .map(existingTrack -> {
+//                trackMapper.partialUpdate(existingTrack, trackDTO);
+//
+//                return existingTrack;
+//            })
+//            .map(trackRepository::save)
+//            .map(savedTrack -> {
+//                trackSearchRepository.index(savedTrack);
+//                return savedTrack;
+//            })
+//            .map(trackMapper::toDto);
+//    }
 
     /**
      * Get all the tracks.
