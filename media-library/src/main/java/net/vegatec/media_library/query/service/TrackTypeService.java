@@ -46,14 +46,14 @@ public class TrackTypeService {
      * @param trackTypeDTO the entity to save.
      * @return the persisted entity.
      */
-    public TrackTypeDTO save(TrackTypeDTO trackTypeDTO) {
-        log.debug("Request to save TrackType : {}", trackTypeDTO);
-        TrackType trackType = trackTypeMapper.toEntity(trackTypeDTO);
-        trackType = trackTypeRepository.save(trackType);
-        TrackTypeDTO result = trackTypeMapper.toDto(trackType);
-        trackTypeSearchRepository.index(trackType);
-        return result;
-    }
+//    public TrackTypeDTO save(TrackTypeDTO trackTypeDTO) {
+//        log.debug("Request to save TrackType : {}", trackTypeDTO);
+//        TrackType trackType = trackTypeMapper.toEntity(trackTypeDTO);
+//        trackType = trackTypeRepository.save(trackType);
+//        TrackTypeDTO result = trackTypeMapper.toDto(trackType);
+//        trackTypeSearchRepository.index(trackType);
+//        return result;
+//    }
 
     /**
      * Update a trackType.
@@ -61,14 +61,14 @@ public class TrackTypeService {
      * @param trackTypeDTO the entity to save.
      * @return the persisted entity.
      */
-    public TrackTypeDTO update(TrackTypeDTO trackTypeDTO) {
-        log.debug("Request to update TrackType : {}", trackTypeDTO);
-        TrackType trackType = trackTypeMapper.toEntity(trackTypeDTO);
-        trackType = trackTypeRepository.save(trackType);
-        TrackTypeDTO result = trackTypeMapper.toDto(trackType);
-        trackTypeSearchRepository.index(trackType);
-        return result;
-    }
+//    public TrackTypeDTO update(TrackTypeDTO trackTypeDTO) {
+//        log.debug("Request to update TrackType : {}", trackTypeDTO);
+//        TrackType trackType = trackTypeMapper.toEntity(trackTypeDTO);
+//        trackType = trackTypeRepository.save(trackType);
+//        TrackTypeDTO result = trackTypeMapper.toDto(trackType);
+//        trackTypeSearchRepository.index(trackType);
+//        return result;
+//    }
 
     /**
      * Partially update a trackType.
@@ -76,23 +76,23 @@ public class TrackTypeService {
      * @param trackTypeDTO the entity to update partially.
      * @return the persisted entity.
      */
-    public Optional<TrackTypeDTO> partialUpdate(TrackTypeDTO trackTypeDTO) {
-        log.debug("Request to partially update TrackType : {}", trackTypeDTO);
-
-        return trackTypeRepository
-            .findById(trackTypeDTO.getId())
-            .map(existingTrackType -> {
-                trackTypeMapper.partialUpdate(existingTrackType, trackTypeDTO);
-
-                return existingTrackType;
-            })
-            .map(trackTypeRepository::save)
-            .map(savedTrackType -> {
-                trackTypeSearchRepository.index(savedTrackType);
-                return savedTrackType;
-            })
-            .map(trackTypeMapper::toDto);
-    }
+//    public Optional<TrackTypeDTO> partialUpdate(TrackTypeDTO trackTypeDTO) {
+//        log.debug("Request to partially update TrackType : {}", trackTypeDTO);
+//
+//        return trackTypeRepository
+//            .findById(trackTypeDTO.getId())
+//            .map(existingTrackType -> {
+//                trackTypeMapper.partialUpdate(existingTrackType, trackTypeDTO);
+//
+//                return existingTrackType;
+//            })
+//            .map(trackTypeRepository::save)
+//            .map(savedTrackType -> {
+//                trackTypeSearchRepository.index(savedTrackType);
+//                return savedTrackType;
+//            })
+//            .map(trackTypeMapper::toDto);
+//    }
 
     /**
      * Get all the trackTypes.

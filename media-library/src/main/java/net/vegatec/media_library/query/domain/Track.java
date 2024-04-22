@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDateTime;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -50,7 +52,7 @@ public class Track implements Serializable {
 
     @Column(name = "playback_length")
     @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Integer)
-    private Integer playbackLength;
+    private Long playbackLength;
 
     @Column(name = "bit_rate")
     @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Integer)
@@ -58,7 +60,7 @@ public class Track implements Serializable {
 
     @NotNull
     @Column(name = "created_on", nullable = false)
-    private Instant createdOn;
+    private LocalDateTime createdOn;
 
     @Column(name = "tag_version_1")
     @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
@@ -76,7 +78,7 @@ public class Track implements Serializable {
     @AttributeOverrides(
         value = {
             @AttributeOverride(name = "name", column = @Column(name = "album_name")),
-            //        @AttributeOverride(name = "sortName", column = @Column(name = "album_sort_name")),
+            @AttributeOverride(name = "sortName", column = @Column(name = "album_sort_name")),
             @AttributeOverride(name = "releasedYear", column = @Column(name = "album_released_year")),
             @AttributeOverride(name = "subfolder", column = @Column(name = "subfolder", updatable = false, insertable = false)),
         }
@@ -88,16 +90,21 @@ public class Track implements Serializable {
         return album;
     }
 
-    public void setAlbum(Album album) {
+    protected void setAlbum(Album album) {
         this.album = album;
         updatePath();
+    }
+
+    public Track album(String name, String artist, Integer releasedYear) {
+        this.setAlbum(new Album(name, artist, releasedYear));
+        return this;
     }
 
     @Embedded
     @AttributeOverrides(
         value = {
             @AttributeOverride(name = "name", column = @Column(name = "genre_name")),
-            //        @AttributeOverride(name = "sortName", column = @Column(name = "genre_sort_name"))
+            @AttributeOverride(name = "sortName", column = @Column(name = "genre_sort_name"))
         }
     )
     @Access(AccessType.FIELD)
@@ -107,16 +114,21 @@ public class Track implements Serializable {
         return genre;
     }
 
-    public void setGenre(Genre genre) {
+    protected void setGenre(Genre genre) {
         this.genre = genre;
         updatePath();
+    }
+
+    public Track genre(String genreName) {
+        setGenre(new Genre(genreName));
+        return this;
     }
 
     @Embedded
     @AttributeOverrides(
         value = {
             @AttributeOverride(name = "name", column = @Column(name = "artist_name")),
-            //        @AttributeOverride(name = "sortName", column = @Column(name = "artist_sort_name"))
+            @AttributeOverride(name = "sortName", column = @Column(name = "artist_sort_name"))
         }
     )
     @Access(AccessType.FIELD)
@@ -126,9 +138,14 @@ public class Track implements Serializable {
         return artist;
     }
 
-    public void setArtist(Artist artist) {
+    protected void setArtist(Artist artist) {
         this.artist = artist;
         updatePath();
+    }
+
+    public Track artist(String  name) {
+        setArtist(new Artist(name));
+        return this;
     }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -155,16 +172,12 @@ public class Track implements Serializable {
         this.filePath = filePath;
     }
 
-    //public String getFilePath() {
-    //        return this.filePath;
-    //}
 
     public String getFilePath() {
         return String.format("%s/%s", subfolder, filePath);
     }
 
     protected void updatePath() {
-        //        this.path = String.format("%s/%s/%s.mp3", Integer.toHexString(albumArtistName.hashCode()), Integer.toHexString(albumName.hashCode()), Integer.toHexString(hashCode()));;
         this.filePath =
             String.format(
                 "%s/%s/%s.mp3",
@@ -228,16 +241,16 @@ public class Track implements Serializable {
         this.trackNumber = trackNumber;
     }
 
-    public Integer getPlaybackLength() {
+    public Long getPlaybackLength() {
         return this.playbackLength;
     }
 
-    public Track playbackLength(Integer playbackLength) {
+    public Track playbackLength(Long playbackLength) {
         this.setPlaybackLength(playbackLength);
         return this;
     }
 
-    public void setPlaybackLength(Integer playbackLength) {
+    public void setPlaybackLength(Long playbackLength) {
         this.playbackLength = playbackLength;
     }
 
@@ -254,16 +267,16 @@ public class Track implements Serializable {
         this.bitRate = bitRate;
     }
 
-    public Instant getCreatedOn() {
+    public LocalDateTime getCreatedOn() {
         return this.createdOn;
     }
 
-    public Track createdOn(Instant createdOn) {
+    public Track createdOn(LocalDateTime createdOn) {
         this.setCreatedOn(createdOn);
         return this;
     }
 
-    public void setCreatedOn(Instant createdOn) {
+    public void setCreatedOn(LocalDateTime createdOn) {
         this.createdOn = createdOn;
     }
 
