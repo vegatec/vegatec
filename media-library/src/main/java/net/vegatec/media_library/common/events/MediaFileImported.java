@@ -1,10 +1,9 @@
 package net.vegatec.media_library.common.events;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 
-public class MediaFileCreated extends  BaseEvent<Long>{
+public class MediaFileImported extends  BaseEvent<Long>{
 
 
     private String title;
@@ -76,7 +75,7 @@ public class MediaFileCreated extends  BaseEvent<Long>{
     }
 
 
-    public MediaFileCreated(Long id, String folder, String path, String title,  String artistName, String albumTitle, String albumArtistName, Integer albumReleasedYear, String genreName, Integer playbackLength, Integer trackNumber,  Instant createdOn) {
+    public MediaFileImported(Long id, String title, String folder, String path, String artistName, String albumTitle, String albumArtistName, Integer albumReleasedYear, String genreName, Integer playbackLength, Integer trackNumber, Instant createdOn) {
         super(id);
         this.title = title;
         this.subfolder = folder;

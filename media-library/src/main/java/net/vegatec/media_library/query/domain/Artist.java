@@ -14,6 +14,7 @@ import java.util.Objects;
 public class Artist implements Serializable {
 
     public Artist(String artistName) {
+        this.setName(artistName);
     }
 
     public int getId() {
@@ -25,12 +26,18 @@ public class Artist implements Serializable {
     @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String name;
 
+    private String sortName;
+
     public String getName() {
         return name;
     }
 
     protected void setName(String name) {
         this.name = name;
+        this.sortName = (name == null)? null:
+            Normalizer.normalize(name.toLowerCase().replaceAll("\\s+",""), Normalizer.Form.NFKD)
+                .replaceAll("\\p{M}", "");
+
     }
 
     protected Artist() {}

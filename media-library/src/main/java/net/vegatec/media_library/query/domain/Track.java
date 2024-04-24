@@ -3,6 +3,7 @@ package net.vegatec.media_library.query.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.text.Normalizer;
 import java.time.Instant;
 import java.time.LocalDateTime;
 
@@ -22,7 +23,7 @@ public class Track implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -52,7 +53,7 @@ public class Track implements Serializable {
 
     @Column(name = "playback_length")
     @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Integer)
-    private Long playbackLength;
+    private Integer playbackLength;
 
     @Column(name = "bit_rate")
     @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Integer)
@@ -60,10 +61,10 @@ public class Track implements Serializable {
 
     @NotNull
     @Column(name = "created_on", nullable = false)
-    private LocalDateTime createdOn;
+    private Instant createdOn;
 
     @Column(name = "tag_version_1")
-    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
+   @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
     private Boolean tagVersion1;
 
     @Column(name = "tag_version_2")
@@ -92,7 +93,7 @@ public class Track implements Serializable {
 
     protected void setAlbum(Album album) {
         this.album = album;
-        updatePath();
+       // updatePath();
     }
 
     public Track album(String name, String artist, Integer releasedYear) {
@@ -116,7 +117,7 @@ public class Track implements Serializable {
 
     protected void setGenre(Genre genre) {
         this.genre = genre;
-        updatePath();
+       // updatePath();
     }
 
     public Track genre(String genreName) {
@@ -140,7 +141,7 @@ public class Track implements Serializable {
 
     protected void setArtist(Artist artist) {
         this.artist = artist;
-        updatePath();
+        //updatePath();
     }
 
     public Track artist(String  name) {
@@ -177,7 +178,7 @@ public class Track implements Serializable {
         return String.format("%s/%s", subfolder, filePath);
     }
 
-    protected void updatePath() {
+    public void updatePath() {
         this.filePath =
             String.format(
                 "%s/%s/%s.mp3",
@@ -212,7 +213,8 @@ public class Track implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-        this.updatePath();
+        this.sortName= Normalizer.normalize(name, Normalizer.Form.NFD);
+      //  this.updatePath();
     }
 
     public String getSortName() {
@@ -241,16 +243,16 @@ public class Track implements Serializable {
         this.trackNumber = trackNumber;
     }
 
-    public Long getPlaybackLength() {
+    public Integer getPlaybackLength() {
         return this.playbackLength;
     }
 
-    public Track playbackLength(Long playbackLength) {
+    public Track playbackLength(Integer playbackLength) {
         this.setPlaybackLength(playbackLength);
         return this;
     }
 
-    public void setPlaybackLength(Long playbackLength) {
+    public void setPlaybackLength(Integer playbackLength) {
         this.playbackLength = playbackLength;
     }
 
@@ -267,16 +269,16 @@ public class Track implements Serializable {
         this.bitRate = bitRate;
     }
 
-    public LocalDateTime getCreatedOn() {
+    public Instant getCreatedOn() {
         return this.createdOn;
     }
 
-    public Track createdOn(LocalDateTime createdOn) {
+    public Track createdOn(Instant createdOn) {
         this.setCreatedOn(createdOn);
         return this;
     }
 
-    public void setCreatedOn(LocalDateTime createdOn) {
+    public void setCreatedOn(Instant createdOn) {
         this.createdOn = createdOn;
     }
 

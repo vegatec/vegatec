@@ -96,16 +96,16 @@ class TrackResourceIT {
     private static final Integer UPDATED_TRACK_NUMBER = 2;
     private static final Integer SMALLER_TRACK_NUMBER = 1 - 1;
 
-    private static final Long DEFAULT_PLAYBACK_LENGTH = 1L;
-    private static final Long UPDATED_PLAYBACK_LENGTH = 2L;
-    private static final Long SMALLER_PLAYBACK_LENGTH = 1L - 1L;
+    private static final Integer DEFAULT_PLAYBACK_LENGTH = 1;
+    private static final Integer UPDATED_PLAYBACK_LENGTH = 2;
+    private static final Integer SMALLER_PLAYBACK_LENGTH = 1 - 1;
 
     private static final Integer DEFAULT_BIT_RATE = 1;
     private static final Integer UPDATED_BIT_RATE = 2;
     private static final Integer SMALLER_BIT_RATE = 1 - 1;
 
-    private static final LocalDateTime DEFAULT_CREATED_ON = Instant.ofEpochMilli(0L).atZone(ZoneId.systemDefault()).toLocalDateTime();
-    private static final LocalDateTime UPDATED_CREATED_ON = Instant.now().truncatedTo(ChronoUnit.MILLIS).atZone(ZoneId.systemDefault()).toLocalDateTime();
+    private static final Instant DEFAULT_CREATED_ON = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_CREATED_ON = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final Boolean DEFAULT_TAG_VERSION_1 = false;
     private static final Boolean UPDATED_TAG_VERSION_1 = true;

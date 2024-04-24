@@ -30,7 +30,7 @@ public class TrackTestSamples {
             //            .genreName("genreName1")
             //            .genreSortName("genreSortName1")
             .trackNumber(1)
-            .playbackLength(1L)
+            .playbackLength(1)
             .bitRate(1);
     }
 
@@ -51,7 +51,7 @@ public class TrackTestSamples {
             //            .genreName("genreName2")
             //            .genreSortName("genreSortName2")
             .trackNumber(2)
-            .playbackLength(2L)
+            .playbackLength(2)
             .bitRate(2);
     }
 
