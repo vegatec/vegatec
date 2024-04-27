@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="crm" />
       </profile>
       <profile name="Annotation profile for Media Library" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -38,7 +39,6 @@
           <entry name="$MAVEN_REPOSITORY$/jakarta/inject/jakarta.inject-api/2.0.1/jakarta.inject-api-2.0.1.jar" />
         </processorPath>
         <module name="media-library" />
-        <module name="crm" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
