@@ -2,7 +2,7 @@ package net.vegatec.media_library.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+
 import java.io.Serializable;
 import java.text.Normalizer;
 import java.util.Objects;
@@ -13,28 +13,45 @@ import java.util.Objects;
 @Embeddable
 public class Album implements Serializable {
 
+    protected Album() {}
+    public Album(String name, String artistName, int releasedYear) {
+        this.setName(name);
+        this.setArtist( new Artist(artistName));
+        this.setReleasedYear(releasedYear);
+    }
+
     public int getId() {
         return hashCode();
     }
 
-    @Column(name = "name")
-    @Access(AccessType.FIELD)
+    //    @Column(name = "name")
+//    @Access(AccessType.FIELD)
     private String name;
+    private String sortName;
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    protected void setName(String name) {
         this.name = name;
+        this.sortName = (name == null)? null:
+            Normalizer.normalize(name.toLowerCase().replaceAll("\\s+",""), Normalizer.Form.NFKD)
+                .replaceAll("\\p{M}", "");
     }
 
-    @Column(name = "released_year")
-    @Access(AccessType.FIELD)
+
+
+
+    //    @Column(name = "released_year")
+//    @Access(AccessType.FIELD)
     private Integer releasedYear;
 
     public Integer getReleasedYear() {
         return releasedYear;
+    }
+    protected void setReleasedYear(Integer releasedYear) {
+        this.releasedYear = releasedYear;
     }
 
     @JsonIgnore
@@ -46,8 +63,8 @@ public class Album implements Serializable {
         return String.format(
             "media/%s/%s/%s",
             subfolder,
-            Integer.toHexString(artist.getName().hashCode()),
-            Integer.toHexString(name.hashCode())
+            Integer.toHexString(artist == null ? 0: artist.hashCode()),
+            Integer.toHexString(hashCode())
         );
     }
 
@@ -64,27 +81,30 @@ public class Album implements Serializable {
     public Artist getArtist() {
         return artist;
     }
+    protected void setArtist(Artist artist) {
+        this.artist = artist;
+    }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, artist.getName(), releasedYear);
+        return Objects.hash(name, artist, releasedYear);
     }
 
     @Override
     public String toString() {
         return (
             "Album{" +
-            ", name='" +
-            name +
-            "'" +
-            //      ", sortName='" + sortName + "'" +
-            ", artworkPath='" +
-            getArtworkPath() +
-            "'" +
-            ", releasedOn='" +
-            releasedYear +
-            "'" +
-            '}'
+                ", name='" +
+                name +
+                "'" +
+                //      ", sortName='" + sortName + "'" +
+                ", artworkPath='" +
+                getArtworkPath() +
+                "'" +
+                ", releasedOn='" +
+                releasedYear +
+                "'" +
+                '}'
         );
     }
 }

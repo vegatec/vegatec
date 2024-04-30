@@ -1,31 +1,39 @@
 package net.vegatec.media_library.service;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Stream;
 
-import com.mpatric.mp3agic.ID3v2;
-import com.mpatric.mp3agic.InvalidDataException;
-import com.mpatric.mp3agic.Mp3File;
-import com.mpatric.mp3agic.UnsupportedTagException;
+import com.mpatric.mp3agic.*;
 import net.vegatec.media_library.config.ApplicationProperties;
 import net.vegatec.media_library.domain.Artist;
 import net.vegatec.media_library.domain.Track;
+import net.vegatec.media_library.domain.TrackType;
+import net.vegatec.media_library.domain.Track_;
 import net.vegatec.media_library.repository.TrackRepository;
+import net.vegatec.media_library.repository.TrackTypeRepository;
 import net.vegatec.media_library.repository.search.TrackSearchRepository;
+import net.vegatec.media_library.service.criteria.TrackCriteria;
 import net.vegatec.media_library.service.dto.TrackDTO;
 import net.vegatec.media_library.service.mapper.TrackMapper;
 import net.vegatec.media_library.util.ImageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tech.jhipster.service.filter.Filter;
+import tech.jhipster.service.filter.StringFilter;
 
 /**
  * Service Implementation for managing {@link net.vegatec.media_library.domain.Track}.
@@ -50,16 +58,22 @@ public class TrackService {
 
     private final TrackRepository trackRepository;
 
+    private final TrackTypeRepository trackTypeRepository;
+
     private final TrackMapper trackMapper;
 
     private final TrackSearchRepository trackSearchRepository;
 
+    private final TrackQueryService trackQueryService;
+
     private final ApplicationProperties applicationProperties;
 
-    public TrackService(TrackRepository trackRepository, TrackMapper trackMapper, TrackSearchRepository trackSearchRepository, ApplicationProperties applicationProperties) {
+    public TrackService(TrackRepository trackRepository, TrackTypeRepository trackTypeRepository, TrackMapper trackMapper, TrackSearchRepository trackSearchRepository, TrackQueryService trackQueryService, ApplicationProperties applicationProperties) {
         this.trackRepository = trackRepository;
+        this.trackTypeRepository = trackTypeRepository;
         this.trackMapper = trackMapper;
         this.trackSearchRepository = trackSearchRepository;
+        this.trackQueryService = trackQueryService;
         this.applicationProperties = applicationProperties;
     }
 
@@ -180,11 +194,14 @@ public class TrackService {
             logger.debug("buildCreateMediaFileCommand("+ file+ ")");
         try {
 
+            TrackType type= trackTypeRepository.getReferenceById(1L);
             Mp3File mp3File = new Mp3File(file);
-            String folder = file.getParentFile().getPath();
+            //String folder = file.getParentFile().getPath();
 
-            if (mp3File.hasId3v2Tag()) {
+            if (mp3File.hasId3v2Tag() ) {
                 ID3v2 id3v2Tag = mp3File.getId3v2Tag();
+
+
 
                 int releasedYear=0, trackNumber =0;
                 String title, artist, album, albumArtist, genre;
@@ -234,13 +251,16 @@ public class TrackService {
 
 
                 try {
-                    releasedYear = Integer.parseInt(id3v2Tag.getYear());
+                    String year = id3v2Tag.getYear() == null? ((ID3v24Tag)id3v2Tag).getRecordingTime(): id3v2Tag.getYear();
+
+                    releasedYear = Integer.parseInt(year);
+
                 } catch (Exception e){
 
                 }
 
                 try {
-                    trackNumber = Integer.parseInt(id3v2Tag.getTrack().split("/")[0]);
+                     trackNumber = Integer.parseInt(id3v2Tag.getTrack().split("/")[0]);
                 } catch (Exception e){
 
 
@@ -249,7 +269,9 @@ public class TrackService {
                 Instant createdOn= Instant.ofEpochMilli(file.lastModified());
 
                 Track track = new Track()
-                    .subfolder(DOWNLOADED)
+                        .id(0L)
+                    .type(type)
+                    .subfolder(INBOX)
                     .filePath(file.getPath())
                     .name(title)
                     .artist(artist)
@@ -261,7 +283,7 @@ public class TrackService {
                     .createdOn(createdOn);
 
 
-                Path newPath = Paths.get(applicationProperties.getMediaFolder(), event.getPath());
+                Path newPath = Paths.get(applicationProperties.getMediaFolder(), track.getFilePath());
                 File newFile = newPath.toFile();
 
                 if (!newFile.getParentFile().exists())
@@ -285,21 +307,25 @@ public class TrackService {
                     File artwork = new File(folder, "artwork.jpg");//.replaceFirst(SOURCE, TARGET);
                     File thumbnail = new File(folder, "thumbnail.jpg");//.replaceFirst(SOURCE, TARGET);
 
+                    try {
 
-                    if (artwork.exists())
-                        System.out.format("Image file: {0} already exist ", artwork);
-                    else {
-                        ImageUtils.scale(extractedImageFileName, 256, 256, artwork.getAbsolutePath());
-                        System.out.format("Image file: {0} don't  exist will create a scaled version ", artwork);
+                        if (artwork.exists())
+                            System.out.format("Image file: {0} already exist ", artwork);
+                        else {
+                            ImageUtils.scale(extractedImageFileName, 256, 256, artwork.getAbsolutePath());
+                            System.out.format("Image file: {0} don't  exist will create a scaled version ", artwork);
 
-                    }
+                        }
 
-                    if (thumbnail.exists())
-                        System.out.format("Image file: {0} already exist ", thumbnail);
-                    else {
-                        ImageUtils.scale(extractedImageFileName, 128, 128, thumbnail.getAbsolutePath());
-                        System.out.format("Image file: {0} don't  exist will create a scaled version ", thumbnail);
+                        if (thumbnail.exists())
+                            System.out.format("Image file: {0} already exist ", thumbnail);
+                        else {
+                            ImageUtils.scale(extractedImageFileName, 128, 128, thumbnail.getAbsolutePath());
+                            System.out.format("Image file: {0} don't  exist will create a scaled version ", thumbnail);
 
+                        }
+                    }catch (Exception ex) {
+                        System.out.format("Unable to extract artwork from id3 tag of file {0} ", file.getName());
                     }
 
                 }
@@ -308,6 +334,9 @@ public class TrackService {
                 // delete original file
                 file.delete();
 
+
+
+                this.trackRepository.save(track);
 
             }
 
@@ -323,6 +352,44 @@ public class TrackService {
 
     }
 
+//    @Transactional(readOnly = true)
+    public void fixFilePath(String folder) {
+
+        TrackCriteria criteria= new TrackCriteria();
+        StringFilter subfolder= new StringFilter();
+        subfolder.setEquals("outbox");
+        criteria.setSubfolder(subfolder);
+//        Page<TrackDTO> page= trackQueryService.findByCriteria(criteria, PageRequest.of(0, 100));
+//        List<Track> allTracks= trackMapper.toEntity(page.getContent());
+
+        Track example= new Track().subfolder("inbox");
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withIgnoreNullValues()
+                .withIgnorePaths("filePath");
+        //  .withIncludeNullValues();
+                //.withStringMatcher(ExampleMatcher.StringMatcher.EXACT);
+
+        int pageNumber= 0, totalPages= 0;
+
+        do  {
+            Page<Track> page= trackRepository.findAll(Example.of(example, matcher), PageRequest.of(pageNumber, 100).withSort(Sort.by("album.artist.name").and(Sort.by("album.name"))));
+
+            for (Track track : page.getContent()) {
+                logger.info("track: {} - {} - {} ", track.getAlbum().getArtist(), track.getAlbum(), track.getName());
+                try {
+                    Track updatedTrack= moveMediaFile(track, track.getSubfolder());
+                    trackRepository.save(updatedTrack);
+                } catch (IOException e) {
+                    logger.error("unable to move media file", e.getMessage());
+                }
+            }
+
+            totalPages= page.getTotalPages();
+            pageNumber++;
+
+        } while (pageNumber < totalPages);
+
+    }
 
     /**
      * Move media file between inbox and outbox relative to application media folder
@@ -332,31 +399,34 @@ public class TrackService {
      * @throws IOException
      */
 
-    protected void moveMediaFile(String destinationSubfolder) throws IOException {
+    protected Track moveMediaFile(Track track, String destinationSubfolder) throws IOException {
         if (logger.isDebugEnabled())
             logger.debug("Moving out media file to %s ", destinationSubfolder);
 
 
         //ignore of moving to same subfolder
-        if (getSubfolder().equalsIgnoreCase(destinationSubfolder))
-            return;
+//        if (track.getSubfolder().equalsIgnoreCase(destinationSubfolder))
+//            return;
 
         // 1. remember original media file location
-        Path sourceFilePath = Paths.get(applicationProperties.getMediaFolder(),  getPath()).toAbsolutePath();
+        Path sourceFilePath = Paths.get(applicationProperties.getMediaFolder(),  track.getFilePath()).toAbsolutePath();
 
         // check if source file exist
         if (!sourceFilePath.toFile().exists())
             throw new FileNotFoundException(sourceFilePath.toString());
 
         //change subfolder
-        subfolder= destinationSubfolder;
+      //  track.subfolder(destinationSubfolder);
+
+        if (track.getFilePath() != track.getUpdatedPath())
+            track.setFilePath(track.getUpdatedPath());
 
         // 2. determine new location. No only the subfolder might change
-        Path destFilePath = Paths.get(applicationProperties.getMediaFolder(), getPath()).toAbsolutePath();
+        Path destFilePath = Paths.get(applicationProperties.getMediaFolder(), destinationSubfolder, track.getUpdatedPath()).toAbsolutePath();
 
         //source and destination the same ignore. no necessary because already check above
-        if (destFilePath == sourceFilePath)
-            return;
+//        if (destFilePath == sourceFilePath)
+//            return track;
 
         // 3. check if a same file exist on destination. If so don't move it
         if (destFilePath.toFile().exists())
@@ -371,7 +441,7 @@ public class TrackService {
         // 5. move file new destination location
         if (sourceFilePath.toFile().renameTo(destFilePath.toFile())) {
 
-            logger.info("successfully moved file %s to inbox", destFilePath);
+            logger.info("successfully moved file %s to destination", destFilePath);
 
             // 6. if files were moved to outbox make file read only or read/write otherwise
             Set<PosixFilePermission> filePermissions = OUTBOX.equalsIgnoreCase(destinationSubfolder) ?
@@ -382,7 +452,7 @@ public class TrackService {
 
             // 7. Verify that file exists on destination and update to which subfolder resides.
             if (destFilePath.toFile().exists())
-                subfolder= destinationSubfolder;
+                track.subfolder(destinationSubfolder);
 
 
             // 8. copy or move any relate images
@@ -397,6 +467,7 @@ public class TrackService {
             throw new IOException("Error moving file");
         }
 
+        return track;
 
 
     }

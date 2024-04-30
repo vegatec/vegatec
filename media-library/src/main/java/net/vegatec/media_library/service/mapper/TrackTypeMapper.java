@@ -13,5 +13,5 @@ public interface TrackTypeMapper extends EntityMapper<TrackTypeDTO, TrackType> {
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
     @Mapping(target = "name", source = "name")
-    TrackTypeDTO toDtoName(TrackType trackType);
+    TrackTypeDTO toDto(TrackType trackType);
 }

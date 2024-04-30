@@ -3,7 +3,11 @@ package net.vegatec.media_library.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.text.Normalizer;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.Objects;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -74,12 +78,12 @@ public class Track implements Serializable {
 
     @Embedded
     @AttributeOverrides(
-        value = {
-            @AttributeOverride(name = "name", column = @Column(name = "album_name")),
-            //        @AttributeOverride(name = "sortName", column = @Column(name = "album_sort_name")),
-            @AttributeOverride(name = "releasedYear", column = @Column(name = "album_released_year")),
-            @AttributeOverride(name = "subfolder", column = @Column(name = "subfolder", updatable = false, insertable = false)),
-        }
+            value = {
+                    @AttributeOverride(name = "name", column = @Column(name = "album_name")),
+                    @AttributeOverride(name = "sortName", column = @Column(name = "album_sort_name")),
+                    @AttributeOverride(name = "releasedYear", column = @Column(name = "album_released_year")),
+                    @AttributeOverride(name = "subfolder", column = @Column(name = "subfolder", updatable = false, insertable = false)),
+            }
     )
     @Access(AccessType.FIELD)
     private Album album;
@@ -88,17 +92,22 @@ public class Track implements Serializable {
         return album;
     }
 
-    public void setAlbum(Album album) {
+    protected void setAlbum(Album album) {
         this.album = album;
         updatePath();
     }
 
+    public Track album(String name, String artist, Integer releasedYear) {
+        this.setAlbum(new Album(name, artist, releasedYear));
+        return this;
+    }
+
     @Embedded
     @AttributeOverrides(
-        value = {
-            @AttributeOverride(name = "name", column = @Column(name = "genre_name")),
-            //        @AttributeOverride(name = "sortName", column = @Column(name = "genre_sort_name"))
-        }
+            value = {
+                    @AttributeOverride(name = "name", column = @Column(name = "genre_name")),
+                    @AttributeOverride(name = "sortName", column = @Column(name = "genre_sort_name"))
+            }
     )
     @Access(AccessType.FIELD)
     private Genre genre;
@@ -109,15 +118,20 @@ public class Track implements Serializable {
 
     public void setGenre(Genre genre) {
         this.genre = genre;
-        updatePath();
+         updatePath();
+    }
+
+    public Track genre(String genreName) {
+        setGenre(new Genre(genreName));
+        return this;
     }
 
     @Embedded
     @AttributeOverrides(
-        value = {
-            @AttributeOverride(name = "name", column = @Column(name = "artist_name")),
-            //        @AttributeOverride(name = "sortName", column = @Column(name = "artist_sort_name"))
-        }
+            value = {
+                    @AttributeOverride(name = "name", column = @Column(name = "artist_name")),
+                    @AttributeOverride(name = "sortName", column = @Column(name = "artist_sort_name"))
+            }
     )
     @Access(AccessType.FIELD)
     private Artist artist;
@@ -129,6 +143,11 @@ public class Track implements Serializable {
     public void setArtist(Artist artist) {
         this.artist = artist;
         updatePath();
+    }
+
+    public Track artist(String  name) {
+        setArtist(new Artist(name));
+        return this;
     }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -155,23 +174,23 @@ public class Track implements Serializable {
         this.filePath = filePath;
     }
 
-    //public String getFilePath() {
-    //        return this.filePath;
-    //}
 
     public String getFilePath() {
-        return String.format("%s/%s", subfolder, filePath);
+        return String.format("%s/%s", subfolder, getUpdatedPath());
     }
 
     protected void updatePath() {
-        //        this.path = String.format("%s/%s/%s.mp3", Integer.toHexString(albumArtistName.hashCode()), Integer.toHexString(albumName.hashCode()), Integer.toHexString(hashCode()));;
-        this.filePath =
-            String.format(
-                "%s/%s/%s.mp3",
-                Integer.toHexString(album.getArtist() == null ? 0 : artist.hashCode()),
-                Integer.toHexString(album == null ? 0 : album.hashCode()),
-                Integer.toHexString(hashCode())
-            );
+        this.filePath = getUpdatedPath();
+    }
+
+    public String getUpdatedPath() {
+         return
+                String.format(
+                        "%s/%s/%s.mp3",
+                        Integer.toHexString(album == null || album.getArtist() == null ? 0 : album.getArtist().hashCode()),
+                        Integer.toHexString(album == null ? 0 : album.hashCode()),
+                        Integer.toHexString(hashCode())
+                );
     }
 
     public String getSubfolder() {
@@ -199,21 +218,25 @@ public class Track implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+        this.sortName = (name == null)? null:
+                Normalizer.normalize(name.toLowerCase().replaceAll("\\s+",""), Normalizer.Form.NFKD)
+                        .replaceAll("\\p{M}", "");
+
         this.updatePath();
     }
 
-    public String getSortName() {
-        return this.sortName;
-    }
-
-    public Track sortName(String sortName) {
-        this.setSortName(sortName);
-        return this;
-    }
-
-    public void setSortName(String sortName) {
-        this.sortName = sortName;
-    }
+//    public String getSortName() {
+//        return this.sortName;
+//    }
+//
+//    public Track sortName(String sortName) {
+//        this.setSortName(sortName);
+//        return this;
+//    }
+//
+//    public void setSortName(String sortName) {
+//        this.sortName = sortName;
+//    }
 
     public Integer getTrackNumber() {
         return this.trackNumber;
@@ -325,19 +348,18 @@ public class Track implements Serializable {
 
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
-        return getClass().hashCode();
+        return Objects.hash(trackNumber, genre == null ? 0: genre.hashCode(), name);
     }
 
     // prettier-ignore
     @Override
     public String toString() {
         return "Track{" +
-            "id=" + getId() +
-            ", filePath='" + getFilePath() + "'" +
-            ", subfolder='" + getSubfolder() + "'" +
-            ", name='" + getName() + "'" +
-            ", sortName='" + getSortName() + "'" +
+                "id=" + getId() +
+                ", filePath='" + getFilePath() + "'" +
+                ", subfolder='" + getSubfolder() + "'" +
+                ", name='" + getName() + "'" +
+//                ", sortName='" + getSortName() + "'" +
 //            ", artistName='" + getArtistName() + "'" +
 //            ", artistSortName='" + getArtistSortName() + "'" +
 //            ", albumName='" + getAlbumName() + "'" +
@@ -347,12 +369,12 @@ public class Track implements Serializable {
 //            ", albumReleasedYear=" + getAlbumReleasedYear() +
 //            ", genreName='" + getGenreName() + "'" +
 //            ", genreSortName='" + getGenreSortName() + "'" +
-            ", trackNumber=" + getTrackNumber() +
-            ", playbackLength=" + getPlaybackLength() +
-            ", bitRate=" + getBitRate() +
-            ", createdOn='" + getCreatedOn() + "'" +
-            ", tagVersion1='" + getTagVersion1() + "'" +
-            ", tagVersion2='" + getTagVersion2() + "'" +
-            "}";
+                ", trackNumber=" + getTrackNumber() +
+                ", playbackLength=" + getPlaybackLength() +
+                ", bitRate=" + getBitRate() +
+                ", createdOn='" + getCreatedOn() + "'" +
+                ", tagVersion1='" + getTagVersion1() + "'" +
+                ", tagVersion2='" + getTagVersion2() + "'" +
+                "}";
     }
 }

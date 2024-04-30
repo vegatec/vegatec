@@ -1,5 +1,6 @@
 package net.vegatec.media_library.service;
 
+import net.vegatec.media_library.util.FileUtils;
 import org.slf4j.Logger;
 
 
@@ -11,7 +12,10 @@ import org.springframework.stereotype.Service;
 
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.nio.file.*;
+import java.util.Iterator;
+import java.util.List;
 
 @Service
 public class MediaFileMonitor implements Runnable {
@@ -58,8 +62,25 @@ public class MediaFileMonitor implements Runnable {
                             + ". File affected: " + filename.toFile() + ".");
 
                     File file= Paths.get(applicationProperties.getMediaFolder(), TrackService.DOWNLOADED, filename.toString()).toFile();
+                    if (file.isDirectory()) {
+                        int count = 0;
+                        List files = FileUtils.search(file, new FilenameFilter() {
+                            public boolean accept(File dir, String name) {
+                                return (name.toLowerCase().endsWith(".mp3"));
+                            }
+                        });
 
-                    if (file.exists())
+
+                        for (Iterator iter = files.iterator(); iter.hasNext(); count++) {
+
+                            System.out.println("count: " + count);
+
+                            File mp3 = (File) iter.next();
+                            trackService.importFile(mp3);
+
+                        }
+
+                    } else if (file.exists() && file.getName().endsWith(".mp3"))
                         trackService.importFile(file);
                 }
                 key.reset();

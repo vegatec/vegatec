@@ -1,5 +1,4 @@
 package net.vegatec.media_library.domain;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 //import javax.persistence.Access;
 //import javax.persistence.AccessType;
@@ -13,24 +12,34 @@ import java.util.Objects;
 @Embeddable
 public class Artist implements Serializable {
 
+    public Artist(String artistName) {
+        this.setName(artistName);
+    }
+
     public int getId() {
         return hashCode();
     }
 
     @Access(AccessType.FIELD)
-    @Column(name = "name", insertable = false, updatable = false)
+    //   @Column(name = "name", insertable = false, updatable = false)
     @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String name;
+
+    private String sortName;
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    protected void setName(String name) {
         this.name = name;
+        this.sortName = (name == null)? null:
+                Normalizer.normalize(name.toLowerCase().replaceAll("\\s+",""), Normalizer.Form.NFKD)
+                        .replaceAll("\\p{M}", "");
+
     }
 
-    public Artist() {}
+    protected Artist() {}
 
     @Override
     public int hashCode() {

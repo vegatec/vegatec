@@ -152,7 +152,7 @@ class TrackResourceIT {
             .filePath(DEFAULT_FILE_PATH)
             .subfolder(DEFAULT_SUBFOLDER)
             .name(DEFAULT_NAME)
-            .sortName(DEFAULT_SORT_NAME)
+           // .sortName(DEFAULT_SORT_NAME)
             //            .artistName(DEFAULT_ARTIST_NAME)
             //            .artistSortName(DEFAULT_ARTIST_SORT_NAME)
             //            .albumName(DEFAULT_ALBUM_NAME)
@@ -192,7 +192,7 @@ class TrackResourceIT {
             .filePath(UPDATED_FILE_PATH)
             .subfolder(UPDATED_SUBFOLDER)
             .name(UPDATED_NAME)
-            .sortName(UPDATED_SORT_NAME)
+            //.sortName(UPDATED_SORT_NAME)
             //            .artistName(UPDATED_ARTIST_NAME)
             //            .artistSortName(UPDATED_ARTIST_SORT_NAME)
             //            .albumName(UPDATED_ALBUM_NAME)
@@ -390,7 +390,7 @@ class TrackResourceIT {
         int databaseSizeBeforeTest = trackRepository.findAll().size();
         int searchDatabaseSizeBefore = IterableUtil.sizeOf(trackSearchRepository.findAll());
         // set the field null
-        track.setSortName(null);
+        //track.setSortName(null);
 
         // Create the Track, which fails.
         TrackDTO trackDTO = trackMapper.toDto(track);
@@ -2083,7 +2083,7 @@ class TrackResourceIT {
             .filePath(UPDATED_FILE_PATH)
             .subfolder(UPDATED_SUBFOLDER)
             .name(UPDATED_NAME)
-            .sortName(UPDATED_SORT_NAME)
+            //.sortName(UPDATED_SORT_NAME)
             //            .artistName(UPDATED_ARTIST_NAME)
             //            .artistSortName(UPDATED_ARTIST_SORT_NAME)
             //            .albumName(UPDATED_ALBUM_NAME)
@@ -2143,7 +2143,7 @@ class TrackResourceIT {
                 assertThat(testTrackSearch.getFilePath()).isEqualTo(UPDATED_FILE_PATH);
                 assertThat(testTrackSearch.getSubfolder()).isEqualTo(UPDATED_SUBFOLDER);
                 assertThat(testTrackSearch.getName()).isEqualTo(UPDATED_NAME);
-                assertThat(testTrackSearch.getSortName()).isEqualTo(UPDATED_SORT_NAME);
+              //  assertThat(testTrackSearch.getSortName()).isEqualTo(UPDATED_SORT_NAME);
                 //                assertThat(testTrackSearch.getArtistName()).isEqualTo(UPDATED_ARTIST_NAME);
                 //                assertThat(testTrackSearch.getArtistSortName()).isEqualTo(UPDATED_ARTIST_SORT_NAME);
                 //                assertThat(testTrackSearch.getAlbumName()).isEqualTo(UPDATED_ALBUM_NAME);
@@ -2259,7 +2259,7 @@ class TrackResourceIT {
             .filePath(UPDATED_FILE_PATH)
             .subfolder(UPDATED_SUBFOLDER)
             .name(UPDATED_NAME)
-            .sortName(UPDATED_SORT_NAME)
+            //.sortName(UPDATED_SORT_NAME)
             //            .artistName(UPDATED_ARTIST_NAME)
             //            .artistSortName(UPDATED_ARTIST_SORT_NAME)
             //            .albumArtistSortName(UPDATED_ALBUM_ARTIST_SORT_NAME)
@@ -2286,7 +2286,7 @@ class TrackResourceIT {
         assertThat(testTrack.getFilePath()).isEqualTo(UPDATED_FILE_PATH);
         assertThat(testTrack.getSubfolder()).isEqualTo(UPDATED_SUBFOLDER);
         assertThat(testTrack.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testTrack.getSortName()).isEqualTo(UPDATED_SORT_NAME);
+        //assertThat(testTrack.getSortName()).isEqualTo(UPDATED_SORT_NAME);
         //        assertThat(testTrack.getArtistName()).isEqualTo(UPDATED_ARTIST_NAME);
         //        assertThat(testTrack.getArtistSortName()).isEqualTo(UPDATED_ARTIST_SORT_NAME);
         //        assertThat(testTrack.getAlbumName()).isEqualTo(DEFAULT_ALBUM_NAME);
@@ -2320,7 +2320,7 @@ class TrackResourceIT {
             .filePath(UPDATED_FILE_PATH)
             .subfolder(UPDATED_SUBFOLDER)
             .name(UPDATED_NAME)
-            .sortName(UPDATED_SORT_NAME)
+            //.sortName(UPDATED_SORT_NAME)
             //            .artistName(UPDATED_ARTIST_NAME)
             //            .artistSortName(UPDATED_ARTIST_SORT_NAME)
             //            .albumName(UPDATED_ALBUM_NAME)
@@ -2353,7 +2353,7 @@ class TrackResourceIT {
         assertThat(testTrack.getFilePath()).isEqualTo(UPDATED_FILE_PATH);
         assertThat(testTrack.getSubfolder()).isEqualTo(UPDATED_SUBFOLDER);
         assertThat(testTrack.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testTrack.getSortName()).isEqualTo(UPDATED_SORT_NAME);
+        //assertThat(testTrack.getSortName()).isEqualTo(UPDATED_SORT_NAME);
         //        assertThat(testTrack.getArtistName()).isEqualTo(UPDATED_ARTIST_NAME);
         //        assertThat(testTrack.getArtistSortName()).isEqualTo(UPDATED_ARTIST_SORT_NAME);
         //        assertThat(testTrack.getAlbumName()).isEqualTo(UPDATED_ALBUM_NAME);

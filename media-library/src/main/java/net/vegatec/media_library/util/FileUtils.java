@@ -1,24 +1,24 @@
 package net.vegatec.media_library.util;
 
-import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public final class FileUtils {
 
-	private static Logger logger = Logger.getLogger(FileUtils.class);
+	private static Logger logger = Logger.getLogger("FileUtils");
 
 	public static List search(final File folder, final FilenameFilter filter) {
 		final List<File> found = new ArrayList<File>();
 		FolderVisitor visitor= new  FolderVisitor() {
 			protected  void process(File file) {
 				if (filter.accept(file.getParentFile(), file.getName())) {
-					if (logger.isDebugEnabled()) {
-						logger.debug(file);
-
-					}
+//					if (logger.isDebugEnabled()) {
+//						logger.debug(file);
+//
+//					}
 					found.add(file);
 				}
 			}
@@ -27,67 +27,6 @@ public final class FileUtils {
 		visitor.visitAllFiles(folder);
 		return found;
 	}
-
-
-//	public static List search(File folder, FilenameFilter filter) {
-//		List found = new ArrayList();
-//		search(folder, found, filter);
-//		return found;
-//	}
-//
-//
-//
-//
-//	protected static void search( File folder, List<File> filesFound,
-//			FilenameFilter filter) {
-//		if (logger.isDebugEnabled())
-//			logger.debug("search(" + folder + ")");
-//
-//		if (folder != null && folder.isDirectory()) {
-//
-//			File[] files = folder.listFiles(filter);
-//
-//			if (files != null && files.length > 0) {
-//				for (int i = 0; i < files.length; i++) {
-//					filesFound.add(files[i]);
-//				}
-//				return;
-//			}
-//
-//			String[] children = folder.list();
-//			for (int i = 0; i < children.length; i++) {
-//				search( new File(folder, children[i]), filesFound,
-//						filter);
-//			}
-//
-//		}
-//	}
-//
-
-//	protected static void search(File rootFolder, File folder, List filesFound,
-//			FilenameFilter filter) {
-//		if (logger.isDebugEnabled())
-//			logger.debug("search(" + folder + ")");
-//
-//		if (folder != null && folder.isDirectory()) {
-//
-//			File[] files = folder.listFiles(filter);
-//
-//			if (files != null && files.length > 1) {
-//				for (int i = 0; i < files.length; i++) {
-//					filesFound.add(files[i]);
-//				}
-//				return;
-//			}
-//
-//			String[] children = folder.list();
-//			for (int i = 0; i < children.length; i++) {
-//				search(rootFolder, new File(folder, children[i]), filesFound,
-//						filter);
-//			}
-//
-//		}
-//	}
 
 
 //	 Copies all files under srcDir to dstDir.
