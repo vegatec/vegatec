@@ -22,7 +22,7 @@ import javax.annotation.PreDestroy;
 
 import static java.nio.file.StandardWatchEventKinds.*;
 
-@Service
+//@Service
 public class RecursiveMediaFileMonitor {
 
     private static final Logger LOG = LoggerFactory.getLogger(RecursiveMediaFileMonitor.class);
@@ -114,13 +114,13 @@ public class RecursiveMediaFileMonitor {
 
                         if(e.kind() == ENTRY_DELETE) {
                             LOG.info("Folder " + absPath + " deleted");
-//                            WatchKey watchKey= keys.entrySet().stream().filter(k -> k.getValue().equals(absPath)).findFirst().get().getKey();
-//                            if (watchKey != null) {
-//                                watchKey.cancel();
-//                                keys.remove(watchKey);
-//                                LOG.info("Related key " + absPath + " cancelled");
-//
-//                            }
+                            WatchKey watchKey= keys.entrySet().stream().filter(k -> k.getValue().equals(absPath)).findFirst().get().getKey();
+                            if (watchKey != null) {
+                                watchKey.cancel();
+                                keys.remove(watchKey);
+                                LOG.info("Related key " + absPath + " cancelled");
+
+                            }
 
                         } else   if (e.kind() == ENTRY_CREATE) {
 
@@ -132,9 +132,13 @@ public class RecursiveMediaFileMonitor {
                                 final File file = absPath.toFile();
                                 LOG.info("Detected new file " + file.getAbsolutePath());
                                 if (file.getName().toLowerCase().endsWith(".mp3"))
-                                    trackService.importFile(file);
-//                                else
-//                                    file.delete();
+                                    try {
+                                        trackService.importFile(file);
+                                    } catch (Exception ex) {
+                                        LOG.error("Error importing file " + file.getAbsolutePath(), ex);
+                                    }
+                                else
+                                    file.delete();
                             }
                         }
                     });

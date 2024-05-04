@@ -11,6 +11,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.stream.Stream;
 
 import com.mpatric.mp3agic.*;
@@ -35,6 +37,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.jhipster.service.filter.Filter;
 import tech.jhipster.service.filter.StringFilter;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Service Implementation for managing {@link net.vegatec.media_library.domain.Track}.
@@ -69,6 +73,9 @@ public class TrackService {
 
     private final ApplicationProperties applicationProperties;
 
+    private static final BlockingQueue<File> queue = new ArrayBlockingQueue<>(150);
+
+
     public TrackService(TrackRepository trackRepository, TrackTypeRepository trackTypeRepository, TrackMapper trackMapper, TrackSearchRepository trackSearchRepository, TrackQueryService trackQueryService, ApplicationProperties applicationProperties) {
         this.trackRepository = trackRepository;
         this.trackTypeRepository = trackTypeRepository;
@@ -76,6 +83,24 @@ public class TrackService {
         this.trackSearchRepository = trackSearchRepository;
         this.trackQueryService = trackQueryService;
         this.applicationProperties = applicationProperties;
+    }
+
+
+    @PostConstruct
+    protected void inti()
+    {
+        Thread t = new Thread(() -> {
+            while (true) {
+                try {
+                    File file= queue.take();
+                    importFile(file);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        t.start();
     }
 
     /**
@@ -189,6 +214,12 @@ public class TrackService {
         return trackSearchRepository.search(query, pageable).map(trackMapper::toDto);
     }
 
+
+    public void addToImportQueue(File file) {
+        queue.add(file);
+    }
+
+
     @Transactional
     public void importFile( File file) {
         if(logger.isDebugEnabled())
@@ -293,6 +324,8 @@ public class TrackService {
                 //save to new file base on media file properties. i.e title, artist, album
                 mp3File.save(newFile.getAbsolutePath());
 
+
+
                 // extract cover image
 
                 byte[] albumImageData = id3v2Tag.getAlbumImage();
@@ -332,18 +365,35 @@ public class TrackService {
                 }
 
 
+
+                this.trackRepository.save(track);
+
+
                 // delete original file
                 File parent = file.getParentFile();
+
+
+
+
+                do {
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException e) {
+
+                    }
+
+                } while (file.length() != newFile.length());
+
+
                 if (file.delete()) {
-                    if (parent.getName() != DOWNLOADED &&   parent.list().length == 0)
+
+                    if (!parent.getName().equals(DOWNLOADED) &&   parent.list().length == 0)
                         parent.delete();
                 }
 
 
 
 
-
-                this.trackRepository.save(track);
 
             }
 
