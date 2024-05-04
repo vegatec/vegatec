@@ -87,7 +87,8 @@ public class Album implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, artist, releasedYear);
+       // return Objects.hash(name, artist, releasedYear);
+        return name.hashCode();
     }
 
     @Override

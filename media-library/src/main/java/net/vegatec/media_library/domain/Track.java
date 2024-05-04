@@ -176,7 +176,7 @@ public class Track implements Serializable {
 
 
     public String getFilePath() {
-        return String.format("%s/%s", subfolder, getUpdatedPath());
+        return String.format("%s/%s", subfolder, filePath);
     }
 
     protected void updatePath() {
