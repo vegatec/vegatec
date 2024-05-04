@@ -68,6 +68,10 @@ export class TrackComponent implements OnInit {
   //trackId = (_index: number, item: Track): number => this.trackService.getTrackIdentifier(item);
   trackId = (_index: number, item: Track): number => item.id;
 
+  moveToTrash(): void {
+    this.store.selected().forEach(t=> this.store.delete(t));
+  }
+
   delete(track: Track): void {
     const modalRef = this.modalService.open(TrackDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.track = track;

@@ -1,6 +1,7 @@
 <div class="card">
   <h6 id="page-heading" data-cy="TrackHeading" class="card-header text-center">
     <span jhiTranslate="mediaLibraryApp.track.home.title">Tracks</span>
+    <button (click)="moveToTrash()">delete</button>
   </h6>
 
   <jhi-alert-error></jhi-alert-error>
@@ -8,11 +9,11 @@
   <jhi-alert></jhi-alert>
 
   <div class="card-body p-0">
-    <!-- @if (store.tracks()?.length === 0) {
-      <div class="alert alert-warning" id="no-result">
+    @if (store.tracks()?.length === 0) {
+      <div class="no-result " id="no-result" jhiAutoHeight="100">
         <span jhiTranslate="mediaLibraryApp.track.home.notFound">No Tracks found</span>
       </div>
-    } -->
+    }
 
     @if (store.tracks() && store.tracks().length > 0) {
       <div
@@ -57,9 +58,9 @@
                   <div class="col-md-11 p-l-4 d-flex">
                     <fa-icon icon="music" [fixedWidth]="true"></fa-icon>
                     <span class="font-weight-normal px-2"> {{ track?.genre?.name }}</span>
-                    <fa-icon icon="compact-disc" [fixedWidth]="true"></fa-icon>
-                    <div class="font-weight-normal px-2">{{ track?.artist?.name }}</div>
                     <fa-icon icon="microphone" [fixedWidth]="true"></fa-icon>
+                    <div class="font-weight-normal px-2">{{ track?.artist?.name }}</div>
+                    <fa-icon icon="compact-disc" [fixedWidth]="true"></fa-icon>
                     <div class="font-weight-normal px-2">{{ track?.album?.name }}</div>
                   </div>
                 </div>

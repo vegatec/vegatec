@@ -29,6 +29,7 @@ export type EntityArrayResponseType = HttpResponse<Track[]>;
 
 @Injectable({ providedIn: 'root' })
 export class TrackService {
+
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/tracks');
   protected resourceSearchUrl = this.applicationConfigService.getEndpointFor('api/tracks/_search');
 
@@ -72,6 +73,7 @@ export class TrackService {
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
+
 
   search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);

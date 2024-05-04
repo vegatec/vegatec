@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.jhipster.service.filter.Filter;
@@ -188,7 +189,7 @@ public class TrackService {
         return trackSearchRepository.search(query, pageable).map(trackMapper::toDto);
     }
 
-
+    @Transactional
     public void importFile( File file) {
         if(logger.isDebugEnabled())
             logger.debug("buildCreateMediaFileCommand("+ file+ ")");
@@ -332,7 +333,13 @@ public class TrackService {
 
 
                 // delete original file
-                file.delete();
+                File parent = file.getParentFile();
+                if (file.delete()) {
+                    if (parent.getName() != DOWNLOADED &&   parent.list().length == 0)
+                        parent.delete();
+                }
+
+
 
 
 
@@ -362,7 +369,7 @@ public class TrackService {
 //        Page<TrackDTO> page= trackQueryService.findByCriteria(criteria, PageRequest.of(0, 100));
 //        List<Track> allTracks= trackMapper.toEntity(page.getContent());
 
-        Track example= new Track().subfolder("inbox");
+        Track example= new Track().subfolder("outbox");
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withIgnoreNullValues()
                 .withIgnorePaths("filePath");
@@ -390,6 +397,81 @@ public class TrackService {
         } while (pageNumber < totalPages);
 
     }
+
+    @Async
+    public void execute(Track track) throws Exception {
+
+        logger.debug("Updating  media file  {}", track);
+
+        // 1. find original file
+        Optional<Track> originalTrack = trackRepository.findById(track.getId());
+        if (originalTrack.isEmpty())
+            throw new Exception("Not media file was found!");
+
+        logger.info("-->>>>>>>>>> original file path  {}", originalTrack.get().getFilePath());
+
+        moveMediaFile(originalTrack.get(), INBOX);
+
+        Path currentFilePath = Paths.get(applicationProperties.getMediaFolder(), originalTrack.get().getFilePath()).toAbsolutePath();
+
+        //move to temp to update tags
+
+        logger.info("-->>>>>>>>>>before creating temp file  {}", currentFilePath.getParent().toFile());
+        File tempFile = File.createTempFile("media-library", ".mp3", currentFilePath.getParent().toFile());
+        logger.info("-->>>>>>>>>>temp file  {}",tempFile.toString());
+
+        if (currentFilePath.toFile().renameTo(tempFile)) {
+
+
+            // 3. update  id3 tags using original media file
+            Mp3File mp3File = new Mp3File(tempFile);
+
+            ID3v2 id3v2Tag = new ID3v23Tag();
+            id3v2Tag.setTitle(track.getName());
+            id3v2Tag.setArtist(track.getArtist().getName());
+            id3v2Tag.setAlbum(track.getAlbum().getName());
+            id3v2Tag.setAlbumArtist(track.getAlbum().getArtist().getName());
+            id3v2Tag.setYear(track.getAlbum().getReleasedYear().toString());
+
+            try {
+                id3v2Tag.setGenreDescription(track.getGenre().getName());
+            } catch (Exception ex) {
+
+            }
+            mp3File.setId3v2Tag(id3v2Tag);
+
+            // 4. now update original media file with new information
+            originalTrack.get()
+                    .subfolder(INBOX)
+                    .name(track.getName())
+                    .artist(track.getArtist().getName())
+                    .album( track.getAlbum().getName(), track.getAlbum().getArtist().getName(), track.getAlbum().getReleasedYear())
+                    .genre(track.getGenre().getName());
+
+            File destFile = Paths.get(applicationProperties.getMediaFolder(), originalTrack.get().getFilePath()).toAbsolutePath().toFile();
+
+            // 5. create parent folders if don't exists
+            if (!destFile.getParentFile().exists())
+                destFile.getParentFile().mkdirs();
+
+
+            mp3File.save(destFile.getAbsolutePath());
+
+            tempFile.delete();
+
+
+
+            // 6. persist changes
+            trackRepository.save(originalTrack.get());
+
+        }
+    }
+
+
+
+
+
+
 
     /**
      * Move media file between inbox and outbox relative to application media folder

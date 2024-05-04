@@ -2,6 +2,9 @@ package net.vegatec.media_library.util;
 
 
 import java.io.*;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -85,7 +88,20 @@ public final class FileUtils {
 		return absolutePath;
 	}
 
-
+    public static void listAllFiles(Path currentPath, List<Path> allFiles)
+        throws IOException
+    {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(currentPath))
+        {
+            for (Path entry : stream) {
+                if (Files.isDirectory(entry)) {
+                    listAllFiles(entry, allFiles);
+                } else {
+                    allFiles.add(entry);
+                }
+            }
+        }
+    }
 
 //	public static void main(String[] args) {
 //		long start= System.currentTimeMillis();

@@ -10,7 +10,7 @@
   <div class="card-body p-0">
     @if (store.groupedAlbums() | async; as groupedAlbums) {
       @if (groupedAlbums.length === 0) {
-        <div class="alert alert-warning" id="no-result">
+        <div class="no-result " id="no-result" jhiAutoHeight="100">
           <span jhiTranslate="mediaLibraryApp.album.home.notFound">No Albums found</span>
         </div>
       } @else {

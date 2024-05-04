@@ -1,6 +1,9 @@
 package net.vegatec.media_library.service;
 
+import com.mysql.cj.log.Log;
+import com.sun.nio.file.ExtendedWatchEventModifier;
 import net.vegatec.media_library.util.FileUtils;
+import net.vegatec.media_library.util.ListDirectoryRecursively;
 import org.slf4j.Logger;
 
 
@@ -13,11 +16,15 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.nio.file.*;
-import java.util.Iterator;
-import java.util.List;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.*;
 
-@Service
+import static net.vegatec.media_library.util.FileUtils.listAllFiles;
+import static org.apache.commons.io.FileUtils.listFiles;
+
+//@Service
 public class MediaFileMonitor implements Runnable {
 
     private final Logger logger = LoggerFactory.getLogger(MediaFileMonitor.class);
@@ -29,10 +36,17 @@ public class MediaFileMonitor implements Runnable {
 
     private final TrackService trackService;
 
+
+
     public MediaFileMonitor(ApplicationProperties applicationProperties, TrackService trackService)   {
 
         this.applicationProperties = applicationProperties;
         this.trackService = trackService;
+
+
+
+
+
 
         this.thread = new Thread(this);
         this.thread.start();
@@ -43,52 +57,120 @@ public class MediaFileMonitor implements Runnable {
 
     @Override
     public void run() {
+
+        Path folder = Paths.get(applicationProperties.getMediaFolder(), TrackService.DOWNLOADED);
+
         try {
             this.watchService = FileSystems.getDefault().newWatchService();
+            WatchKey key= folder.register(watchService,StandardWatchEventKinds.ENTRY_CREATE);
 
-            Path folder = Paths.get(applicationProperties.getMediaFolder(), TrackService.DOWNLOADED);
+            key.cancel();
 
-            folder.register(watchService, StandardWatchEventKinds.ENTRY_CREATE);
-
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        for (;;) {
             WatchKey key;
-            while ((key = watchService.take()) != null) {
-                for (WatchEvent<?> event : key.pollEvents()) {
+            try {
+                key = watchService.take();
+            } catch (InterruptedException x) {
+                return;
+            }
 
-                    WatchEvent<Path> ev = (WatchEvent<Path>) event;
-                    Path filename = ev.context();
+            for (WatchEvent<?> event : key.pollEvents()) {
 
-                    System.out.println(
-                        "Event kind:" + event.kind()
-                            + ". File affected: " + filename.toFile() + ".");
+                WatchEvent<Path> ev = (WatchEvent<Path>) event;
+                Path filename = ev.context();
 
-                    File file= Paths.get(applicationProperties.getMediaFolder(), TrackService.DOWNLOADED, filename.toString()).toFile();
-                    if (file.isDirectory()) {
-                        int count = 0;
-                        List files = FileUtils.search(file, new FilenameFilter() {
-                            public boolean accept(File dir, String name) {
-                                return (name.toLowerCase().endsWith(".mp3"));
-                            }
-                        });
+                System.out.println(
+                    "Event kind:" + event.kind()
+                        + ". File affected: " + filename.toFile() + ".");
+                File file = folder.resolve(filename).toFile();
+
+                if (file.isDirectory()) {
+
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+
+//                    ListDirectoryRecursively listDirectoryRecursively= new ListDirectoryRecursively(file.toPath());
+//                    try {
+//                        listDirectoryRecursively.call();
+//                    } catch (IOException e) {
+//                        throw new RuntimeException(e);
+//                    }
 
 
-                        for (Iterator iter = files.iterator(); iter.hasNext(); count++) {
+//                    int count = 0;
+//                    List files= new ArrayList();
+//                    synchronized (this) {
+//                         files.addAll(FileUtils.search(file, (dir, name) -> (name.toLowerCase().endsWith(".mp3"))));
+//                    }
+//
+//                        for (Iterator iter = files.iterator(); iter.hasNext(); count++) {
+//
+//                            System.out.println("count: " + count);
+//
+//                            File mp3 = (File) iter.next();
+//
+//                            logger.info(mp3.getAbsolutePath());
+////                            trackService.importFile(mp3);
+//
+//                        }
 
-                            System.out.println("count: " + count);
 
-                            File mp3 = (File) iter.next();
-                            trackService.importFile(mp3);
+                        try {
 
+
+
+                                Files.walkFileTree(file.toPath(), new SimpleFileVisitor<Path>() {
+                                    @Override
+                                    public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) throws IOException {
+
+                                        logger.info(file.toString());
+                                        return FileVisitResult.CONTINUE;
+                                    }
+                                });
+
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
                         }
 
-                    } else if (file.exists() && file.getName().endsWith(".mp3"))
-                        trackService.importFile(file);
+
+                } else if (file.exists() && file.getName().endsWith(".mp3")) {
+//                        trackService.importFile(file);
+                    logger.info(file.getAbsolutePath());
                 }
-                key.reset();
+
+
             }
-        } catch (Exception ex) {
-            System.err.println("something bad happened");
+
+            boolean valid = key.reset();
+            if (!valid) {
+                break;
+            }
+
         }
     }
+
+
+
+    public Set<String> listFilesUsingDirectoryStream(String dir) throws IOException {
+        Set<String> fileSet = new HashSet<>();
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(dir))) {
+            for (Path path : stream) {
+                if (!Files.isDirectory(path)) {
+                    fileSet.add(path.getFileName()
+                        .toString());
+                }
+            }
+        }
+        return fileSet;
+    }
+
+
 
 
 }

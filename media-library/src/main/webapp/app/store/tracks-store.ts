@@ -24,6 +24,7 @@ import {
 } from 'rxjs';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 
+
 export interface TracksState {
   tracks: Track[];
   selected: Track[];
@@ -115,6 +116,22 @@ export const TracksStore = signalStore(
         ),
       ),
 
+      // delete: (track: Track) => rxMethod<number>(
+      //   pipe(
+      //     switchMap(() =>
+      //       trackService.delete(track.id).pipe(
+      //         map(response => response.body ?? []),
+      //         tap(tracks => {
+      //           patchState(store, { tracks: [...store.tracks().filter(t=> t.id !== track.id)]});
+      //         }),
+      //         catchError(error => of({ error: error.message })),
+      //       ),
+      //     ),
+      //     tap()
+
+      //   ),
+      // ),
+
       select: (item: Track) => {
         const isSelected = store.selected().findIndex( i => i === item) !== -1
 
@@ -132,7 +149,29 @@ export const TracksStore = signalStore(
         else
         patchState(store, {selected: []});
 
+      },
+
+      moveToTrash() {
+        store.selected().forEach(t=> this.delete(t));
+      },
+
+ 
+      delete(track: Track) {
+       
+    
+            trackService.delete(track.id).pipe(
+              map(response => response.body ?? []),
+              tap(() => {
+                patchState(store, { tracks: [...store.tracks().filter(t=> t.id !== track.id)]});
+              }),
+              catchError(error => of({ error: error.message })),
+            ).subscribe();
+
+       
       }
+
+   
+  
     };
   }),
   withHooks({
