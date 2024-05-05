@@ -8,11 +8,10 @@ import java.nio.file.*;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Stream;
 
 import com.mpatric.mp3agic.*;
@@ -27,6 +26,7 @@ import net.vegatec.media_library.repository.search.TrackSearchRepository;
 import net.vegatec.media_library.service.criteria.TrackCriteria;
 import net.vegatec.media_library.service.dto.TrackDTO;
 import net.vegatec.media_library.service.mapper.TrackMapper;
+import net.vegatec.media_library.util.DebounceExecutor;
 import net.vegatec.media_library.util.ImageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +73,17 @@ public class TrackService {
 
     private final ApplicationProperties applicationProperties;
 
-    private static final BlockingQueue<File> queue = new ArrayBlockingQueue<>(150);
+    private static final Queue<File> queue = new LinkedList<File>();
+
+
+    private Thread thread;
+    private  Object lock = new Object();
+
+
+    private volatile  boolean paused= true;
+
+
+    private DebounceExecutor debouncer = new DebounceExecutor();
 
 
     public TrackService(TrackRepository trackRepository, TrackTypeRepository trackTypeRepository, TrackMapper trackMapper, TrackSearchRepository trackSearchRepository, TrackQueryService trackQueryService, ApplicationProperties applicationProperties) {
@@ -87,20 +97,28 @@ public class TrackService {
 
 
     @PostConstruct
-    protected void inti()
+    protected void init()
     {
-        Thread t = new Thread(() -> {
+        thread = new Thread(() -> {
             while (true) {
                 try {
-                    File file= queue.take();
+                    synchronized (lock) {
+                        if (paused)
+                            lock.wait();
+                    }
+
+                    File file= queue.remove();
                     importFile(file);
+
+                    if (queue.size() == 0)
+                        paused= true;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
             }
         });
-        t.start();
+        thread.start();
     }
 
     /**
@@ -216,7 +234,21 @@ public class TrackService {
 
 
     public void addToImportQueue(File file) {
+        paused= true;
+
+        debouncer.debounce(100, () -> {
+            paused= false;
+            resume();
+        });
+
         queue.add(file);
+    }
+
+    private void resume() {
+//        if(this.thread.getState() == Thread.State.WAITING)
+            synchronized (lock) {
+                lock.notifyAll();
+            }
     }
 
 
@@ -366,7 +398,6 @@ public class TrackService {
 
 
 
-                this.trackRepository.save(track);
 
 
                 // delete original file
@@ -377,7 +408,7 @@ public class TrackService {
 
                 do {
                     try {
-                        Thread.sleep(50);
+                        Thread.sleep(25);
                     } catch (InterruptedException e) {
 
                     }
@@ -392,6 +423,7 @@ public class TrackService {
                 }
 
 
+                this.trackRepository.save(track);
 
 
 

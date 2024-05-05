@@ -81,7 +81,7 @@ public class OracleRecursiveMediaFileMonitor {
      * Register the given directory with the WatchService
      */
     private void register(Path dir) throws IOException {
-        WatchKey key = dir.register(watcher, ENTRY_CREATE, ENTRY_DELETE);
+        WatchKey key = dir.register(watcher, ENTRY_CREATE);
         if (trace) {
             Path prev = keys.get(key);
             if (prev == null) {
@@ -182,8 +182,8 @@ public class OracleRecursiveMediaFileMonitor {
                                         //trackService.importFile(file);
                                         trackService.addToImportQueue(file);
                                     }
-                                else
-                                    file.delete();
+//                                else
+//                                    file.delete();
                             }
                         } catch (IOException x) {
                             // ignore to keep sample readbale
