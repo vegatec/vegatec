@@ -1,25 +1,20 @@
 package net.vegatec.media_library.service;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.*;
 import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.time.Instant;
 import java.util.*;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Stream;
 
 import com.mpatric.mp3agic.*;
 import net.vegatec.media_library.config.ApplicationProperties;
-import net.vegatec.media_library.domain.Artist;
 import net.vegatec.media_library.domain.Track;
 import net.vegatec.media_library.domain.TrackType;
-import net.vegatec.media_library.domain.Track_;
 import net.vegatec.media_library.repository.TrackRepository;
 import net.vegatec.media_library.repository.TrackTypeRepository;
 import net.vegatec.media_library.repository.search.TrackSearchRepository;
@@ -31,11 +26,9 @@ import net.vegatec.media_library.util.ImageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.*;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tech.jhipster.service.filter.Filter;
 import tech.jhipster.service.filter.StringFilter;
 
 import javax.annotation.PostConstruct;
@@ -73,45 +66,73 @@ public class TrackService {
 
     private final ApplicationProperties applicationProperties;
 
-    private static final Queue<File> queue = new LinkedList<File>();
+    private final RecursiveFolderMonitor folderMonitor; ;
+
+
+
+//    private static final Queue<File> queue = new LinkedList<File>();
 
 
     private Thread thread;
     private  Object lock = new Object();
 
 
-    private volatile  boolean paused= true;
+    private volatile  boolean fileImportPaused = true;
 
 
     private DebounceExecutor debouncer = new DebounceExecutor();
 
 
-    public TrackService(TrackRepository trackRepository, TrackTypeRepository trackTypeRepository, TrackMapper trackMapper, TrackSearchRepository trackSearchRepository, TrackQueryService trackQueryService, ApplicationProperties applicationProperties) {
+
+
+    public TrackService(TrackRepository trackRepository, TrackTypeRepository trackTypeRepository, TrackMapper trackMapper, TrackSearchRepository trackSearchRepository, TrackQueryService trackQueryService, ApplicationProperties applicationProperties, RecursiveFolderMonitor folderMonitor) {
         this.trackRepository = trackRepository;
         this.trackTypeRepository = trackTypeRepository;
         this.trackMapper = trackMapper;
         this.trackSearchRepository = trackSearchRepository;
         this.trackQueryService = trackQueryService;
         this.applicationProperties = applicationProperties;
+        this.folderMonitor = folderMonitor;
     }
 
 
     @PostConstruct
     protected void init()
     {
+        this.folderMonitor.addPropertyChangeListener(evt -> {
+            //pause file import if folder monitors detects new files been copied
+            fileImportPaused = true;
+            //debounce to start import when all files are copied
+            debouncer.debounce(3000, () -> {
+                synchronized (lock) {
+                    fileImportPaused = false;
+                    lock.notifyAll();
+                }
+            });
+
+        });
+
         thread = new Thread(() -> {
             while (true) {
                 try {
                     synchronized (lock) {
-                        if (paused)
+                        if (fileImportPaused)
                             lock.wait();
                     }
 
-                    File file= queue.remove();
-                    importFile(file);
+//                    File file= queue.remove();
+//                    importFile(file);
+//
+//                    if (queue.size() == 0)
 
-                    if (queue.size() == 0)
-                        paused= true;
+                    try {
+                        importFiles();
+                    } catch (IOException e) {
+
+                    }
+
+                    fileImportPaused = true;
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -119,6 +140,26 @@ public class TrackService {
             }
         });
         thread.start();
+    }
+
+    public void importFiles() throws IOException {
+
+        Path downloadsFolder =  Path.of(applicationProperties.getMediaFolder(), DOWNLOADED);
+
+        logger.debug("Started scanning all media files on {}", downloadsFolder);
+
+        Files.walkFileTree(downloadsFolder, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult visitFile (Path path, BasicFileAttributes attrs)    throws IOException
+            {
+                File file = path.toFile();
+                if ( !fileImportPaused && attrs.isRegularFile() && file.getName().endsWith(".mp3") ) {
+                    importFile(file);
+                }
+
+                return FileVisitResult.CONTINUE;
+            }
+        });
     }
 
     /**
@@ -233,16 +274,16 @@ public class TrackService {
     }
 
 
-    public void addToImportQueue(File file) {
-        paused= true;
-
-        debouncer.debounce(100, () -> {
-            paused= false;
-            resume();
-        });
-
-        queue.add(file);
-    }
+//    private void addToImportQueue(File file) {
+//        fileImportPaused = true;
+//
+//        debouncer.debounce(3000, () -> {
+//            fileImportPaused = false;
+//            resume();
+//        });
+//
+//        queue.add(file);
+//    }
 
     private void resume() {
 //        if(this.thread.getState() == Thread.State.WAITING)
@@ -396,15 +437,8 @@ public class TrackService {
 
                 }
 
-
-
-
-
                 // delete original file
                 File parent = file.getParentFile();
-
-
-
 
                 do {
                     try {
