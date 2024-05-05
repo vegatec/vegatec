@@ -26,9 +26,9 @@
         [scrollWindow]="false"
       >
         @for (track of store.tracks(); track trackId) {
-          <div class="card bg-light">
+          <div class="border border-bottom-1 ">
             <div
-              class="card-body d-flex p-2"
+              class=" d-flex p-2"
               [ngClass]="{
                 outbox: track.subfolder === 'outbox',
                 inbox: track.subfolder === 'inbox',
@@ -37,7 +37,7 @@
             >
               <span class="checkbox float-left p-3">
                 <label>
-                  <input type="checkbox" class="checkbox checkbox-lg" [checked]="store.isSelected(track)" (change)="store.select(track)" />
+                  <input type="checkbox" class="checkbox-lg form-check-input"[checked]="store.isSelected(track)" (change)="store.select(track)" />
                   <i class="input-helper"></i>
                 </label>
               </span>

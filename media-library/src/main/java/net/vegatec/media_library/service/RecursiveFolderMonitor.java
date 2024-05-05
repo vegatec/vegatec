@@ -1,6 +1,5 @@
 package net.vegatec.media_library.service;
 
-import com.sun.nio.file.SensitivityWatchEventModifier;
 import net.vegatec.media_library.config.ApplicationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
@@ -16,7 +18,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.function.Consumer;
 
 import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
 import static java.nio.file.StandardWatchEventKinds.*;
@@ -26,9 +27,9 @@ import static java.nio.file.StandardWatchEventKinds.*;
  * https://docs.oracle.com/javase/tutorial/essential/io/examples/WatchDir.java
  */
 @Service
-public class OracleRecursiveMediaFileMonitor {
+public class RecursiveFolderMonitor {
 
-    private static final Logger LOG = LoggerFactory.getLogger(OracleRecursiveMediaFileMonitor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RecursiveFolderMonitor.class);
 
 //    @Value("${root.folder}")
     private Path rootFolder;
@@ -39,18 +40,17 @@ public class OracleRecursiveMediaFileMonitor {
 
     private boolean trace = false;
 
-    private boolean recursive= true;
-
     private ExecutorService executor;
 
     private final ApplicationProperties applicationProperties;
 
-    private final TrackService trackService;
+   // private final TrackService trackService;
 
+    private PropertyChangeSupport support= new PropertyChangeSupport(this);
 
-    public OracleRecursiveMediaFileMonitor(ApplicationProperties applicationProperties, TrackService trackService) {
+    public RecursiveFolderMonitor(ApplicationProperties applicationProperties) {
         this.applicationProperties = applicationProperties;
-        this.trackService = trackService;
+       // this.trackService = trackService;
         rootFolder = Paths.get(applicationProperties.getMediaFolder(), TrackService.DOWNLOADED);
     }
 
@@ -59,12 +59,9 @@ public class OracleRecursiveMediaFileMonitor {
         watcher = FileSystems.getDefault().newWatchService();
         executor = Executors.newSingleThreadExecutor();
 
-        this.watcher = FileSystems.getDefault().newWatchService();
         this.keys = new HashMap<WatchKey,Path>();
-        this.recursive = true;
+
         startRecursiveWatcher();
-
-
     }
 
     @PreDestroy
@@ -115,28 +112,24 @@ public class OracleRecursiveMediaFileMonitor {
 
 
     @SuppressWarnings("unchecked")
-    static <T> WatchEvent<T> cast(WatchEvent<?> event) {
+    private static <T> WatchEvent<T> cast(WatchEvent<?> event) {
         return (WatchEvent<T>)event;
     }
 
 
-
-
-
     private void startRecursiveWatcher() throws IOException {
         LOG.info("Starting Recursive Watcher");
-        if (recursive) {
-            System.out.format("Scanning %s ...\n", rootFolder);
-            registerAll(rootFolder);
-            System.out.println("Done.");
-        } else {
-            register(rootFolder);
-        }
+
+        LOG.info("Scanning %s ...\n", rootFolder);
+        registerAll(rootFolder);
+        LOG.info("Done.");
+
 
         // enable trace after initial registration
         this.trace = true;
+
         executor.submit(() -> {
-            for (; ; ) {
+            while(true) {
 
                 // wait for key to be signalled
                 WatchKey key;
@@ -148,7 +141,7 @@ public class OracleRecursiveMediaFileMonitor {
 
                 Path dir = keys.get(key);
                 if (dir == null) {
-                    System.err.println("WatchKey not recognized!!");
+                    LOG.error("WatchKey not recognized!!");
                     continue;
                 }
 
@@ -170,7 +163,7 @@ public class OracleRecursiveMediaFileMonitor {
 
                     // if directory is created, and watching recursively, then
                     // register it and its sub-directories
-                    if (recursive && (kind == ENTRY_CREATE)) {
+                    if (kind == ENTRY_CREATE) {
                         try {
                             if (Files.isDirectory(child, NOFOLLOW_LINKS)) {
                                 registerAll(child);
@@ -178,15 +171,11 @@ public class OracleRecursiveMediaFileMonitor {
                                 LOG.info("Detected new file " + child.toAbsolutePath());
                                 File file = child.toFile();
                                 if (file.getName().toLowerCase().endsWith(".mp3"))
-                                    synchronized (this) {
-                                        //trackService.importFile(file);
-                                        trackService.addToImportQueue(file);
-                                    }
-//                                else
-//                                    file.delete();
+                                    this.support.firePropertyChange(new PropertyChangeEvent(this, "file", null, file));
+                                    //trackService.addToImportQueue(file);
                             }
                         } catch (IOException x) {
-                            // ignore to keep sample readbale
+                            // ignore to keep sample readable
                         }
                     }
                 }
@@ -204,4 +193,14 @@ public class OracleRecursiveMediaFileMonitor {
             }
         });
     }
+
+
+    public void addPropertyChangeListener(PropertyChangeListener pcl) {
+        support.addPropertyChangeListener(pcl);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener pcl) {
+        support.removePropertyChangeListener(pcl);
+    }
+
 }
