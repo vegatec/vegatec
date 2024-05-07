@@ -237,16 +237,16 @@ public class TrackResource {
     }
 
 
-    @GetMapping("/fix")
-    public ResponseEntity<String> searchTracks(
-        @RequestParam("folder") String folder
-
-    ) {
-        log.debug("REST request to search for a page of Tracks for query {}", folder);
-
-            trackService.fixFilePath(folder);
-
-            return ResponseEntity.ok("fixing tracks paths");
-
-    }
+//    @GetMapping("/fix")
+//    public ResponseEntity<String> searchTracks(
+//        @RequestParam("folder") String folder
+//
+//    ) {
+//        log.debug("REST request to search for a page of Tracks for query {}", folder);
+//
+//            trackService.fixFilePath(folder);
+//
+//            return ResponseEntity.ok("fixing tracks paths");
+//
+//    }
 }

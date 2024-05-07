@@ -1,8 +1,10 @@
 package net.vegatec.media_library.service;
 
 import net.vegatec.media_library.config.ApplicationProperties;
+import net.vegatec.media_library.domain.events.FileCreated;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -44,14 +46,15 @@ public class RecursiveFolderMonitor {
 
     private final ApplicationProperties applicationProperties;
 
-   // private final TrackService trackService;
 
-    private PropertyChangeSupport support= new PropertyChangeSupport(this);
+   // private PropertyChangeSupport support= new PropertyChangeSupport(this);
 
-    public RecursiveFolderMonitor(ApplicationProperties applicationProperties) {
+    private final ApplicationEventPublisher applicationEventPublisher;
+
+    public RecursiveFolderMonitor(ApplicationProperties applicationProperties, ApplicationEventPublisher applicationEventPublisher) {
         this.applicationProperties = applicationProperties;
-       // this.trackService = trackService;
         rootFolder = Paths.get(applicationProperties.getMediaFolder(), TrackService.DOWNLOADED);
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @PostConstruct
@@ -171,8 +174,8 @@ public class RecursiveFolderMonitor {
                                 LOG.info("Detected new file " + child.toAbsolutePath());
                                 File file = child.toFile();
                                 if (file.getName().toLowerCase().endsWith(".mp3"))
-                                    this.support.firePropertyChange(new PropertyChangeEvent(this, "file", null, file));
-                                    //trackService.addToImportQueue(file);
+                                    applicationEventPublisher.publishEvent(new FileCreated(this, file));
+
                             }
                         } catch (IOException x) {
                             // ignore to keep sample readable
@@ -194,13 +197,5 @@ public class RecursiveFolderMonitor {
         });
     }
 
-
-    public void addPropertyChangeListener(PropertyChangeListener pcl) {
-        support.addPropertyChangeListener(pcl);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener pcl) {
-        support.removePropertyChangeListener(pcl);
-    }
 
 }

@@ -15,6 +15,7 @@ import com.mpatric.mp3agic.*;
 import net.vegatec.media_library.config.ApplicationProperties;
 import net.vegatec.media_library.domain.Track;
 import net.vegatec.media_library.domain.TrackType;
+import net.vegatec.media_library.domain.events.FileCreated;
 import net.vegatec.media_library.repository.TrackRepository;
 import net.vegatec.media_library.repository.TrackTypeRepository;
 import net.vegatec.media_library.repository.search.TrackSearchRepository;
@@ -25,6 +26,7 @@ import net.vegatec.media_library.util.DebounceExecutor;
 import net.vegatec.media_library.util.ImageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.event.EventListener;
 import org.springframework.data.domain.*;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -68,21 +70,9 @@ public class TrackService {
 
     private final RecursiveFolderMonitor folderMonitor; ;
 
-
-
-//    private static final Queue<File> queue = new LinkedList<File>();
-
-
-    private Thread thread;
-    private  Object lock = new Object();
-
-
     private volatile  boolean fileImportPaused = true;
 
-
     private DebounceExecutor debouncer = new DebounceExecutor();
-
-
 
 
     public TrackService(TrackRepository trackRepository, TrackTypeRepository trackTypeRepository, TrackMapper trackMapper, TrackSearchRepository trackSearchRepository, TrackQueryService trackQueryService, ApplicationProperties applicationProperties, RecursiveFolderMonitor folderMonitor) {
@@ -95,51 +85,19 @@ public class TrackService {
         this.folderMonitor = folderMonitor;
     }
 
-
-    @PostConstruct
-    protected void init()
-    {
-        this.folderMonitor.addPropertyChangeListener(evt -> {
-            //pause file import if folder monitors detects new files been copied
-            fileImportPaused = true;
-            //debounce to start import when all files are copied
-            debouncer.debounce(3000, () -> {
-                synchronized (lock) {
-                    fileImportPaused = false;
-                    lock.notifyAll();
-                }
-            });
-
-        });
-
-        thread = new Thread(() -> {
-            while (true) {
-                try {
-                    synchronized (lock) {
-                        if (fileImportPaused)
-                            lock.wait();
-                    }
-
-//                    File file= queue.remove();
-//                    importFile(file);
-//
-//                    if (queue.size() == 0)
-
-                    try {
-                        importFiles();
-                    } catch (IOException e) {
-
-                    }
-
-                    fileImportPaused = true;
-
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
+    @EventListener
+    public void handle(FileCreated event) {
+        fileImportPaused = true;
+        //debounce to start import when all files are copied
+        debouncer.debounce(3000, () -> {
+            try {
+                fileImportPaused= false;
+                importFiles();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
+
         });
-        thread.start();
     }
 
     public void importFiles() throws IOException {
@@ -274,23 +232,7 @@ public class TrackService {
     }
 
 
-//    private void addToImportQueue(File file) {
-//        fileImportPaused = true;
-//
-//        debouncer.debounce(3000, () -> {
-//            fileImportPaused = false;
-//            resume();
-//        });
-//
-//        queue.add(file);
-//    }
 
-    private void resume() {
-//        if(this.thread.getState() == Thread.State.WAITING)
-            synchronized (lock) {
-                lock.notifyAll();
-            }
-    }
 
 
     @Transactional
