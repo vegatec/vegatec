@@ -1,4 +1,4 @@
-package net.vegatec.media_library.domain.events;
+package net.vegatec.media_library.service.events;
 
 import org.springframework.context.ApplicationEvent;
 

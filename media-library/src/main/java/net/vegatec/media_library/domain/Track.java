@@ -23,6 +23,11 @@ public class Track implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public static final String DOWNLOADED = "downloaded";
+    public static final String INBOX = "inbox";
+    public static final String OUTBOX = "outbox";
+    public static final String TRASH = "trash";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

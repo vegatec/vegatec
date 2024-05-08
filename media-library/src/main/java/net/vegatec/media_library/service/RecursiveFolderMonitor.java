@@ -1,7 +1,8 @@
 package net.vegatec.media_library.service;
 
 import net.vegatec.media_library.config.ApplicationProperties;
-import net.vegatec.media_library.domain.events.FileCreated;
+import net.vegatec.media_library.domain.Track;
+import net.vegatec.media_library.service.events.FileCreated;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
@@ -9,9 +10,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
@@ -53,7 +51,7 @@ public class RecursiveFolderMonitor {
 
     public RecursiveFolderMonitor(ApplicationProperties applicationProperties, ApplicationEventPublisher applicationEventPublisher) {
         this.applicationProperties = applicationProperties;
-        rootFolder = Paths.get(applicationProperties.getMediaFolder(), TrackService.DOWNLOADED);
+        rootFolder = Paths.get(applicationProperties.getMediaFolder(), Track.DOWNLOADED);
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
@@ -131,7 +129,7 @@ public class RecursiveFolderMonitor {
         // enable trace after initial registration
         this.trace = true;
 
-        executor.submit(() -> {
+        executor.execute(() -> {
             while(true) {
 
                 // wait for key to be signalled

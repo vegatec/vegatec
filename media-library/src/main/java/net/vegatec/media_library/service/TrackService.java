@@ -1,7 +1,5 @@
 package net.vegatec.media_library.service;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -15,7 +13,7 @@ import com.mpatric.mp3agic.*;
 import net.vegatec.media_library.config.ApplicationProperties;
 import net.vegatec.media_library.domain.Track;
 import net.vegatec.media_library.domain.TrackType;
-import net.vegatec.media_library.domain.events.FileCreated;
+import net.vegatec.media_library.service.events.FileCreated;
 import net.vegatec.media_library.repository.TrackRepository;
 import net.vegatec.media_library.repository.TrackTypeRepository;
 import net.vegatec.media_library.repository.search.TrackSearchRepository;
@@ -33,8 +31,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.jhipster.service.filter.StringFilter;
 
-import javax.annotation.PostConstruct;
-
 /**
  * Service Implementation for managing {@link net.vegatec.media_library.domain.Track}.
  */
@@ -51,10 +47,6 @@ public class TrackService {
     private static final String MISSING_ALBUM_ARTIST = "missing album artist";
     private static final String MISSING_GENRE = "missing genre";
 
-    public static final String DOWNLOADED = "downloaded";
-    public static final String INBOX = "inbox";
-    public static final String OUTBOX = "outbox";
-    public static final String TRASH = "trash";
 
     private final TrackRepository trackRepository;
 
@@ -102,7 +94,7 @@ public class TrackService {
 
     public void importFiles() throws IOException {
 
-        Path downloadsFolder =  Path.of(applicationProperties.getMediaFolder(), DOWNLOADED);
+        Path downloadsFolder =  Path.of(applicationProperties.getMediaFolder(), Track.DOWNLOADED);
 
         logger.debug("Started scanning all media files on {}", downloadsFolder);
 
@@ -318,7 +310,7 @@ public class TrackService {
                 Track track = new Track()
                         .id(0L)
                     .type(type)
-                    .subfolder(INBOX)
+                    .subfolder(Track.INBOX)
                     .filePath(file.getPath())
                     .name(title)
                     .artist(artist)
@@ -394,7 +386,7 @@ public class TrackService {
 
                 if (file.delete()) {
 
-                    if (!parent.getName().equals(DOWNLOADED) &&   parent.list().length == 0)
+                    if (!parent.getName().equals(Track.DOWNLOADED) &&   parent.list().length == 0)
                         parent.delete();
                 }
 
@@ -468,7 +460,7 @@ public class TrackService {
 
         logger.info("-->>>>>>>>>> original file path  {}", originalTrack.get().getFilePath());
 
-        moveMediaFile(originalTrack.get(), INBOX);
+        moveMediaFile(originalTrack.get(), Track.INBOX);
 
         Path currentFilePath = Paths.get(applicationProperties.getMediaFolder(), originalTrack.get().getFilePath()).toAbsolutePath();
 
@@ -500,7 +492,7 @@ public class TrackService {
 
             // 4. now update original media file with new information
             originalTrack.get()
-                    .subfolder(INBOX)
+                    .subfolder(Track.INBOX)
                     .name(track.getName())
                     .artist(track.getArtist().getName())
                     .album( track.getAlbum().getName(), track.getAlbum().getArtist().getName(), track.getAlbum().getReleasedYear())
@@ -584,7 +576,7 @@ public class TrackService {
             logger.info("successfully moved file %s to destination", destFilePath);
 
             // 6. if files were moved to outbox make file read only or read/write otherwise
-            Set<PosixFilePermission> filePermissions = OUTBOX.equalsIgnoreCase(destinationSubfolder) ?
+            Set<PosixFilePermission> filePermissions = Track.OUTBOX.equalsIgnoreCase(destinationSubfolder) ?
                 PosixFilePermissions.fromString("r--r--r--") :
                 PosixFilePermissions.fromString("rw-rw-rw-");
 
