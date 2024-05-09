@@ -1,14 +1,14 @@
-<div class="card">
-  <h6 id="page-heading" data-cy="TrackHeading" class="card-header text-center">
+<div class="card ">
+  <h5 id="page-heading" data-cy="TrackHeading" class="card-header text-center">
     <span jhiTranslate="mediaLibraryApp.track.home.title">Tracks</span>
-    <button (click)="moveToTrash()">delete</button>
-  </h6>
+    
+  </h5>
 
   <jhi-alert-error></jhi-alert-error>
 
   <jhi-alert></jhi-alert>
 
-  <div class="card-body p-0">
+  <div class="card-body p-0 w3-container">
     @if (store.tracks().length === 0) {
       <div class="no-result " id="no-result" jhiAutoHeight="100">
         <span jhiTranslate="mediaLibraryApp.track.home.notFound">No Tracks found</span>
@@ -26,6 +26,8 @@
         [scrollWindow]="false"
       >
         @for (track of store.tracks(); track trackId) {
+     
+          
           <div class="border border-bottom-1 ">
             <div
               class=" d-flex p-2"
