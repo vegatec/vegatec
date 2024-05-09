@@ -8,9 +8,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import net.vegatec.media_library.domain.Track;
+import net.vegatec.media_library.mediator.SpringMediator;
 import net.vegatec.media_library.repository.TrackRepository;
 import net.vegatec.media_library.service.TrackQueryService;
 import net.vegatec.media_library.service.TrackService;
+import net.vegatec.media_library.service.commands.PublishTrack;
+import net.vegatec.media_library.service.commands.UnpublishTrack;
 import net.vegatec.media_library.service.criteria.LibrarySearchCriteria;
 import net.vegatec.media_library.service.criteria.TrackCriteria;
 import net.vegatec.media_library.service.dto.TrackDTO;
@@ -49,10 +52,13 @@ public class TrackResource {
 
     private final TrackQueryService trackQueryService;
 
-    public TrackResource(TrackService trackService, TrackRepository trackRepository, TrackQueryService trackQueryService) {
+    private final SpringMediator mediator;
+
+    public TrackResource(TrackService trackService, TrackRepository trackRepository, TrackQueryService trackQueryService, SpringMediator mediator) {
         this.trackService = trackService;
         this.trackRepository = trackRepository;
         this.trackQueryService = trackQueryService;
+        this.mediator = mediator;
     }
 
     /**
@@ -237,16 +243,30 @@ public class TrackResource {
     }
 
 
-    @GetMapping("/fix")
-    public ResponseEntity<String> searchTracks(
-        @RequestParam("folder") String folder
+    @PutMapping("/{id}/publish")
+    public ResponseEntity<TrackDTO> publishTrack(
+        @PathVariable("id") Long id
 
     ) {
-        log.debug("REST request to search for a page of Tracks for query {}", folder);
+        log.debug("REST request publish track with id {}", id);
 
-            trackService.fixFilePath(folder);
+            TrackDTO result= mediator.send(new PublishTrack(id));
 
-            return ResponseEntity.ok("fixing tracks paths");
+            return ResponseEntity.ok(result);
+
+    }
+
+
+    @PutMapping("/{id}/unpublish")
+    public ResponseEntity<TrackDTO> unpublishTrack(
+        @PathVariable("id") Long id
+
+    ) {
+        log.debug("REST request unpublish track with id {}", id);
+
+        TrackDTO result= mediator.send(new UnpublishTrack(id));
+
+        return ResponseEntity.ok(result);
 
     }
 }

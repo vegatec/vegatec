@@ -57,6 +57,22 @@ export class TrackService {
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
+  publish(id: number) : Observable<EntityResponseType> {
+    return this.http
+      .put<RestTrack>(`${this.resourceUrl}/${id}/publish`,  {} , { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
+    
+  }
+
+  unpublish(id: number) : Observable<EntityResponseType> {
+    return this.http
+      .put<RestTrack>(`${this.resourceUrl}/${id}/unpublish`,  {} , { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
+    
+  }
+
+
+
   find(id: number): Observable<EntityResponseType> {
     return this.http
       .get<RestTrack>(`${this.resourceUrl}/${id}`, { observe: 'response' })

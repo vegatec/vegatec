@@ -20,6 +20,8 @@
         <li><a class="dropdown-item" (click)="trackStore.selectAll()" >Select All</a></li>
         <!-- <li><a class="dropdown-item" (click)="edit()" [hidden]="trackStore.hasSelections()">Edit</a></li> -->
         <li><i><fa-icon icon="trash"></fa-icon></i><a class="dropdown-item" (click)="trackStore.moveToTrash()">Move to trash</a></li>
+        <li><i><fa-icon icon="arrow-up"></fa-icon></i><a class="dropdown-item" (click)="trackStore.publish()">Publish</a></li>       
+         <li><i><fa-icon icon="arrow-down"></fa-icon></i><a class="dropdown-item" (click)="trackStore.unpublish()">Unpublish</a></li>
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="#">Separated link</a></li>
       </ul>

@@ -41,6 +41,9 @@ import {
   faMicrophone,
   faPlayCircle,
   faCompactDisc,
+  faTrash,
+  faArrowDown,
+  faArrowUp,
   // jhipster-needle-add-icon-import
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -87,6 +90,9 @@ export const fontAwesomeIcons = [
   faMicrophone,
   faPlayCircle,
   faCompactDisc,
+  faTrash,
+  faArrowDown,
+  faArrowUp,
 
   // jhipster-needle-add-icon-import
 ];

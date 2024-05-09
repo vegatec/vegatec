@@ -1,15 +1,15 @@
 package net.vegatec.media_library.service;
 
 import net.vegatec.media_library.config.ApplicationProperties;
+import net.vegatec.media_library.domain.Track;
+import net.vegatec.media_library.service.events.FileCreated;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
@@ -44,14 +44,15 @@ public class RecursiveFolderMonitor {
 
     private final ApplicationProperties applicationProperties;
 
-   // private final TrackService trackService;
 
-    private PropertyChangeSupport support= new PropertyChangeSupport(this);
+   // private PropertyChangeSupport support= new PropertyChangeSupport(this);
 
-    public RecursiveFolderMonitor(ApplicationProperties applicationProperties) {
+    private final ApplicationEventPublisher applicationEventPublisher;
+
+    public RecursiveFolderMonitor(ApplicationProperties applicationProperties, ApplicationEventPublisher applicationEventPublisher) {
         this.applicationProperties = applicationProperties;
-       // this.trackService = trackService;
-        rootFolder = Paths.get(applicationProperties.getMediaFolder(), TrackService.DOWNLOADED);
+        rootFolder = Paths.get(applicationProperties.getMediaFolder(), Track.DOWNLOADED);
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @PostConstruct
@@ -128,7 +129,7 @@ public class RecursiveFolderMonitor {
         // enable trace after initial registration
         this.trace = true;
 
-        executor.submit(() -> {
+        executor.execute(() -> {
             while(true) {
 
                 // wait for key to be signalled
@@ -171,8 +172,8 @@ public class RecursiveFolderMonitor {
                                 LOG.info("Detected new file " + child.toAbsolutePath());
                                 File file = child.toFile();
                                 if (file.getName().toLowerCase().endsWith(".mp3"))
-                                    this.support.firePropertyChange(new PropertyChangeEvent(this, "file", null, file));
-                                    //trackService.addToImportQueue(file);
+                                    applicationEventPublisher.publishEvent(new FileCreated(this, file));
+
                             }
                         } catch (IOException x) {
                             // ignore to keep sample readable
@@ -194,13 +195,5 @@ public class RecursiveFolderMonitor {
         });
     }
 
-
-    public void addPropertyChangeListener(PropertyChangeListener pcl) {
-        support.addPropertyChangeListener(pcl);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener pcl) {
-        support.removePropertyChangeListener(pcl);
-    }
 
 }

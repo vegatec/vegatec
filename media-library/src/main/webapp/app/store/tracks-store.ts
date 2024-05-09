@@ -155,12 +155,41 @@ export const TracksStore = signalStore(
         store.selected().forEach(t=> this.delete(t));
       },
 
+      publish() {
+        store.selected().forEach(track=> {
+          trackService.publish(track.id).pipe(
+            map(response => response.body ),
+            tap((res) => {
+              patchState(store, { tracks: [...store.tracks().filter(t=> t.id !== track.id), res! ]});
+            }),
+            catchError(error => of({ error: error.message })),
+          ).subscribe()
+        });
+
+      },
+
+
+      unpublish() {
+        store.selected().forEach(track=> {
+          trackService.unpublish(track.id).pipe(
+            map(response => response.body ),
+            tap((res) => {
+              patchState(store, { tracks: [...store.tracks().filter(t=> t.id !== track.id), res! ]});
+            }),
+            catchError(error => of({ error: error.message })),
+          ).subscribe()
+        });
+
+      },
+
+
+
  
       delete(track: Track) {
        
     
             trackService.delete(track.id).pipe(
-              map(response => response.body ?? []),
+              map(response => response.body ?? null),
               tap(() => {
                 patchState(store, { tracks: [...store.tracks().filter(t=> t.id !== track.id)]});
               }),
