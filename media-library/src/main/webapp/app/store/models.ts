@@ -58,4 +58,5 @@ export interface SearchCriteria {
   albumName?: string;
   artistName?: string;
   trackName?: string;
+  subfolder?: string;
 }

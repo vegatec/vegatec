@@ -160,7 +160,8 @@ export const TracksStore = signalStore(
           trackService.publish(track.id).pipe(
             map(response => response.body ),
             tap((res) => {
-              patchState(store, { tracks: [...store.tracks().filter(t=> t.id !== track.id), res! ]});
+              this.load(0);
+              // patchState(store, { tracks: [...store.tracks().filter(t=> t.id !== track.id), res! ]});
             }),
             catchError(error => of({ error: error.message })),
           ).subscribe()
@@ -174,7 +175,8 @@ export const TracksStore = signalStore(
           trackService.unpublish(track.id).pipe(
             map(response => response.body ),
             tap((res) => {
-              patchState(store, { tracks: [...store.tracks().filter(t=> t.id !== track.id), res! ]});
+              this.load(0);
+              // patchState(store, { tracks: [...store.tracks().filter(t=> t.id !== track.id), res! ]});
             }),
             catchError(error => of({ error: error.message })),
           ).subscribe()
@@ -188,10 +190,11 @@ export const TracksStore = signalStore(
       delete(track: Track) {
        
     
-            trackService.delete(track.id).pipe(
+            trackService.moveToTrash(track.id).pipe(
               map(response => response.body ?? null),
               tap(() => {
-                patchState(store, { tracks: [...store.tracks().filter(t=> t.id !== track.id)]});
+                this.load(0);
+                // patchState(store, { tracks: [...store.tracks().filter(t=> t.id !== track.id)]});
               }),
               catchError(error => of({ error: error.message })),
             ).subscribe();

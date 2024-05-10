@@ -34,13 +34,14 @@
                       tracks: [
                         'tracks',
                         {
-                        
+                          
                           albumArtistName: g[0]!,
 
                           addedSince: store.searchCriteria().addedSince!,
                           releasedSince: store.searchCriteria().releasedSince!,
                           trackName: store.searchCriteria().trackName!,
-                          filter: store.searchCriteria().filter!
+                          filter: store.searchCriteria().filter!,
+                          subfolder: store.searchCriteria().subfolder!
                         }
                       ]
                     }

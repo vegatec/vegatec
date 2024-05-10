@@ -1,12 +1,12 @@
 <div class="flex flex-column p-2 bg-dark">
   <div class="row text-white animated bounce infinite">
-    <h5 class="col-1">{{state?.currentTime!*1000 | date:'mm:ss'}}</h5>
+    <h4 class="col-1">{{state?.currentTime!*1000 | date:'mm:ss'}}</h4>
     <div class="col-10 m-0">
       <h4 class="text-center text-white">
         {{ track?.name }} <i> by {{ track?.artist?.name }} </i>
       </h4>
     </div>
-    <h5 class="col-1 text-right">{{(state?.duration!-state?.currentTime!)*1000 | date:'mm:ss'}}</h5>
+    <h4 class="col-1 text-end">{{(state?.duration!-state?.currentTime!)*1000 | date:'mm:ss'}}</h4>
   </div>
   <!-- <ngb-progressbar class="progress-bar" height="4px" type="primary" [value]="state?.progress!"></ngb-progressbar> -->
   <ngb-progressbar class="progress-bar" class="mb-3"height=".5rem" type="warning" [value]="state?.progress!"></ngb-progressbar>

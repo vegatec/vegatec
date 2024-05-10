@@ -30,6 +30,7 @@ export type EntityArrayResponseType = HttpResponse<Track[]>;
 @Injectable({ providedIn: 'root' })
 export class TrackService {
 
+
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/tracks');
   protected resourceSearchUrl = this.applicationConfigService.getEndpointFor('api/tracks/_search');
 
@@ -59,18 +60,23 @@ export class TrackService {
 
   publish(id: number) : Observable<EntityResponseType> {
     return this.http
-      .put<RestTrack>(`${this.resourceUrl}/${id}/publish`,  {} , { observe: 'response' })
+      .put<RestTrack>(`${this.resourceUrl}/${id}/move`,  'outbox', { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
     
   }
 
   unpublish(id: number) : Observable<EntityResponseType> {
     return this.http
-      .put<RestTrack>(`${this.resourceUrl}/${id}/unpublish`,  {} , { observe: 'response' })
+      .put<RestTrack>(`${this.resourceUrl}/${id}/move`,   'inbox' , { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
     
   }
 
+  moveToTrash(id: number) : Observable<EntityResponseType>  {
+    return this.http
+      .put<RestTrack>(`${this.resourceUrl}/${id}/move`,  'trash' , { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
+  }
 
 
   find(id: number): Observable<EntityResponseType> {
