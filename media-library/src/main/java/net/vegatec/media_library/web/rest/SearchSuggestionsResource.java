@@ -1,8 +1,7 @@
 package net.vegatec.media_library.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
 import net.vegatec.media_library.repository.SearchSuggestionsRepository;
-import net.vegatec.media_library.web.rest.util.PaginationUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -14,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tech.jhipster.web.util.PaginationUtil;
 
 import java.net.URISyntaxException;
 import java.util.List;
@@ -42,40 +43,49 @@ public class SearchSuggestionsResource {
      * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
 
+    @GetMapping("/suggestions/artists")
 
-
-    @GetMapping("/artists/suggestions")
-    @Timed
     public ResponseEntity<List<String>> findArtistSuggestions(@RequestParam(name="term") String term, Pageable pageable) throws URISyntaxException  {
         log.debug("REST request to get all artist names matching  {}", term);
 
         final Page<String> page =  searchSuggestionsRepository.findArtistSuggestions(pageable, term);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/artists/suggestions");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+
     }
 
-    @GetMapping("/albums/suggestions")
-    @Timed
+    @GetMapping("/suggestions/albums")
+
     public ResponseEntity<List<String>> findAlbumSuggestions(@RequestParam(name = "term") String term, Pageable pageable) throws URISyntaxException  {
         log.debug("REST request to get all album names matching  {}", term);
 
         final Page<String> page =  searchSuggestionsRepository.findAlbumSuggestions(pageable, term);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/albums/suggestions");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+
     }
 
-    @GetMapping("/tracks/suggestions")
-    @Timed
+    @GetMapping("/suggestions/tracks")
     public ResponseEntity<List<String>> findTrackSuggestions(@RequestParam( name="term") String term, Pageable pageable) throws URISyntaxException  {
         log.debug("REST request to get all track names matching  {}", term);
 
         final Page<String> page =  searchSuggestionsRepository.findTrackSuggestions(pageable, term);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/tracks/suggestions");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+
     }
 
 
+    @GetMapping("/suggestions/genres")
+    public ResponseEntity<List<String>> findGenreSuggestions(@RequestParam( name="term") String term, Pageable pageable) throws URISyntaxException  {
+        log.debug("REST request to get all track names matching  {}", term);
 
+        final Page<String> page =  searchSuggestionsRepository.findGenreSuggestions(pageable, term);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+
+    }
 
 
 }

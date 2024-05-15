@@ -42,6 +42,7 @@ export interface Track {
   type?: Pick<TrackType, 'id' | 'name'> | null;
 }
 
+
 export type NewTrack = Omit<Track, 'id'> & { id: null };
 
 export interface PagingOptions {
@@ -59,4 +60,27 @@ export interface SearchCriteria {
   artistName?: string;
   trackName?: string;
   subfolder?: string;
+  update?:boolean;
+}
+
+
+export class UpdatetableTrack {
+
+  id: number;
+  name?: string;
+  artist?: string;
+  album?: string ;
+  albumArtist?: string;
+  genre?: string;
+  releasedYear?: number;
+
+  constructor( id: number, name?: string, artist?: string, album?: string, albumArtist?: string, genre?: string, releasedYear?: number) {
+    this.id= id;
+    this.name= name;
+    this.artist= artist;
+    this.album= album;
+    this.albumArtist= albumArtist;
+    this.genre= genre;
+    this.releasedYear= releasedYear;
+  }
 }

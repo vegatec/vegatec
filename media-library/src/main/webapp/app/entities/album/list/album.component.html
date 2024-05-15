@@ -1,5 +1,6 @@
 <div class="card">
   <h5 id="page-heading" data-cy="AlbumHeading" class="card-header text-center">
+    {{store.total()}} 
     <span jhiTranslate="mediaLibraryApp.album.home.title">Albums</span>
   </h5>
 
@@ -70,7 +71,8 @@
                               addedSince: store.searchCriteria().addedSince,
                               releasedSince: store.searchCriteria().releasedSince,
                               trackName: store.searchCriteria().trackName,
-                              filter: store.searchCriteria().filter
+                              filter: store.searchCriteria().filter,
+                              subfolder: store.searchCriteria().subfolder!
                             }
                           ]
                         }

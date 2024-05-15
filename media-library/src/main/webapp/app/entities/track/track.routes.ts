@@ -10,36 +10,46 @@ import TrackResolve from './route/track-routing-resolve.service';
 const trackRoute: Routes = [
   {
     path: '',
-    component: TrackComponent,
-    data: {
-      defaultSort: 'id,' + ASC,
-    },
-    canActivate: [UserRouteAccessService],
-  },
-  {
-    path: ':id/view',
-    component: TrackDetailComponent,
-    resolve: {
-      track: TrackResolve,
-    },
-    canActivate: [UserRouteAccessService],
-  },
-  {
-    path: 'new',
     component: TrackUpdateComponent,
     resolve: {
       track: TrackResolve,
     },
     canActivate: [UserRouteAccessService],
   },
-  {
-    path: ':id/edit',
-    component: TrackUpdateComponent,
-    resolve: {
-      track: TrackResolve,
-    },
-    canActivate: [UserRouteAccessService],
-  },
+
+
+  // {
+  //   path: '',
+  //   component: TrackComponent,
+  //   data: {
+  //     defaultSort: 'id,' + ASC,
+  //   },
+  //   canActivate: [UserRouteAccessService],
+  // },
+  // {
+  //   path: ':id/view',
+  //   component: TrackDetailComponent,
+  //   resolve: {
+  //     track: TrackResolve,
+  //   },
+  //   canActivate: [UserRouteAccessService],
+  // },
+  // {
+  //   path: 'new',
+  //   component: TrackUpdateComponent,
+  //   resolve: {
+  //     track: TrackResolve,
+  //   },
+  //   canActivate: [UserRouteAccessService],
+  // },
+  // {
+  //   path: ':id/edit',
+  //   component: TrackUpdateComponent,
+  //   resolve: {
+  //     track: TrackResolve,
+  //   },
+  //   canActivate: [UserRouteAccessService],
+  // },
 ];
 
 export default trackRoute;

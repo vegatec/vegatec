@@ -11,12 +11,12 @@ const routes: Routes = [
     data: { pageTitle: 'mediaLibraryApp.musicRequest.home.title' },
     loadChildren: () => import('./music-request/music-request.routes'),
   },
-  // {
-  //   path: 'track',
-  //   data: { pageTitle: 'mediaLibraryApp.track.home.title' },
-  //   loadChildren: () => import('./track/track.routes'),
+  {
+    path: 'track',
+    data: { pageTitle: 'mediaLibraryApp.track.home.title' },
+    loadChildren: () => import('./track/track.routes'),
 
-  // },
+  },
 
   // {
   //   path: 'album',

@@ -8,7 +8,9 @@
 
     <div class="m-auto"></div>
     <div class="justify-content-center m-1 w-50">
-      <input type="search" class="form-control" placeholder="Search" aria-label="Search" (keyup)="search($event)" />
+
+        <input type="search" class="form-control" placeholder="Search" aria-label="Search" #searchInput (keyup)="navbarService.search(searchInput.value)"  (search)="navbarService.search('')" />
+    
     </div>
     <div class="m-auto"></div>
 
@@ -17,13 +19,16 @@
         <i><fa-icon icon="bars"></fa-icon></i>  
       </button>
       <ul class="dropdown-menu ">
-        <li><a class="dropdown-item" (click)="trackStore.selectAll()" >Select All</a></li>
+        <li  class="dropdown-item "><a  (click)="trackStore.selectAll()" >Select All</a></li>
         <!-- <li><a class="dropdown-item" (click)="edit()" [hidden]="trackStore.hasSelections()">Edit</a></li> -->
-        <li><i><fa-icon icon="trash"></fa-icon></i><a class="dropdown-item" (click)="trackStore.moveToTrash()">Move to trash</a></li>
-        <li><i><fa-icon icon="arrow-up"></fa-icon></i><a class="dropdown-item" (click)="trackStore.publish()">Publish</a></li>       
-         <li><i><fa-icon icon="arrow-down"></fa-icon></i><a class="dropdown-item" (click)="trackStore.unpublish()">Unpublish</a></li>
+        <li class="dropdown-item " *ngIf="trackStore.hasSelections()"
+        routerLink="/track"
+        ><i><fa-icon icon="edit" class="pe-2"></fa-icon></i><a >Edit</a></li>
+        <li class="dropdown-item " *ngIf="trackStore.hasSelections()"><i><fa-icon icon="arrow-up" class="pe-2"></fa-icon></i><a  (click)="trackStore.publish()">Publish</a></li>       
+         <li class="dropdown-item " *ngIf="trackStore.hasSelections()"><i><fa-icon icon="arrow-down" class="pe-2"></fa-icon></i><a (click)="trackStore.unpublish()">Unpublish</a></li>
+         <li class="dropdown-item " *ngIf="trackStore.hasSelections()"><i><fa-icon icon="trash" class="pe-2"></fa-icon></i><a  (click)="trackStore.moveToTrash()">Move to trash</a></li>
         <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item" href="#">Separated link</a></li>
+        <li class="dropdown-item "><a  href="#">{{trackStore.hasSelections()}}</a></li>
       </ul>
     </div>
 

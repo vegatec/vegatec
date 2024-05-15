@@ -3,7 +3,8 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import SharedModule from 'app/shared/shared.module';
 import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
-import { ITrack } from '../track.model';
+import { Track } from 'app/store/models';
+
 
 @Component({
   standalone: true,
@@ -12,7 +13,7 @@ import { ITrack } from '../track.model';
   imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
 export class TrackDetailComponent {
-  @Input() track: ITrack | null = null;
+  @Input() track: Track | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 

@@ -26,6 +26,7 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 
 export interface AlbumsState {
   albums: Album[];
+  total: number;
   selected: Album | string | null;
 
   pagingOptions: PagingOptions;
@@ -43,7 +44,7 @@ export const AlbumsStore = signalStore(
   { providedIn: 'root' },
   withState<AlbumsState>({
     albums: [],
-
+    total: 0,
     selected: null,
     pagingOptions: {
       itemsPerPage: ITEMS_PER_PAGE,
@@ -92,9 +93,10 @@ export const AlbumsStore = signalStore(
           distinctUntilChanged(),
           switchMap(() =>
             albumService.query({ ...store.pagingOptions(), ...store.searchCriteria() }).pipe(
-              map(response => response.body ?? []),
-              tap(albums => {
-                patchState(store, { albums: [...store.albums(), ...albums] });
+             // map(response => response.body ?? []),
+
+              tap(response => {
+                patchState(store, { albums: [...store.albums(), ...response.body!], total:  +response.headers.get('x-total-count')! });
               }),
               catchError(error => of({ error: error.message })),
             ),

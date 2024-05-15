@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -12,6 +12,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
 import SharedModule from 'app/shared/shared.module';
 import ActiveMenuDirective from '../navbar/active-menu.directive';
+import { TracksStore } from 'app/store/tracks-store';
+import { AlbumsStore } from 'app/store/albums-store';
 
 @Component({
   standalone: true,
@@ -31,6 +33,10 @@ export class SidebarComponent {
   account: Account | null = null;
   selectedItem = '';
 
+
+  trackStore = inject(TracksStore);
+  albumStore = inject(AlbumsStore);
+
   constructor(
     private loginService: LoginService,
     private translateService: TranslateService,
@@ -38,6 +44,7 @@ export class SidebarComponent {
     private accountService: AccountService,
     private profileService: ProfileService,
     private router: Router,
+    
   ) {
     if (VERSION) {
       this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION;

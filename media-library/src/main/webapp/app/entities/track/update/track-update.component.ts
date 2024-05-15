@@ -1,50 +1,146 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, computed, effect, inject, signal } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { Observable, OperatorFunction, of } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, finalize, map, switchMap, tap } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ITrackType } from 'app/entities/track-type/track-type.model';
 import { TrackTypeService } from 'app/entities/track-type/service/track-type.service';
-import { ITrack } from '../track.model';
 import { TrackService } from '../service/track.service';
-import { TrackFormService, TrackFormGroup } from './track-form.service';
+// import { TrackFormService, TrackFormGroup } from './track-form.service';
+import { Track, UpdatetableTrack } from 'app/store/models';
+import { TrackFormService } from './track-form.service';
+import { TracksStore } from 'app/store/tracks-store';
+import { SuggestionService } from '../service/suggestion.service';
+import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   standalone: true,
   selector: 'jhi-track-update',
   templateUrl: './track-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgbTypeahead],
 })
 export class TrackUpdateComponent implements OnInit {
+
+
+  trackStore = inject(TracksStore);
+  
   isSaving = false;
-  track: ITrack | null = null;
 
-  trackTypesSharedCollection: ITrackType[] = [];
+  tracks= signal<UpdatetableTrack[]>([]);
 
-  editForm: TrackFormGroup = this.trackFormService.createTrackFormGroup();
+  artists= signal<string[]>([]);
+  
+  albums= signal<string[]>([]);
 
+  albumArtists= signal<string[]>([]);
+
+  genres= signal<string[]>([]);
+
+  years= signal<number[]>([]);
+
+
+  index= signal(0);
+
+
+
+  artist= signal<string>('');
+  album= signal<string>('');
+  albumArtist= signal<string>('');
+  genre= signal<string>('');
+  year= signal<number>(0);
+
+  originalArtist= signal<string>('');
+  originalAlbum= signal<string>('');
+  originalAlbumArtist= signal<string>('');
+  originalGenre= signal<string>('');
+  originalYear= signal<number>(0);
+
+  artistHasChanged= computed(() => { return this.artist() !== this.originalArtist()});
+  albumHasChanged= computed(() =>  { return this.album() !== this.originalAlbum()});
+  albumArtistHasChanged= computed(() =>{ return (this.albumArtist() !== this.originalAlbumArtist())});
+  genreHasChanged= computed(() => { return this.genre() !== this.originalGenre()});
+  yearHasChanged= computed(() =>{ return this.year() !== this.originalYear()});
+
+  hasNext= computed(() =>{ return this.index() < this.tracks().length-1});
+  hasPrevious= computed(() =>{ return this.index() > 0});
+
+
+  
   constructor(
     protected trackService: TrackService,
     protected trackFormService: TrackFormService,
     protected trackTypeService: TrackTypeService,
     protected activatedRoute: ActivatedRoute,
-  ) {}
+    protected suggestionService: SuggestionService
+  ) {
+    effect(()=> {
+      
 
-  compareTrackType = (o1: ITrackType | null, o2: ITrackType | null): boolean => this.trackTypeService.compareTrackType(o1, o2);
+
+    })
+  }
+
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ track }) => {
-      this.track = track;
-      if (track) {
-        this.updateForm(track);
-      }
 
-      this.loadRelationshipsOptions();
+      const mapped= this.trackStore.selected().map(t=>  {
+        return new UpdatetableTrack (
+          t.id, 
+          toCamelCase(t.name!),
+          toCamelCase(t.artist?.name!),
+          toCamelCase(t.album?.name!),          
+          toCamelCase(t.album?.artist?.name!),
+          toCamelCase(t.genre?.name!),
+          t.album?.releasedYear!
+        );      
+
+      });
+
+
+      this.tracks.set( mapped );
+
+      // 
+      this.artists.set([... new Set(this.tracks().map(t=> t.artist!))]);
+      this.albums.set([... new Set(this.tracks().map(t=> t.album!))]);
+      this.albumArtists.set([... new Set(this.tracks().map(t=> t.albumArtist!))]);
+      this.genres.set([... new Set(this.tracks().map(t=> t.genre!))]);
+      this.years.set([... new Set(this.tracks().map(t=> t.releasedYear!))]);
+
+      // record original values
+      this.originalArtist.set(this.artist());     
+      this.originalAlbum.set(this.album());      
+      this.originalAlbumArtist.set(this.albumArtist());     
+      this.originalGenre.set(this.genre());
+      this.originalYear.set(this.year());
+
+
+      if (this.artists().length == 1)
+        this.artist.set( this.artists()[0]);
+
+      if (this.albums().length == 1)
+        this.album.set( this.albums()[0]);
+
+      if (this.albumArtists().length == 1)
+        this.albumArtist.set( this.albumArtists()[0]);
+      
+      if (this.genres().length == 1)
+        this.genre.set( this.genres()[0]);
+      
+      if (this.years().length == 1)
+        this.year.set( this.years()[0])
+
     });
+  }
+
+  onArtistChanged(e: any):void {
+    console.log(`Artist Changed: ${e}`);
+
   }
 
   previousState(): void {
@@ -52,16 +148,41 @@ export class TrackUpdateComponent implements OnInit {
   }
 
   save(): void {
-    this.isSaving = true;
-    const track = this.trackFormService.getTrack(this.editForm);
-    if (track.id !== null) {
-      this.subscribeToSaveResponse(this.trackService.update(track));
-    } else {
-      this.subscribeToSaveResponse(this.trackService.create(track));
-    }
+    // this.isSaving = true;
+    // const track = this.trackFormService.getTrack(this.editForm);
+    // if (track.id !== null) {
+    //   this.subscribeToSaveResponse(this.trackService.update(track));
+    // } else {
+    //   this.subscribeToSaveResponse(this.trackService.create(track));
+    // }
+
+
+       this.tracks().forEach(s=>  { 
+        if   (this.artistHasChanged())
+          s.artist = this.artist();
+
+        if  ( this.albumHasChanged())
+          s.album = this.album();
+
+        if (this.albumArtistHasChanged()) 
+          s.albumArtist = this.albumArtist();
+        
+        if (this.genreHasChanged())
+          s.genre = this.genre();
+
+        if (this.yearHasChanged())
+          s.releasedYear = this.year();
+
+        this.trackService.update(s);
+
+      });
+
+
+    
+
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<ITrack>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<Track>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: () => this.onSaveSuccess(),
       error: () => this.onSaveError(),
@@ -80,25 +201,80 @@ export class TrackUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  protected updateForm(track: ITrack): void {
-    this.track = track;
-    this.trackFormService.resetForm(this.editForm, track);
+  protected updateForm(track: Track): void {
+    // this.track = track;
+    // this.trackFormService.resetForm(this.editForm, track);
 
-    this.trackTypesSharedCollection = this.trackTypeService.addTrackTypeToCollectionIfMissing<ITrackType>(
-      this.trackTypesSharedCollection,
-      track.type,
+    // this.trackTypesSharedCollection = this.trackTypeService.addTrackTypeToCollectionIfMissing<ITrackType>(
+    //   this.trackTypesSharedCollection,
+    //   track.type,
+    // );
+  }
+
+
+
+
+
+
+
+  artistSuggestions: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+     
+      switchMap(term =>
+        this.suggestionService.artists(term).pipe(
+          map(res=> res.body!),
+          catchError(() => {
+  
+            return of([]);
+          }))
+      ),
+
     );
+
+
+  genreSuggestions: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      
+      switchMap(term =>
+        this.suggestionService.genres(term).pipe(
+          map(res=> res.body!),
+          catchError(() => {
+            return of([]);
+          }))
+      ),
+
+    );
+
+  next(): void {
+    if (this.hasNext()) 
+        this.index.update(index => index +1)
+  } 
+
+
+  previous(): void {
+      if (this.hasPrevious()) 
+          this.index.update(index => index-1);
+
   }
 
-  protected loadRelationshipsOptions(): void {
-    this.trackTypeService
-      .query()
-      .pipe(map((res: HttpResponse<ITrackType[]>) => res.body ?? []))
-      .pipe(
-        map((trackTypes: ITrackType[]) =>
-          this.trackTypeService.addTrackTypeToCollectionIfMissing<ITrackType>(trackTypes, this.track?.type),
-        ),
-      )
-      .subscribe((trackTypes: ITrackType[]) => (this.trackTypesSharedCollection = trackTypes));
-  }
+  protected camelCase( input: string ):string  {
+    var words = input.toLowerCase().split( ' ' );
+    for ( var i = 0, len = words.length; i < len; i++ )
+        words[i] = words[i].charAt( 0 ).toUpperCase() + words[i].slice( 1 );
+    return words.join( ' ' );
+};
+
 }
+
+
+function toCamelCase(input: string ) {
+  var words = input.toLowerCase().split( ' ' );
+  for ( var i = 0, len = words.length; i < len; i++ )
+      words[i] = words[i].charAt( 0 ).toUpperCase() + words[i].slice( 1 );
+  return words.join( ' ' );
+}
+

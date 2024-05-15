@@ -27,7 +27,9 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 
 export interface TracksState {
   tracks: Track[];
+  total: number;
   selected: Track[];
+
 
   pagingOptions: PagingOptions;
   searchCriteria: SearchCriteria;
@@ -44,7 +46,7 @@ export const TracksStore = signalStore(
   { providedIn: 'root' },
   withState<TracksState>({
     tracks: [],
-
+    total:0,
     selected: [],
     pagingOptions: {
       itemsPerPage: ITEMS_PER_PAGE,
@@ -53,6 +55,7 @@ export const TracksStore = signalStore(
     },
     searchCriteria: {
       filter: '',
+      update: false
     },
     loading: false,
     error: '',
@@ -67,7 +70,7 @@ export const TracksStore = signalStore(
         toArray(),
       ),
     ),
-    hasSelections: computed(() => selected.length > 0)
+    hasSelections: computed(() => selected().length > 0)
   })),
 
   withMethods(store => {
@@ -78,7 +81,7 @@ export const TracksStore = signalStore(
           tap(criteria => {
             patchState(store, {
               pagingOptions: { ...store.pagingOptions(), page: 0 },
-              searchCriteria: criteria,
+              searchCriteria: { ...criteria, update:false},
               tracks: [],
               selected: []
             });
@@ -87,9 +90,9 @@ export const TracksStore = signalStore(
           distinctUntilChanged(),
           switchMap(() =>
             trackService.query({ ...store.pagingOptions(), ...store.searchCriteria() }).pipe(
-              map(response => response.body ?? []),
-              tap(tracks => {
-                patchState(store, { tracks: [...store.tracks()].concat(tracks) });
+        //      map(response => response.body ?? []),
+              tap(response => {
+                patchState(store, { tracks: [...store.tracks(), ...response.body!], total:  +response.headers.get('x-total-count')! });
               }),
               catchError(error => of({ error: error.message })),
             ),
@@ -106,9 +109,9 @@ export const TracksStore = signalStore(
           distinctUntilChanged(),
           switchMap(() =>
             trackService.query({ ...store.pagingOptions(), ...store.searchCriteria() }).pipe(
-              map(response => response.body ?? []),
-              tap(tracks => {
-                patchState(store, { tracks: [...store.tracks()].concat(tracks) });
+            //  map(response => response.body ?? []),
+              tap(response => {
+                patchState(store, { tracks: [...store.tracks(), ...response.body!], total:  +response.headers.get('x-total-count')! });
               }),
               catchError(error => of({ error: error.message })),
             ),
@@ -116,21 +119,6 @@ export const TracksStore = signalStore(
         ),
       ),
 
-      // delete: (track: Track) => rxMethod<number>(
-      //   pipe(
-      //     switchMap(() =>
-      //       trackService.delete(track.id).pipe(
-      //         map(response => response.body ?? []),
-      //         tap(tracks => {
-      //           patchState(store, { tracks: [...store.tracks().filter(t=> t.id !== track.id)]});
-      //         }),
-      //         catchError(error => of({ error: error.message })),
-      //       ),
-      //     ),
-      //     tap()
-
-      //   ),
-      // ),
 
       select: (item: Track) => {
         const isSelected = store.selected().findIndex( i => i === item) !== -1
@@ -143,15 +131,21 @@ export const TracksStore = signalStore(
 
       isSelected: (item: Track | string) => store.selected().findIndex( i => i === item) !== -1,
 
-      selectAll() {
-        if (store.selected().length === 0)
-          patchState(store, {selected: store.tracks()});
-        else
-        patchState(store, {selected: []});
+      // selectAll() {
+      //   if (!store.hasSelections())
+      //     patchState(store, {selected: store.tracks()});
+      //   else
+      //   patchState(store, {selected: []});
 
-      },
+      // },
 
-      moveToTrash() {
+
+      selectAll: () =>     
+          patchState(store, {selected: store.hasSelections()? []: store.tracks()}),
+
+
+
+      moveToTrash(): void {
         store.selected().forEach(t=> this.delete(t));
       },
 
@@ -160,7 +154,8 @@ export const TracksStore = signalStore(
           trackService.publish(track.id).pipe(
             map(response => response.body ),
             tap((res) => {
-              this.load(0);
+             //patchState(store, { searchCriteria: {...store.searchCriteria(), update: true }});
+              this.updateCriteria({...store.searchCriteria(), update:true});
               // patchState(store, { tracks: [...store.tracks().filter(t=> t.id !== track.id), res! ]});
             }),
             catchError(error => of({ error: error.message })),
@@ -175,7 +170,8 @@ export const TracksStore = signalStore(
           trackService.unpublish(track.id).pipe(
             map(response => response.body ),
             tap((res) => {
-              this.load(0);
+             // patchState(store, { searchCriteria: {...store.searchCriteria(), update: !store.searchCriteria.update }});
+             this.updateCriteria({...store.searchCriteria(), update:true});
               // patchState(store, { tracks: [...store.tracks().filter(t=> t.id !== track.id), res! ]});
             }),
             catchError(error => of({ error: error.message })),
@@ -193,7 +189,7 @@ export const TracksStore = signalStore(
             trackService.moveToTrash(track.id).pipe(
               map(response => response.body ?? null),
               tap(() => {
-                this.load(0);
+                patchState(store, { searchCriteria: {...store.searchCriteria(), update: !store.searchCriteria.update }});
                 // patchState(store, { tracks: [...store.tracks().filter(t=> t.id !== track.id)]});
               }),
               catchError(error => of({ error: error.message })),

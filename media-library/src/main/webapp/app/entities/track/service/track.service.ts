@@ -10,7 +10,7 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { SearchWithPagination } from 'app/core/request/request.model';
-import { Track, NewTrack } from 'app/store/models';
+import { Track, NewTrack, UpdatetableTrack } from 'app/store/models';
 
 export type PartialUpdateTrack = Partial<Track> & Pick<Track, 'id'>;
 
@@ -44,7 +44,7 @@ export class TrackService {
     return this.http.post<RestTrack>(this.resourceUrl, copy, { observe: 'response' }).pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  update(track: Track): Observable<EntityResponseType> {
+  update(track: UpdatetableTrack): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(track);
     return this.http
       .put<RestTrack>(`${this.resourceUrl}/${this.getTrackIdentifier(track)}`, copy, { observe: 'response' })

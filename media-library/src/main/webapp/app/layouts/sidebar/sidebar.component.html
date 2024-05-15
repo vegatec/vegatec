@@ -20,7 +20,7 @@
     <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
     <a href="#" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-users fa-fw"></i>  Libray</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"
-    [routerLink]="['/library', { outlets: { albums: ['albums'], tracks: ['tracks'] } }]"
+    [routerLink]="['/library', { outlets: { albums: ['albums', {filter: albumStore.searchCriteria().filter!}], tracks: ['tracks', {filter: trackStore.searchCriteria().filter! }] } }]"
 
      ><i class="fa fa-eye fa-fw"></i>  All
     </a>
@@ -29,8 +29,8 @@
                 '/library',
                 {
                   outlets: {
-                    albums: ['albums', { subfolder: 'outbox' }],
-                    tracks: ['tracks', { subfolder: 'outbox' }]
+                    albums: ['albums', { subfolder: 'outbox', filter: albumStore.searchCriteria().filter! }],
+                    tracks: ['tracks', { subfolder: 'outbox', filter: trackStore.searchCriteria().filter! }]
                   }
                 }
               ]"
@@ -40,8 +40,8 @@
                 '/library',
                 {
                   outlets: {
-                    albums: ['albums', { subfolder: 'inbox' }],
-                    tracks: ['tracks', { subfolder: 'inbox' }]
+                    albums: ['albums', { subfolder: 'inbox', filter: albumStore.searchCriteria().filter!  }],
+                    tracks: ['tracks', { subfolder: 'inbox', filter: trackStore.searchCriteria().filter!  }]
                   }
                 }
               ]"
@@ -49,7 +49,7 @@
     <a href="#" class="w3-bar-item w3-button w3-padding"
     [routerLink]="[
     '/library',
-    { outlets: { albums: ['albums', { addedSince: 1 * 7 }], tracks: ['tracks', { addedSince: 1 * 7 }] } }
+    { outlets: { albums: ['albums', { addedSince: 1 * 7, filter: albumStore.searchCriteria().filter!}], tracks: ['tracks', { addedSince: 1 * 7 , filter: trackStore.searchCriteria().filter! }] } }
   ]"
     ><i class="fa fa-trash fa-fw"></i>  Recently Added</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"
@@ -57,8 +57,8 @@
     '/library',
     {
       outlets: {
-        albums: ['albums', { subfolder: 'trash' }],
-        tracks: ['tracks', { subfolder: 'trash' }]
+        albums: ['albums', { subfolder: 'trash', filter: albumStore.searchCriteria().filter! }],
+        tracks: ['tracks', { subfolder: 'trash', filter: trackStore.searchCriteria().filter!  }]
       }
     }
   ]"

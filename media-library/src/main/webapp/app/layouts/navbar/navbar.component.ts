@@ -13,7 +13,7 @@ import { LoginService } from 'app/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
 import ActiveMenuDirective from './active-menu.directive';
-import NavbarItem from './navbar-item.model';
+
 import { NavbarService } from './navbar.service';
 import { TracksStore } from 'app/store/tracks-store';
 
@@ -30,7 +30,7 @@ export default class NavbarComponent {
 
   constructor(public navbarService: NavbarService) {}
 
-  search(event: KeyboardEvent): void {
-    this.navbarService.search(event);
-  }
+  // search(event: KeyboardEvent): void {
+  //   this.navbarService.search(event);
+  // }
 }

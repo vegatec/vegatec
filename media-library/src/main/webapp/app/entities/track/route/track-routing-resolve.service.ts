@@ -4,16 +4,16 @@ import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { of, EMPTY, Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
-import { ITrack } from '../track.model';
 import { TrackService } from '../service/track.service';
+import { Track } from 'app/store/models';
 
-export const trackResolve = (route: ActivatedRouteSnapshot): Observable<null | ITrack> => {
+export const trackResolve = (route: ActivatedRouteSnapshot): Observable<null | Track> => {
   const id = route.params['id'];
   if (id) {
     return inject(TrackService)
       .find(id)
       .pipe(
-        mergeMap((track: HttpResponse<ITrack>) => {
+        mergeMap((track: HttpResponse<Track>) => {
           if (track.body) {
             return of(track.body);
           } else {
