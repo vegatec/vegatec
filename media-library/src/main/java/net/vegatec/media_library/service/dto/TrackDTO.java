@@ -24,13 +24,13 @@ public class TrackDTO implements Serializable {
     private String name;
 
     @NotNull
-    private ArtistDTO artist;
+    private String artist;
 
     @NotNull
     private AlbumDTO album;
 
     @NotNull
-    private GenreDTO genre;
+    private String genre;
 
     private Integer trackNumber;
 
@@ -95,11 +95,11 @@ public class TrackDTO implements Serializable {
     //        this.sortName = sortName;
     //    }
 
-    public ArtistDTO getArtist() {
+    public String getArtist() {
         return artist;
     }
 
-    public void setArtist(ArtistDTO artist) {
+    public void setArtist(String artist) {
         this.artist = artist;
     }
 
@@ -151,11 +151,11 @@ public class TrackDTO implements Serializable {
     //        this.albumReleasedYear = albumReleasedYear;
     //    }
 
-    public GenreDTO getGenre() {
+    public String getGenre() {
         return genre;
     }
 
-    public void setGenre(GenreDTO genre) {
+    public void setGenre(String genre) {
         this.genre = genre;
     }
 

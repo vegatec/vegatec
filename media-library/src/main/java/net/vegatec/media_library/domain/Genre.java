@@ -32,7 +32,7 @@ public class Genre implements Serializable {
 
     private String sortName;
 
-    protected void setName(String name) {
+    public void setName(String name) {
         this.name = name;
         this.sortName = (name == null)? null:
             Normalizer.normalize(name.toLowerCase().replaceAll("\\s+",""), Normalizer.Form.NFKD)

@@ -45,9 +45,9 @@ export class TrackService {
   }
 
   update(track: UpdatetableTrack): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(track);
+   // const copy = this.convertDateFromClient(track);
     return this.http
-      .put<RestTrack>(`${this.resourceUrl}/${this.getTrackIdentifier(track)}`, copy, { observe: 'response' })
+      .put<RestTrack>(`${this.resourceUrl}/${this.getTrackIdentifier(track)}`, track, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 

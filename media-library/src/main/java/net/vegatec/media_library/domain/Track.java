@@ -97,7 +97,7 @@ public class Track implements Serializable {
         return album;
     }
 
-    protected void setAlbum(Album album) {
+    public void setAlbum(Album album) {
         this.album = album;
         updatePath();
     }

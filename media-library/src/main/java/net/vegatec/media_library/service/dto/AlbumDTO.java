@@ -16,7 +16,7 @@ public class AlbumDTO implements Serializable {
 
     private String artworkPath;
 
-    private ArtistDTO artist;
+    private String artist;
 
     public String getName() {
         return name;
@@ -42,11 +42,11 @@ public class AlbumDTO implements Serializable {
         this.releasedYear = releasedYear;
     }
 
-    public ArtistDTO getArtist() {
+    public String getArtist() {
         return artist;
     }
 
-    public void setArtist(ArtistDTO artist) {
+    public void setArtist(String artist) {
         this.artist = artist;
     }
 
@@ -68,7 +68,7 @@ public class AlbumDTO implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, artist.getName(), releasedYear);
+        return Objects.hash(name, artist, releasedYear);
     }
 
     @Override

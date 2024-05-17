@@ -81,7 +81,7 @@ public class Album implements Serializable {
     public Artist getArtist() {
         return artist;
     }
-    protected void setArtist(Artist artist) {
+    public void setArtist(Artist artist) {
         this.artist = artist;
     }
 

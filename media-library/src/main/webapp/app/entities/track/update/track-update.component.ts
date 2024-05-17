@@ -107,10 +107,10 @@ export class TrackUpdateComponent implements OnInit {
 
       // 
       this.artists.set([... new Set(this.tracks().map(t=> t.artist!))]);
-      this.albums.set([... new Set(this.tracks().map(t=> t.album!))]);
-      this.albumArtists.set([... new Set(this.tracks().map(t=> t.albumArtist!))]);
       this.genres.set([... new Set(this.tracks().map(t=> t.genre!))]);
-      this.years.set([... new Set(this.tracks().map(t=> t.releasedYear!))]);
+      this.albums.set([... new Set(this.tracks().map(t=> t.album?.name!))]);
+      this.albumArtists.set([... new Set(this.tracks().map(t=> t.album?.artist!))]);
+      this.years.set([... new Set(this.tracks().map(t=> t.album?.releasedYear!))]);
 
       // record original values
       this.originalArtist.set(this.artist());     
@@ -161,19 +161,20 @@ export class TrackUpdateComponent implements OnInit {
         if   (this.artistHasChanged())
           s.artist = this.artist();
 
-        if  ( this.albumHasChanged())
-          s.album = this.album();
-
-        if (this.albumArtistHasChanged()) 
-          s.albumArtist = this.albumArtist();
-        
         if (this.genreHasChanged())
           s.genre = this.genre();
 
-        if (this.yearHasChanged())
-          s.releasedYear = this.year();
 
-        this.trackService.update(s);
+        if  ( s.album &&  this.albumHasChanged())
+          s.album.name = this.album();
+
+        if (s.album   && this.albumArtistHasChanged()) 
+          s.album.artist = this.albumArtist();
+        
+        if (s.album && this.yearHasChanged())
+          s.album.releasedYear = this.year();
+
+        this.subscribeToSaveResponse(this.trackService.partialUpdate(s));
 
       });
 

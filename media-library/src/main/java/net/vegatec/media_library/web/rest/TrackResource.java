@@ -109,7 +109,7 @@ public class TrackResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        TrackDTO result = trackService.update(trackDTO);
+        TrackDTO result = trackDTO;// trackService.update(trackDTO);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, trackDTO.getId().toString()))
@@ -244,32 +244,32 @@ public class TrackResource {
     }
 
 
-    @PutMapping("/{id}/publish")
-    public ResponseEntity<TrackDTO> publishTrack(
-        @PathVariable("id") Long id
-
-    ) {
-        log.debug("REST request publish track with id {}", id);
-
-            TrackDTO result= mediator.send(new PublishTrack(id));
-
-            return ResponseEntity.ok(result);
-
-    }
-
-
-    @PutMapping("/{id}/unpublish")
-    public ResponseEntity<TrackDTO> unpublishTrack(
-        @PathVariable("id") Long id
-
-    ) {
-        log.debug("REST request unpublish track with id {}", id);
-
-        TrackDTO result= mediator.send(new UnpublishTrack(id));
-
-        return ResponseEntity.ok(result);
-
-    }
+//    @PutMapping("/{id}/publish")
+//    public ResponseEntity<TrackDTO> publishTrack(
+//        @PathVariable("id") Long id
+//
+//    ) {
+//        log.debug("REST request publish track with id {}", id);
+//
+//            TrackDTO result= mediator.send(new PublishTrack(id));
+//
+//            return ResponseEntity.ok(result);
+//
+//    }
+//
+//
+//    @PutMapping("/{id}/unpublish")
+//    public ResponseEntity<TrackDTO> unpublishTrack(
+//        @PathVariable("id") Long id
+//
+//    ) {
+//        log.debug("REST request unpublish track with id {}", id);
+//
+//        TrackDTO result= mediator.send(new UnpublishTrack(id));
+//
+//        return ResponseEntity.ok(result);
+//
+//    }
 
     @PutMapping("/{id}/move")
     public ResponseEntity<TrackDTO> moveTrack(
