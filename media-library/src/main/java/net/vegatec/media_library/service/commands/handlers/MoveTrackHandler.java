@@ -1,24 +1,15 @@
 package net.vegatec.media_library.service.commands.handlers;
 
 import net.vegatec.media_library.config.ApplicationProperties;
-import net.vegatec.media_library.domain.Track;
 import net.vegatec.media_library.mediator.CommandHandler;
-import net.vegatec.media_library.repository.TrackRepository;
 import net.vegatec.media_library.service.TrackService;
 import net.vegatec.media_library.service.commands.MoveTrack;
-import net.vegatec.media_library.service.commands.UnpublishTrack;
 import net.vegatec.media_library.service.dto.TrackDTO;
-import net.vegatec.media_library.service.mapper.TrackMapper;
-import org.apache.commons.io.FileExistsException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Component
 public class MoveTrackHandler extends BaseTrackHandler implements CommandHandler<MoveTrack, TrackDTO> {

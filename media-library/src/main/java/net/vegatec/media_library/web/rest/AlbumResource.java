@@ -2,8 +2,14 @@ package net.vegatec.media_library.web.rest;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -23,8 +29,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
@@ -63,5 +71,64 @@ public class AlbumResource {
         Page<Album> page = albumRepository.findAll(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = "/files/upload")
+    public void upload(@RequestParam("file") MultipartFile downloadedFile, @RequestParam("folder") String folder) throws Exception {
+
+        byte[] bytes;
+
+
+        File downloadsFolder = new File(applicationProperties.getMediaFolder(), MediaFile.DOWNLOADED);
+
+        if (!downloadsFolder.exists())
+            downloadsFolder.mkdir();
+
+
+        if (!downloadedFile.isEmpty()) {
+            bytes = downloadedFile.getBytes();
+
+            //store file in storage
+            File tempFile = new File(String.format("%s/%s", downloadsFolder, downloadedFile.getOriginalFilename()));
+            writeBytesToFileNio(bytes, tempFile.getAbsolutePath());
+
+            if (!folder.isEmpty() && folder.startsWith("media")) {
+
+                String artworkFileName = String.format("%s/%s/artwork.jpg", applicationProperties.getMediaFolder(), folder.replaceAll("media/", ""));
+                File artworkFile = new File(artworkFileName);
+                log.info("artwork file ->>>>>>>>>>>> {}", artworkFile.getAbsoluteFile());
+
+                ImageUtils.scale(tempFile.toString(), 256, 256, artworkFile.getAbsolutePath());
+
+                String thumbnailFileName = String.format("%s/%s/thumbnail.jpg", applicationProperties.getMediaFolder(),  folder.replaceAll("media/", ""));
+                File thumbnailFile = new File(thumbnailFileName);
+                ImageUtils.scale(tempFile.toString(), 128, 128, thumbnailFile.getAbsolutePath());
+
+                tempFile.delete();
+
+
+            } else {
+
+                //MediaFile mediaFile = mediaFileBuilder.build(tempFile);
+//                normalizeMediaFilesHandler.execute(null);
+                importMediaFilesHandler.execute(null);
+            }
+
+        }
+
+        System.out.println(String.format("receive %s ", downloadedFile.getOriginalFilename()));
+    }
+
+
+    private static void writeBytesToFileNio(byte[] bFile, String fileDest) {
+
+        try {
+            Path path = Paths.get(fileDest);
+            Files.write(path, bFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
