@@ -1,17 +1,17 @@
 import dayjs from 'dayjs';
 
-export interface Artist {
+export interface IArtist {
   name?: string;
 }
 
-export interface Genre {
+export interface IGenre {
   name?: string;
 }
 
-export interface Album {
+export interface IAlbum {
   id?: number;
   name?: string;
-  artist?: Artist;
+  artist?: IArtist;
   releasedYear?: number | null;
   artworkPath?: string;
 }
@@ -23,16 +23,15 @@ export interface TrackType {
   vipCreditsNeeded?: number | null;
 }
 
-export interface Track {
+export interface ITrack {
   id: number;
   filePath?: string | null;
   artworkPath?: string;
   subfolder?: string | null;
   name?: string | null;
-  sortName?: string | null;
-  artist?: Artist | null;
-  album?: Album | null;
-  genre?: Genre | null;
+  artist?: IArtist | null;
+  album?: IAlbum | null;
+  genre?: IGenre | null;
   trackNumber?: number | null;
   playbackLength?: number | null;
   bitRate?: number | null;
@@ -43,7 +42,14 @@ export interface Track {
 }
 
 
-export type NewTrack = Omit<Track, 'id'> & { id: null };
+export type NewTrack = Omit<ITrack, 'id'> & { id: null };
+
+// export class Track implements ITrack {
+
+
+// }
+
+
 
 export interface PagingOptions {
   itemsPerPage: number;
@@ -74,43 +80,4 @@ export class UpdatetableAlbum {
   }
 }
 
-export class UpdatetableTrack implements Track {
-
-  // id: number;
-  // name?: string;
-  // artist?: string;
-  // genre?: string;
-
-  // album?: UpdatetableAlbum;
-  // album?: string ;
-  // albumArtist?: string;
-  // releasedYear?: number;
-
-  constructor( id: number, name?: string, artist?: string, album?: string, albumArtist?: string, genre?: string, releasedYear?: number) {
-    this.id= id;
-    this.name= name;
-    // this.artist= artist;
-    // this.genre= genre;
-    // this.album= new UpdatetableAlbum(album, albumArtist, releasedYear)
-
-    // this.album= album;
-    // this.albumArtist= albumArtist;
-    // this.releasedYear= releasedYear;
-  }
-  id: number;
-  filePath?: string | null | undefined;
-  artworkPath?: string | undefined;
-  subfolder?: string | null | undefined;
-  name?: string | null | undefined;
-  sortName?: string | null | undefined;
-  artist?: Artist | null | undefined;
-  album?: Album | null | undefined;
-  genre?: Genre | null | undefined;
-  trackNumber?: number | null | undefined;
-  playbackLength?: number | null | undefined;
-  bitRate?: number | null | undefined;
-  createdOn?: dayjs.Dayjs | null | undefined;
-  tagVersion1?: boolean | null | undefined;
-  tagVersion2?: boolean | null | undefined;
-  type?: Pick<TrackType, 'id' | 'name'> | null | undefined;
-}
+export type NewMusicRequest = Omit<ITrack, 'id'> & { id: null };

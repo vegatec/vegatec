@@ -11,7 +11,7 @@ import { ITrackType } from 'app/entities/track-type/track-type.model';
 import { TrackTypeService } from 'app/entities/track-type/service/track-type.service';
 import { TrackService } from '../service/track.service';
 // import { TrackFormService, TrackFormGroup } from './track-form.service';
-import { Track, UpdatetableTrack } from 'app/store/models';
+import { ITrack } from 'app/store/models';
 import { TrackFormService } from './track-form.service';
 import { TracksStore } from 'app/store/tracks-store';
 import { SuggestionService } from '../service/suggestion.service';
@@ -31,7 +31,7 @@ export class TrackUpdateComponent implements OnInit {
   
   isSaving = false;
 
-  tracks= signal<UpdatetableTrack[]>([]);
+  tracks= signal<ITrack[]>([]);
 
   artists= signal<string[]>([]);
   
@@ -89,16 +89,23 @@ export class TrackUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ track }) => {
 
-      const mapped= this.trackStore.selected().map(t=>  {
-        return new UpdatetableTrack (
-          t.id, 
-          toCamelCase(t.name!),
-          toCamelCase(t.artist?.name!),
-          toCamelCase(t.album?.name!),          
-          toCamelCase(t.album?.artist?.name!),
-          toCamelCase(t.genre?.name!),
-          t.album?.releasedYear!
-        );      
+      let  mapped: ITrack[] = this.trackStore.selected().map(t =>  {
+        
+        let track: ITrack= {
+          id: t.id,
+          name: toCamelCase(t.name!),
+          artist: { name:  toCamelCase(t.artist?.name!)},         
+           genre: { name:  toCamelCase(t.genre?.name!)},
+           album: {
+              name: toCamelCase(t.album?.name!),          
+              artist: { name:   toCamelCase(t.album?.artist?.name!) },
+              releasedYear:  t.album?.releasedYear!,
+
+           }
+
+        };
+        return track;
+           
 
       });
 
@@ -106,10 +113,10 @@ export class TrackUpdateComponent implements OnInit {
       this.tracks.set( mapped );
 
       // 
-      this.artists.set([... new Set(this.tracks().map(t=> t.artist!))]);
-      this.genres.set([... new Set(this.tracks().map(t=> t.genre!))]);
+      this.artists.set([... new Set(this.tracks().map(t=> t.artist?.name!))]);
+      this.genres.set([... new Set(this.tracks().map(t=> t.genre?.name!))]);
       this.albums.set([... new Set(this.tracks().map(t=> t.album?.name!))]);
-      this.albumArtists.set([... new Set(this.tracks().map(t=> t.album?.artist!))]);
+      this.albumArtists.set([... new Set(this.tracks().map(t=> t.album?.artist?.name!))]);
       this.years.set([... new Set(this.tracks().map(t=> t.album?.releasedYear!))]);
 
       // record original values
@@ -158,18 +165,18 @@ export class TrackUpdateComponent implements OnInit {
 
 
        this.tracks().forEach(s=>  { 
-        if   (this.artistHasChanged())
-          s.artist = this.artist();
+        if   ( s.artist && this.artistHasChanged())
+          s.artist.name = this.artist();
 
-        if (this.genreHasChanged())
-          s.genre = this.genre();
+        if (s.genre && this.genreHasChanged())
+          s.genre.name = this.genre();
 
 
         if  ( s.album &&  this.albumHasChanged())
           s.album.name = this.album();
 
-        if (s.album   && this.albumArtistHasChanged()) 
-          s.album.artist = this.albumArtist();
+        if (s.album && s.album.artist  && this.albumArtistHasChanged()) 
+          s.album.artist.name = this.albumArtist();
         
         if (s.album && this.yearHasChanged())
           s.album.releasedYear = this.year();
@@ -183,7 +190,7 @@ export class TrackUpdateComponent implements OnInit {
 
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<Track>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<ITrack>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: () => this.onSaveSuccess(),
       error: () => this.onSaveError(),
@@ -202,7 +209,7 @@ export class TrackUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  protected updateForm(track: Track): void {
+  protected updateForm(track: ITrack): void {
     // this.track = track;
     // this.trackFormService.resetForm(this.editForm, track);
 

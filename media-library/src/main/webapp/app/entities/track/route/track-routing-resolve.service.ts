@@ -5,15 +5,15 @@ import { of, EMPTY, Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 import { TrackService } from '../service/track.service';
-import { Track } from 'app/store/models';
+import { ITrack } from 'app/store/models';
 
-export const trackResolve = (route: ActivatedRouteSnapshot): Observable<null | Track> => {
+export const trackResolve = (route: ActivatedRouteSnapshot): Observable<null | ITrack> => {
   const id = route.params['id'];
   if (id) {
     return inject(TrackService)
       .find(id)
       .pipe(
-        mergeMap((track: HttpResponse<Track>) => {
+        mergeMap((track: HttpResponse<ITrack>) => {
           if (track.body) {
             return of(track.body);
           } else {

@@ -11,4 +11,6 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface ArtistMapper extends EntityMapper<ArtistDTO, Artist> {
     ArtistDTO toDto(Artist s);
+
+    Artist toEntity(ArtistDTO dto);
 }

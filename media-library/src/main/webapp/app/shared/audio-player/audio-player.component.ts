@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { AudioPlayerService } from './audio-player.service';
 import { StreamState } from './stream-state';
 import { NgbProgressbar } from '@ng-bootstrap/ng-bootstrap';
-import { Track } from 'app/store/models';
+import { ITrack } from 'app/store/models';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
 })
 export class AudioPlayerComponent implements OnInit {
   state?: StreamState;
-  track?: Track;
+  track?: ITrack;
   constructor(
     public audioPlayerService: AudioPlayerService,
 

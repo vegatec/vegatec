@@ -16,7 +16,7 @@ public class AlbumDTO implements Serializable {
 
     private String artworkPath;
 
-    private String artist;
+    private ArtistDTO artist;
 
     public String getName() {
         return name;
@@ -42,11 +42,11 @@ public class AlbumDTO implements Serializable {
         this.releasedYear = releasedYear;
     }
 
-    public String getArtist() {
+    public ArtistDTO getArtist() {
         return artist;
     }
 
-    public void setArtist(String artist) {
+    public void setArtist(ArtistDTO artist) {
         this.artist = artist;
     }
 

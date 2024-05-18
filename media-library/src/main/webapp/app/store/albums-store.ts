@@ -1,5 +1,5 @@
 import { patchState, signalStore, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
-import { Album, Artist, PagingOptions, SearchCriteria } from './models';
+import { IAlbum, IArtist, PagingOptions, SearchCriteria } from './models';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { AlbumService } from 'app/entities/album/service/album.service';
 import { computed, inject } from '@angular/core';
@@ -25,9 +25,9 @@ import {
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 
 export interface AlbumsState {
-  albums: Album[];
+  albums: IAlbum[];
   total: number;
-  selected: Album | string | null;
+  selected: IAlbum | string | null;
 
   pagingOptions: PagingOptions;
   searchCriteria: SearchCriteria;
@@ -122,13 +122,13 @@ export const AlbumsStore = signalStore(
           ),
         ),
       ),
-      select: (item: Album | string | null) => {
+      select: (item: IAlbum | string | null) => {
         const result = store.selected() === item ? null : item;
 
         patchState(store, { selected: result });
       },
 
-      isSelected: (item: Album | string) => store.selected() === item,
+      isSelected: (item: IAlbum | string) => store.selected() === item,
     };
   }),
   withHooks({

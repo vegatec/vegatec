@@ -11,15 +11,15 @@ import org.mapstruct.Mappings;
 /**
  * Mapper for the entity {@link Track} and its DTO {@link TrackDTO}.
  */
-//@Mapper(componentModel = "spring", uses = { TrackTypeMapper.class, ArtistMapper.class, AlbumMapper.class, GenreMapper.class })
-@Mapper(componentModel = "spring", uses = { TrackTypeMapper.class,  AlbumMapper.class })
+@Mapper(componentModel = "spring", uses = { TrackTypeMapper.class, ArtistMapper.class, AlbumMapper.class, GenreMapper.class })
+//@Mapper(componentModel = "spring", uses = { TrackTypeMapper.class,  AlbumMapper.class })
 public interface TrackMapper extends EntityMapper<TrackDTO, Track> {
     @Mappings(
         {
             @Mapping(target = "type", source = "type", qualifiedByName = "name"),
-            @Mapping(target = "artist", source = "artist.name"),
+            @Mapping(target = "artist", source = "artist"),
             @Mapping(target = "album", source = "album"),
-            @Mapping(target = "genre", source = "genre.name"),
+            @Mapping(target = "genre", source = "genre"),
         }
     )
     TrackDTO toDto(Track s);
@@ -28,9 +28,9 @@ public interface TrackMapper extends EntityMapper<TrackDTO, Track> {
     @Mappings(
         {
       //      @Mapping(target = "type", source = "type", qualifiedByName = "name"),
-            @Mapping(target = "artist.name", source = "artist"),
+            @Mapping(target = "artist", source = "artist"),
             @Mapping(target = "album", source = "album"),
-            @Mapping(target = "genre.name", source = "genre"),
+            @Mapping(target = "genre", source = "genre"),
         }
     )
     Track toEntity(TrackDTO dto);
@@ -40,7 +40,7 @@ public interface TrackMapper extends EntityMapper<TrackDTO, Track> {
 //        return new Artist(name);
 //    }
 
-    default Genre mapGenre(String genre) {
-        return new Genre(genre);
-    }
+//    default Genre mapGenre(String genre) {
+//        return new Genre(genre);
+//    }
 }

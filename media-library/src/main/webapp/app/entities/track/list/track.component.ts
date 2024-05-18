@@ -19,7 +19,7 @@ import { TrackDeleteDialogComponent } from '../delete/track-delete-dialog.compon
 import { AutoHeightDirective } from 'app/shared/util/auto-height.directive';
 import { AudioPlayerService } from 'app/shared/audio-player/audio-player.service';
 import { TracksStore } from 'app/store/tracks-store';
-import { Track } from 'app/store/models';
+import { ITrack } from 'app/store/models';
 import { NavbarService } from 'app/layouts/navbar/navbar.service';
 
 @Component({
@@ -66,13 +66,13 @@ export class TrackComponent implements OnInit {
   }
 
   //trackId = (_index: number, item: Track): number => this.trackService.getTrackIdentifier(item);
-  trackId = (_index: number, item: Track): number => item.id!;
+  trackId = (_index: number, item: ITrack): number => item.id!;
 
   // moveToTrash(): void {
   //   this.store.selected().forEach(t=> this.store.delete(t));
   // }
 
-  delete(track: Track): void {
+  delete(track: ITrack): void {
     const modalRef = this.modalService.open(TrackDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.track = track;
     // unsubscribe not needed because closed completes on modal close
@@ -88,7 +88,7 @@ export class TrackComponent implements OnInit {
       });
   }
 
-  play(track: Track): void {
+  play(track: ITrack): void {
     //const url= `media/${track.filePath!}`
     this.audioPlayerService.play(track).subscribe(e => {});
   }

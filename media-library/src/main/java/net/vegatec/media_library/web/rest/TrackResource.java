@@ -15,6 +15,7 @@ import net.vegatec.media_library.service.TrackService;
 import net.vegatec.media_library.service.commands.MoveTrack;
 import net.vegatec.media_library.service.commands.PublishTrack;
 import net.vegatec.media_library.service.commands.UnpublishTrack;
+import net.vegatec.media_library.service.commands.UpdateTrack;
 import net.vegatec.media_library.service.criteria.LibrarySearchCriteria;
 import net.vegatec.media_library.service.criteria.TrackCriteria;
 import net.vegatec.media_library.service.dto.TrackDTO;
@@ -144,10 +145,14 @@ public class TrackResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<TrackDTO> result = trackService.partialUpdate(trackDTO);
+        TrackDTO result= mediator.send(new UpdateTrack(trackDTO));
+
+//        Optional<TrackDTO> result = trackService.partialUpdate(trackDTO);
+
+
 
         return ResponseUtil.wrapOrNotFound(
-            result,
+             Optional.of(result),
             HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, trackDTO.getId().toString())
         );
     }

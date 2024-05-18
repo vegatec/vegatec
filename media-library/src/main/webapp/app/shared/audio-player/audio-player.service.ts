@@ -4,7 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 
 //import * as moment from 'moment';
 import { StreamState } from './stream-state';
-import { Track } from 'app/store/models';
+import { ITrack } from 'app/store/models';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +14,7 @@ export class AudioPlayerService {
 
   private stop$: Subject<boolean>;
 
-  private currentTrack$: Subject<Track>;
+  private currentTrack$: Subject<ITrack>;
 
   private audioObj: HTMLAudioElement;
 
@@ -56,11 +56,11 @@ export class AudioPlayerService {
     return this.stateChange.asObservable();
   }
 
-  getCurrentTrack(): Observable<Track> {
+  getCurrentTrack(): Observable<ITrack> {
     return this.currentTrack$.asObservable();
   }
 
-  play(track: Track): Observable<any> {
+  play(track: ITrack): Observable<any> {
     this.stop();
     this.currentTrack$.next(track);
     const url = `media/${track.filePath!}`;

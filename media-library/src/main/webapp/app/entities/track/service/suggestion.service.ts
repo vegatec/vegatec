@@ -10,7 +10,7 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { SearchWithPagination } from 'app/core/request/request.model';
-import { Track, NewTrack } from 'app/store/models';
+import { ITrack } from 'app/store/models';
 
 
 

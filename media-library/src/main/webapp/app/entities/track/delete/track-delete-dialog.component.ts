@@ -6,7 +6,7 @@ import SharedModule from 'app/shared/shared.module';
 import { ITEM_DELETED_EVENT } from 'app/config/navigation.constants';
 
 import { TrackService } from '../service/track.service';
-import { Track } from 'app/store/models';
+import { ITrack } from 'app/store/models';
 
 @Component({
   standalone: true,
@@ -14,7 +14,7 @@ import { Track } from 'app/store/models';
   imports: [SharedModule, FormsModule],
 })
 export class TrackDeleteDialogComponent {
-  track?: Track;
+  track?: ITrack;
 
   constructor(
     protected trackService: TrackService,

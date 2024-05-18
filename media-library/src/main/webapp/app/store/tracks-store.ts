@@ -1,5 +1,5 @@
 import { patchState, signalStore, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
-import { PagingOptions, SearchCriteria, Track } from './models';
+import { PagingOptions, SearchCriteria, ITrack } from './models';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { TrackService } from 'app/entities/track/service/track.service';
 import { computed, inject } from '@angular/core';
@@ -26,9 +26,9 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 
 
 export interface TracksState {
-  tracks: Track[];
+  tracks: ITrack[];
   total: number;
-  selected: Track[];
+  selected: ITrack[];
 
 
   pagingOptions: PagingOptions;
@@ -120,7 +120,7 @@ export const TracksStore = signalStore(
       ),
 
 
-      select: (item: Track) => {
+      select: (item: ITrack) => {
         const isSelected = store.selected().findIndex( i => i === item) !== -1
 
         if (isSelected)
@@ -129,7 +129,7 @@ export const TracksStore = signalStore(
          patchState(store, { selected: [...store.selected(), item] });
       },
 
-      isSelected: (item: Track | string) => store.selected().findIndex( i => i === item) !== -1,
+      isSelected: (item: ITrack | string) => store.selected().findIndex( i => i === item) !== -1,
 
       // selectAll() {
       //   if (!store.hasSelections())
@@ -183,7 +183,7 @@ export const TracksStore = signalStore(
 
 
  
-      delete(track: Track) {
+      delete(track: ITrack) {
        
     
             trackService.moveToTrash(track.id).pipe(
