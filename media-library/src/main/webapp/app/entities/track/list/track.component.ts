@@ -21,6 +21,9 @@ import { AudioPlayerService } from 'app/shared/audio-player/audio-player.service
 import { TracksStore } from 'app/store/tracks-store';
 import { ITrack } from 'app/store/models';
 import { NavbarService } from 'app/layouts/navbar/navbar.service';
+import { IFile } from 'app/shared/file-upload/file';
+import { FileUploadService } from 'app/shared/file-upload/file-upload.service';
+import { ImageUploaderDirective } from 'app/shared/file-upload/file-uploader';
 
 @Component({
   standalone: true,
@@ -37,6 +40,7 @@ import { NavbarService } from 'app/layouts/navbar/navbar.service';
     FormatMediumDatePipe,
     InfiniteScrollModule,
     AutoHeightDirective,
+    ImageUploaderDirective
   ],
 })
 export class TrackComponent implements OnInit {
@@ -49,6 +53,7 @@ export class TrackComponent implements OnInit {
     protected modalService: NgbModal,
     protected audioPlayerService: AudioPlayerService,
     protected navbarService: NavbarService,
+    protected fileUploadService: FileUploadService
   ) {}
 
   ngOnInit(): void {
@@ -91,5 +96,13 @@ export class TrackComponent implements OnInit {
   play(track: ITrack): void {
     //const url= `media/${track.filePath!}`
     this.audioPlayerService.play(track).subscribe(e => {});
+  }
+
+
+
+  onDropFiles(files: IFile[]): void {
+
+    files.forEach(f=> this.fileUploadService.uploadMediaFile(f.file).subscribe() );
+    
   }
 }

@@ -6,10 +6,10 @@ import {
     EventEmitter
   } from "@angular/core";
   import { DomSanitizer } from "@angular/platform-browser";
-  import { ImageFile } from "./image-file";
+  import { IFile } from "./file";
   
   enum DropColor {
-    Default = "#C6E4F1",
+    Default = "#C6E4F100",
     Over = "#ACADAD"
   }
   
@@ -18,7 +18,7 @@ import {
     standalone: true
   })
   export class ImageUploaderDirective {
-    @Output() dropFiles: EventEmitter<ImageFile[]> = new EventEmitter();
+    @Output() dropFiles: EventEmitter<IFile[]> = new EventEmitter();
       @HostBinding("style.background") backgroundColor = DropColor.Default;
   
     constructor(private sanitizer: DomSanitizer) {}
@@ -41,7 +41,7 @@ import {
        this.backgroundColor = DropColor.Default;
   
       let fileList = event.dataTransfer?.files;
-      let files: ImageFile[] = [];
+      let files: IFile[] = [];
   
       for (let i = 0; i < fileList!.length; i++) {
         const file = fileList![i];

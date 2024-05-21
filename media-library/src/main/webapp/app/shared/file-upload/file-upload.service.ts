@@ -14,13 +14,27 @@ export class FileUploadService {
   ) {}
 
 
-upload(file: File, folder: string): Observable<boolean> {
+uploadImageFile(file: File, folder: string): Observable<boolean> {
 
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
     formData.append('folder', folder);
     return this.http
-      .post(`${this.resourceUrl}/upload`, formData)
+      .post(`${this.resourceUrl}/image`, formData)
+      .pipe(
+       map(() => { return true; }),
+      );
+
+  }
+
+
+uploadMediaFile(file: File): Observable<boolean> {
+
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name);
+
+    return this.http
+      .post(`${this.resourceUrl}/media`, formData)
       .pipe(
        map(() => { return true; }),
       );

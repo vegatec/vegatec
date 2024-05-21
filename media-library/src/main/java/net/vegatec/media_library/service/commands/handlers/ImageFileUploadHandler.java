@@ -1,11 +1,9 @@
 package net.vegatec.media_library.service.commands.handlers;
 
 import net.vegatec.media_library.config.ApplicationProperties;
-import net.vegatec.media_library.domain.Album;
-import net.vegatec.media_library.domain.Track;
 import net.vegatec.media_library.mediator.CommandHandler;
 import net.vegatec.media_library.repository.AlbumRepository;
-import net.vegatec.media_library.service.commands.UploadFile;
+import net.vegatec.media_library.service.commands.UploadImageFile;
 import net.vegatec.media_library.util.ImageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,21 +13,21 @@ import java.io.File;
 import java.io.IOException;
 
 @Component
-public class UploadFileHandler implements CommandHandler<UploadFile, Void> {
+public class ImageFileUploadHandler implements CommandHandler<UploadImageFile, Void> {
     private static final Logger LOG = LoggerFactory.getLogger(UpdateTrackHandler.class);
 
     private final ApplicationProperties applicationProperties;
 
     private final AlbumRepository albumRepository;
 
-    public UploadFileHandler(ApplicationProperties applicationProperties, AlbumRepository albumRepository) {
+    public ImageFileUploadHandler(ApplicationProperties applicationProperties, AlbumRepository albumRepository) {
 
        this.applicationProperties = applicationProperties;
         this.albumRepository = albumRepository;
     }
 
     @Override
-    public Void handle(UploadFile command) {
+    public Void handle(UploadImageFile command) {
         LOG.info("Uploading  file {}", command.getFile());
 
 

@@ -34,8 +34,8 @@ import dayjs from 'dayjs';
 import { AutoHeightDirective } from 'app/shared/util/auto-height.directive';
 import { AlbumsStore } from 'app/store/albums-store';
 import { NavbarService } from 'app/layouts/navbar/navbar.service';
-import { ImageFile } from 'app/shared/file-upload/image-file';
-import { ImageUploaderDirective } from 'app/shared/file-upload/image-uploader';
+import { IFile } from 'app/shared/file-upload/file';
+import { ImageUploaderDirective } from 'app/shared/file-upload/file-uploader';
 import { FileUploadService } from 'app/shared/file-upload/file-upload.service';
 
 @Component({
@@ -61,7 +61,7 @@ export class AlbumComponent implements OnInit {
   store = inject(AlbumsStore);
 
 
-  files: ImageFile[] = [];
+  files: IFile[] = [];
   album?: IAlbum;
   // public files: NgxFileDropEntry[] = [];
 
@@ -92,12 +92,12 @@ export class AlbumComponent implements OnInit {
   }
 
 
-  onDropFiles(files: ImageFile[], album: IAlbum): void {
+  onDropFiles(files: IFile[], album: IAlbum): void {
     this.files = [...this.files, ...files];
     this.album= album;
     console.log(album.name);
     console.log(files[0] );
-    this.fileUploadService.upload(files[0].file, album?.artworkPath!).subscribe();
+    this.fileUploadService.uploadImageFile(files[0].file, album?.artworkPath!).subscribe();
   }
 
 

@@ -186,7 +186,10 @@ spring:
             client-id: web_app
             client-secret: web_app
             scope: openid, profile, email, offline_access # last one for refresh tokens
-
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
 server:
   servlet:
     session:
