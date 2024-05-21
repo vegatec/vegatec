@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * Spring Data SQL repository for the Track entity.
  */
@@ -46,4 +48,6 @@ public interface AlbumRepository extends JpaRepository<Track, Long>, JpaSpecific
         "and  ( :#{#searchCriteria.filter} is null or track.album.name like %:#{#searchCriteria.filter}% or track.album.artist.name like %:#{#searchCriteria.filter}% or track.artist.name like %:#{#searchCriteria.filter}% or track.name like %:#{#searchCriteria.filter}%   )  ) "
     )
     Page<Album> findAll(@Param("searchCriteria") LibrarySearchCriteria searchCriteria, Pageable pageRequest);
+
+
 }

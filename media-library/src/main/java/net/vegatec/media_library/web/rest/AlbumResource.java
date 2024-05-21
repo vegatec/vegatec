@@ -14,10 +14,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import net.vegatec.media_library.domain.Album;
+import net.vegatec.media_library.mediator.SpringMediator;
 import net.vegatec.media_library.repository.AlbumRepository;
 import net.vegatec.media_library.repository.TrackRepository;
 import net.vegatec.media_library.service.TrackQueryService;
 import net.vegatec.media_library.service.TrackService;
+import net.vegatec.media_library.service.commands.UploadFile;
 import net.vegatec.media_library.service.criteria.LibrarySearchCriteria;
 import net.vegatec.media_library.service.criteria.TrackCriteria;
 import net.vegatec.media_library.service.dto.TrackDTO;
@@ -54,8 +56,11 @@ public class AlbumResource {
 
     private final AlbumRepository albumRepository;
 
-    public AlbumResource(AlbumRepository albumRepository) {
+    private final SpringMediator mediator;
+
+    public AlbumResource(AlbumRepository albumRepository, SpringMediator mediator) {
         this.albumRepository = albumRepository;
+        this.mediator = mediator;
     }
 
     /**
@@ -73,62 +78,7 @@ public class AlbumResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = "/files/upload")
-    public void upload(@RequestParam("file") MultipartFile downloadedFile, @RequestParam("folder") String folder) throws Exception {
-
-        byte[] bytes;
 
 
-        File downloadsFolder = new File(applicationProperties.getMediaFolder(), MediaFile.DOWNLOADED);
 
-        if (!downloadsFolder.exists())
-            downloadsFolder.mkdir();
-
-
-        if (!downloadedFile.isEmpty()) {
-            bytes = downloadedFile.getBytes();
-
-            //store file in storage
-            File tempFile = new File(String.format("%s/%s", downloadsFolder, downloadedFile.getOriginalFilename()));
-            writeBytesToFileNio(bytes, tempFile.getAbsolutePath());
-
-            if (!folder.isEmpty() && folder.startsWith("media")) {
-
-                String artworkFileName = String.format("%s/%s/artwork.jpg", applicationProperties.getMediaFolder(), folder.replaceAll("media/", ""));
-                File artworkFile = new File(artworkFileName);
-                log.info("artwork file ->>>>>>>>>>>> {}", artworkFile.getAbsoluteFile());
-
-                ImageUtils.scale(tempFile.toString(), 256, 256, artworkFile.getAbsolutePath());
-
-                String thumbnailFileName = String.format("%s/%s/thumbnail.jpg", applicationProperties.getMediaFolder(),  folder.replaceAll("media/", ""));
-                File thumbnailFile = new File(thumbnailFileName);
-                ImageUtils.scale(tempFile.toString(), 128, 128, thumbnailFile.getAbsolutePath());
-
-                tempFile.delete();
-
-
-            } else {
-
-                //MediaFile mediaFile = mediaFileBuilder.build(tempFile);
-//                normalizeMediaFilesHandler.execute(null);
-                importMediaFilesHandler.execute(null);
-            }
-
-        }
-
-        System.out.println(String.format("receive %s ", downloadedFile.getOriginalFilename()));
-    }
-
-
-    private static void writeBytesToFileNio(byte[] bFile, String fileDest) {
-
-        try {
-            Path path = Paths.get(fileDest);
-            Files.write(path, bFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 }

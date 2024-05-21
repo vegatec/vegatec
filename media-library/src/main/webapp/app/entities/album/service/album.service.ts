@@ -37,6 +37,9 @@ export class AlbumService {
     protected applicationConfigService: ApplicationConfigService,
   ) {}
 
+
+
+
   find(id: number): Observable<EntityResponseType> {
     return this.http.get<RestAlbum>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }

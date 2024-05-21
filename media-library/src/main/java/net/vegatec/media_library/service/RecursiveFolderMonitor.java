@@ -44,9 +44,6 @@ public class RecursiveFolderMonitor {
 
     private final ApplicationProperties applicationProperties;
 
-
-   // private PropertyChangeSupport support= new PropertyChangeSupport(this);
-
     private final ApplicationEventPublisher applicationEventPublisher;
 
     public RecursiveFolderMonitor(ApplicationProperties applicationProperties, ApplicationEventPublisher applicationEventPublisher) {

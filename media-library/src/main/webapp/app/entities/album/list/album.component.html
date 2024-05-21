@@ -4,6 +4,8 @@
     <span jhiTranslate="mediaLibraryApp.album.home.title">Albums</span>
   </h5>
 
+  <!-- {{files | json}} -- {{album?.name}} -->
+
   <jhi-alert-error></jhi-alert-error>
 
   <jhi-alert></jhi-alert>
@@ -83,13 +85,18 @@
                     (click)="store.select(album)"
                     class="d-flex p-1"
                     style="border: none"
+                 
                   >
+
                     <img
-                      src="/{{ album?.artworkPath }}/thumbnail.jpg"
-                      alt=""
-                      onerror="this.src='/content/images/music-cd.png';"
-                      class="nonDraggableImage artwork-thumbnail"
-                    />
+                    src="/{{ album?.artworkPath }}/thumbnail.jpg"
+                    alt=""
+                    onerror="this.src='/content/images/music-cd.png';"
+                    class="nonDraggableImage artwork-thumbnail"
+                    jhiImageUpload (dropFiles)="onDropFiles($event, album)"
+
+                  
+                  />
                     <div class="w-100 p-2">
                       <h6 class="card-title">{{ album.name }}</h6>
 

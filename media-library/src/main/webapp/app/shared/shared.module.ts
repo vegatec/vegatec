@@ -11,6 +11,7 @@ import { AlertErrorComponent } from './alert/alert-error.component';
 import { AudioPlayerComponent } from './audio-player/audio-player.component';
 import { AutoHeightDirective } from './util/auto-height.directive';
 
+
 /**
  * Application wide Module
  */
@@ -27,6 +28,7 @@ import { AutoHeightDirective } from './util/auto-height.directive';
     TranslateDirective,
     AutoHeightDirective,
     AudioPlayerComponent,
+    
   ],
 })
 export default class SharedModule {}

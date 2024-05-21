@@ -34,6 +34,9 @@ import dayjs from 'dayjs';
 import { AutoHeightDirective } from 'app/shared/util/auto-height.directive';
 import { AlbumsStore } from 'app/store/albums-store';
 import { NavbarService } from 'app/layouts/navbar/navbar.service';
+import { ImageFile } from 'app/shared/file-upload/image-file';
+import { ImageUploaderDirective } from 'app/shared/file-upload/image-uploader';
+import { FileUploadService } from 'app/shared/file-upload/file-upload.service';
 
 @Component({
   standalone: true,
@@ -50,10 +53,17 @@ import { NavbarService } from 'app/layouts/navbar/navbar.service';
     FormatMediumDatePipe,
     InfiniteScrollModule,
     AutoHeightDirective,
+    ImageUploaderDirective,
+
   ],
 })
 export class AlbumComponent implements OnInit {
   store = inject(AlbumsStore);
+
+
+  files: ImageFile[] = [];
+  album?: IAlbum;
+  // public files: NgxFileDropEntry[] = [];
 
   links: { [key: string]: number } = {
     last: 0,
@@ -65,6 +75,7 @@ export class AlbumComponent implements OnInit {
 
     protected modalService: NgbModal,
     protected navbarService: NavbarService,
+    protected fileUploadService: FileUploadService
   ) {}
 
   //albumId = (_index: number, item: IAlbum): number => this.albumService.getAlbumIdentifier(item);
@@ -79,4 +90,15 @@ export class AlbumComponent implements OnInit {
 
     this.navbarService.searhTerm$.subscribe(term => this.store.updateCriteria({ ...this.store.searchCriteria(), filter: term }));
   }
+
+
+  onDropFiles(files: ImageFile[], album: IAlbum): void {
+    this.files = [...this.files, ...files];
+    this.album= album;
+    console.log(album.name);
+    console.log(files[0] );
+    this.fileUploadService.upload(files[0].file, album?.artworkPath!).subscribe();
+  }
+
+
 }
