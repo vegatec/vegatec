@@ -1,11 +1,7 @@
 package net.vegatec.media_library.service.commands.handlers;
 
 import net.vegatec.media_library.config.ApplicationProperties;
-import net.vegatec.media_library.domain.Track;
-import net.vegatec.media_library.mediator.CommandHandler;
-import net.vegatec.media_library.service.TrackService;
-import net.vegatec.media_library.service.commands.UpdateTrack;
-import net.vegatec.media_library.service.dto.TrackDTO;
+import net.vegatec.media_library.repository.TrackRepository;
 import org.apache.commons.io.FileExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,20 +10,19 @@ import org.springframework.stereotype.Component;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.*;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 @Component
 public abstract  class BaseTrackHandler  {
     protected static final Logger LOG = LoggerFactory.getLogger(BaseTrackHandler.class);
-    protected final TrackService trackService;
-
-    protected final ApplicationProperties applicationProperties;
-
-    public BaseTrackHandler(TrackService service, ApplicationProperties applicationProperties) {
-        this.trackService = service;
-        this.applicationProperties = applicationProperties;
-    }
+//    protected final TrackRepository trackRepository;
+//
+//    protected final ApplicationProperties applicationProperties;
+//
+//    public BaseTrackHandler(TrackRepository repository, ApplicationProperties applicationProperties) {
+//        this.trackRepository = repository;
+//        this.applicationProperties = applicationProperties;
+//    }
 
 
 

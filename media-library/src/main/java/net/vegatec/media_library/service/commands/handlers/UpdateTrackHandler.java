@@ -8,72 +8,63 @@ import net.vegatec.media_library.service.TrackService;
 import net.vegatec.media_library.service.commands.UpdateTrack;
 import net.vegatec.media_library.service.dto.TrackDTO;
 import net.vegatec.media_library.service.mapper.TrackMapper;
-import org.apache.commons.io.FileExistsException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Component
 public class UpdateTrackHandler extends BaseTrackHandler implements CommandHandler<UpdateTrack, TrackDTO> {
 //    private static final Logger LOG = LoggerFactory.getLogger(UpdateTrackHandler.class);
-//    private final TrackService trackService;
-//
-//    private final ApplicationProperties applicationProperties;
+    private final TrackRepository repository;
+    private final TrackMapper trackMapper;
+    private final ApplicationProperties applicationProperties;
+    private final TrackRepository trackRepository;
 
-    public UpdateTrackHandler(TrackService service, ApplicationProperties applicationProperties) {
-        super(service, applicationProperties);
-//        this.trackService = service;
-//
-//        this.applicationProperties = applicationProperties;
+    public UpdateTrackHandler(TrackRepository repository, TrackMapper trackMapper, ApplicationProperties applicationProperties, TrackRepository trackRepository) {
+
+        this.repository = repository;
+        this.trackMapper = trackMapper;
+
+        this.applicationProperties = applicationProperties;
+        this.trackRepository = trackRepository;
     }
 
     @Override
     public TrackDTO handle(UpdateTrack command) {
         LOG.info("Unpublish track with id {}", command.getTrack().getId());
 
-
-
-            Optional<TrackDTO> _dto = trackService.findOne(command.getTrack().getId());
-            if (_dto.isPresent()) {
-                TrackDTO dto = _dto.get();
-
-                dto.setGenre(command.getTrack().getGenre());
-                dto.setArtist(command.getTrack().getArtist());
-                dto.setAlbum(command.getTrack().getAlbum());
-
-                String originalSubfolder = dto.getSubfolder();
-
-                Path sourcePath= Path.of(applicationProperties.getMediaFolder(), dto.getFilePath());
-
-                dto.setSubfolder(Track.INBOX);
-
+            Optional<Track> optionalTrack = repository.findById(command.getTrack().getId());
+            if (optionalTrack.isPresent()) {
 
                 try {
 
+                    Track track = optionalTrack.get();
 
-                    Optional<TrackDTO> result = trackService.partialUpdate(dto);
+                    track.genre(command.getTrack().getGenre().getName());
+                    track.artist(command.getTrack().getArtist().getName());
+                    track.album(command.getTrack().getAlbum().getName(), command.getTrack().getAlbum().getArtist().getName(), command.getTrack().getAlbum().getReleasedYear());
 
-                    Path destinationPath= Path.of(applicationProperties.getMediaFolder(), result.get().getFilePath());
+                    String originalSubfolder = track.getSubfolder();
+
+                    Path sourcePath= Path.of(applicationProperties.getMediaFolder(), track.getFilePath());
+
+                    track.setSubfolder(Track.INBOX);
+
+                    Track result = repository.save(track);
+
+                    Path destinationPath= Path.of(applicationProperties.getMediaFolder(), result.getFilePath());
 
                     moveFile(sourcePath, destinationPath);
 
-                    return  result.get();
+                    return  trackMapper.toDto(result);
 
                 } catch (IOException e) {
-                    dto.setSubfolder(originalSubfolder);
+                   LOG.error("Something wrong happened while updating track {}", command.getTrack().getName());
                 }
 
             }
-
-
-
-
 
         return null;
     }

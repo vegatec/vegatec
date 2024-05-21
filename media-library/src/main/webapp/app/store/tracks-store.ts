@@ -155,8 +155,12 @@ export const TracksStore = signalStore(
             map(response => response.body ),
             tap((res) => {
              //patchState(store, { searchCriteria: {...store.searchCriteria(), update: true }});
-              this.updateCriteria({...store.searchCriteria(), update:true});
-              // patchState(store, { tracks: [...store.tracks().filter(t=> t.id !== track.id), res! ]});
+           //   this.updateCriteria({...store.searchCriteria(), update:true});
+            const index= store.tracks().findIndex(s=> s.id === track.id);
+            const updatedTracks= store.tracks()[index]= res!;
+
+            patchState(store, { tracks: [...store.tracks()] });
+
             }),
             catchError(error => of({ error: error.message })),
           ).subscribe()
@@ -171,8 +175,14 @@ export const TracksStore = signalStore(
             map(response => response.body ),
             tap((res) => {
              // patchState(store, { searchCriteria: {...store.searchCriteria(), update: !store.searchCriteria.update }});
-             this.updateCriteria({...store.searchCriteria(), update:true});
+          //   this.updateCriteria({...store.searchCriteria(), update:true});
               // patchState(store, { tracks: [...store.tracks().filter(t=> t.id !== track.id), res! ]});
+
+              const index= store.tracks().findIndex(s=> s.id === track.id);
+              const updatedTracks= store.tracks()[index]= res!;
+  
+              patchState(store, { tracks: [...store.tracks()] });
+              
             }),
             catchError(error => of({ error: error.message })),
           ).subscribe()
