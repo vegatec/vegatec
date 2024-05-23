@@ -90,7 +90,7 @@ export const TracksStore = signalStore(
           distinctUntilChanged(),
           switchMap(() =>
             trackService.query({ ...store.pagingOptions(), ...store.searchCriteria() }).pipe(
-        //      map(response => response.body ?? []),
+  
               tap(response => {
                 patchState(store, { tracks: [...store.tracks(), ...response.body!], total:  +response.headers.get('x-total-count')! });
               }),
@@ -109,7 +109,7 @@ export const TracksStore = signalStore(
           distinctUntilChanged(),
           switchMap(() =>
             trackService.query({ ...store.pagingOptions(), ...store.searchCriteria() }).pipe(
-            //  map(response => response.body ?? []),
+
               tap(response => {
                 patchState(store, { tracks: [...store.tracks(), ...response.body!], total:  +response.headers.get('x-total-count')! });
               }),
@@ -131,31 +131,20 @@ export const TracksStore = signalStore(
 
       isSelected: (item: ITrack | string) => store.selected().findIndex( i => i === item) !== -1,
 
-      // selectAll() {
-      //   if (!store.hasSelections())
-      //     patchState(store, {selected: store.tracks()});
-      //   else
-      //   patchState(store, {selected: []});
-
-      // },
-
 
       selectAll: () =>     
           patchState(store, {selected: store.hasSelections()? []: store.tracks()}),
 
 
 
-      moveToTrash(): void {
-        store.selected().forEach(t=> this.delete(t));
-      },
+
 
       publish() {
         store.selected().forEach(track=> {
           trackService.publish(track.id).pipe(
             map(response => response.body ),
             tap((res) => {
-             //patchState(store, { searchCriteria: {...store.searchCriteria(), update: true }});
-           //   this.updateCriteria({...store.searchCriteria(), update:true});
+
             const index= store.tracks().findIndex(s=> s.id === track.id);
             const updatedTracks= store.tracks()[index]= res!;
 
@@ -169,20 +158,17 @@ export const TracksStore = signalStore(
       },
 
 
-      unpublish() {
+      moveToTrash() {
         store.selected().forEach(track=> {
-          trackService.unpublish(track.id).pipe(
+          trackService.moveToTrash(track.id).pipe(
             map(response => response.body ),
             tap((res) => {
-             // patchState(store, { searchCriteria: {...store.searchCriteria(), update: !store.searchCriteria.update }});
-          //   this.updateCriteria({...store.searchCriteria(), update:true});
-              // patchState(store, { tracks: [...store.tracks().filter(t=> t.id !== track.id), res! ]});
 
               const index= store.tracks().findIndex(s=> s.id === track.id);
               const updatedTracks= store.tracks()[index]= res!;
   
               patchState(store, { tracks: [...store.tracks()] });
-              
+
             }),
             catchError(error => of({ error: error.message })),
           ).subscribe()
@@ -193,19 +179,15 @@ export const TracksStore = signalStore(
 
 
  
-      delete(track: ITrack) {
-       
-    
-            trackService.moveToTrash(track.id).pipe(
-              map(response => response.body ?? null),
-              tap(() => {
-                patchState(store, { searchCriteria: {...store.searchCriteria(), update: !store.searchCriteria.update }});
-                // patchState(store, { tracks: [...store.tracks().filter(t=> t.id !== track.id)]});
-              }),
-              catchError(error => of({ error: error.message })),
-            ).subscribe();
-
-       
+      emptyTrash() {
+        trackService.emptyTrash().pipe(
+          map(response => response.body ?? null),
+          tap(() => {
+            patchState(store, { searchCriteria: {...store.searchCriteria(), update: !store.searchCriteria.update }});
+            // patchState(store, { tracks: [...store.tracks().filter(t=> t.id !== track.id)]});
+          }),
+          catchError(error => of({ error: error.message })),
+        ).subscribe();       
       }
 
    
@@ -219,8 +201,4 @@ export const TracksStore = signalStore(
   }),
 );
 
-
-// function isSelected(item: string | Track | null) {
-//   throw new Error('Function not implemented.');
-// }
 

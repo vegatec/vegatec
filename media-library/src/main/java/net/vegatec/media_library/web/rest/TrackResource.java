@@ -12,6 +12,7 @@ import net.vegatec.media_library.mediator.SpringMediator;
 import net.vegatec.media_library.repository.TrackRepository;
 import net.vegatec.media_library.service.TrackQueryService;
 import net.vegatec.media_library.service.TrackService;
+import net.vegatec.media_library.service.commands.EmptyTrash;
 import net.vegatec.media_library.service.commands.MoveTrack;
 import net.vegatec.media_library.service.commands.UpdateTrack;
 import net.vegatec.media_library.service.criteria.LibrarySearchCriteria;
@@ -274,9 +275,9 @@ public class TrackResource {
 //
 //    }
 
-    @PutMapping("/{id}/move")
+    @PutMapping("/{id}/{folder}")
     public ResponseEntity<TrackDTO> moveTrack(
-        @PathVariable("id") Long id, @RequestBody String subfolder
+        @PathVariable("id") Long id, @PathVariable("folder") String subfolder
 
     ) {
         log.debug("REST request unpublish track with id {}", id);
@@ -284,6 +285,20 @@ public class TrackResource {
         TrackDTO result= mediator.send(new MoveTrack(id, subfolder));
 
         return ResponseEntity.ok(result);
+
+    }
+
+
+    @DeleteMapping("")
+    public ResponseEntity emptyTrash(
+
+
+    ) {
+        log.debug("REST request to empty trash");
+
+        mediator.send(new EmptyTrash());
+
+        return ResponseEntity.ok("OK");
 
     }
 }

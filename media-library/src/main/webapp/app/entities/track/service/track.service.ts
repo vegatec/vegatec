@@ -60,21 +60,21 @@ export class TrackService {
 
   publish(id: number) : Observable<EntityResponseType> {
     return this.http
-      .put<RestTrack>(`${this.resourceUrl}/${id}/move`,  'outbox', { observe: 'response' })
+      .put<RestTrack>(`${this.resourceUrl}/${id}/outbox`,  {} , { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
     
   }
 
-  unpublish(id: number) : Observable<EntityResponseType> {
+  moveToTrash(id: number) : Observable<EntityResponseType> {
     return this.http
-      .put<RestTrack>(`${this.resourceUrl}/${id}/move`,   'inbox' , { observe: 'response' })
+      .put<RestTrack>(`${this.resourceUrl}/${id}/trash`, {},  { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
     
   }
 
-  moveToTrash(id: number) : Observable<EntityResponseType>  {
+  emptyTrash() : Observable<EntityResponseType>  {
     return this.http
-      .put<RestTrack>(`${this.resourceUrl}/${id}/move`,  'trash' , { observe: 'response' })
+      .delete<RestTrack>(`${this.resourceUrl}` , { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 

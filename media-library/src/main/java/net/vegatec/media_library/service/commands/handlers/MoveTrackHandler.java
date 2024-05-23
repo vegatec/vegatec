@@ -38,13 +38,14 @@ public class MoveTrackHandler extends BaseTrackHandler implements CommandHandler
 
                 Track track = optionalTrack.get();
 
-                String originalSubfolder = track.getSubfolder();
+//                String originalSubfolder = track.getSubfolder();
 
                 Path sourcePath= Path.of(applicationProperties.getMediaFolder(), track.getFilePath());
 
                 track.subfolder(command.getSubfoler());
 
-                track= repository.save(track);;
+                track= repository.save(track);
+
                 Path destinationPath= Path.of(applicationProperties.getMediaFolder(), track.getFilePath());
                 moveFile(sourcePath, destinationPath);
                 return  trackMapper.toDto(track);
