@@ -40,17 +40,18 @@ public class UpdateTrackHandler extends BaseTrackHandler implements CommandHandl
 
                 try {
 
+
                     Track track = optionalTrack.get();
+
+                    Path sourcePath= Path.of(applicationProperties.getMediaFolder(), track.getFilePath());
 
                     track.genre(command.getTrack().getGenre().getName());
                     track.artist(command.getTrack().getArtist().getName());
                     track.album(command.getTrack().getAlbum().getName(), command.getTrack().getAlbum().getArtist().getName(), command.getTrack().getAlbum().getReleasedYear());
 
-                    String originalSubfolder = track.getSubfolder();
+                //    String originalSubfolder = track.getSubfolder();
 
-                    Path sourcePath= Path.of(applicationProperties.getMediaFolder(), track.getFilePath());
-
-                    track.setSubfolder(Track.INBOX);
+                    track.subfolder(Track.INBOX);
 
                     Track result = repository.save(track);
 

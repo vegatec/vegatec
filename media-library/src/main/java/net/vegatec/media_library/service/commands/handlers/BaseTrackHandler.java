@@ -90,6 +90,31 @@ public abstract  class BaseTrackHandler  {
     }
 
 
+
+    /**
+     * Delete media file  relative to application media folder
+     *
+     * @param sourcePath  media file to be deleted
+
+     * @throws IOException
+     */
+
+    protected void deleteFile(Path sourcePath) throws IOException {
+        if (LOG.isDebugEnabled())
+            LOG.debug("Removing file {}  ", sourcePath);
+
+
+        // check if source file exist
+        if (!sourcePath.toFile().exists())
+            throw new FileNotFoundException(String.format("source file {} doesn't exist", sourcePath.toString()));
+
+        // 5. remove file
+        Files.delete(sourcePath);
+
+
+        removeEmptyFolders(sourcePath.getParent());
+
+    }
     protected void moveArtworks(Path sourceAlbumPath, Path destAlbumPath) {
         // if is a check in file also check out the artwork
 
