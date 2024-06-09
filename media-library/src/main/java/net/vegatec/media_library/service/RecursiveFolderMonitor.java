@@ -1,5 +1,6 @@
 package net.vegatec.media_library.service;
 
+import lombok.NoArgsConstructor;
 import net.vegatec.media_library.config.ApplicationProperties;
 import net.vegatec.media_library.domain.Track;
 import net.vegatec.media_library.service.events.FileCreated;
@@ -27,6 +28,7 @@ import static java.nio.file.StandardWatchEventKinds.*;
  * https://docs.oracle.com/javase/tutorial/essential/io/examples/WatchDir.java
  */
 @Service
+
 public class RecursiveFolderMonitor {
 
     private static final Logger LOG = LoggerFactory.getLogger(RecursiveFolderMonitor.class);
@@ -47,6 +49,7 @@ public class RecursiveFolderMonitor {
     private final ApplicationEventPublisher applicationEventPublisher;
 
     public RecursiveFolderMonitor(ApplicationProperties applicationProperties, ApplicationEventPublisher applicationEventPublisher) {
+        LOG.info("Recursive folder monitor started");
         this.applicationProperties = applicationProperties;
         rootFolder = Paths.get(applicationProperties.getMediaFolder(), Track.DOWNLOADED);
         this.applicationEventPublisher = applicationEventPublisher;

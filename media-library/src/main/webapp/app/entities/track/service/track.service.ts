@@ -72,10 +72,19 @@ export class TrackService {
     
   }
 
+
+
   emptyTrash() : Observable<EntityResponseType>  {
     return this.http
       .delete<RestTrack>(`${this.resourceUrl}` , { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
+  }
+
+  embedImages() : Observable<EntityResponseType> {
+    return this.http
+      .put<RestTrack>(`${this.resourceUrl}/embed-images`, {},  { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
+    
   }
 
 
