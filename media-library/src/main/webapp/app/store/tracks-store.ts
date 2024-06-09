@@ -176,6 +176,17 @@ export const TracksStore = signalStore(
 
       },
 
+      embedImages() {
+       
+        trackService.embedImages().pipe(
+          map(response => response.body ),
+
+          catchError(error => of({ error: error.message })),
+        ).subscribe();
+        
+
+      },
+
 
 
  

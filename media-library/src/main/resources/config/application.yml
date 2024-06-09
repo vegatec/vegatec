@@ -250,4 +250,5 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+application:
+  mediaFolder: /mnt/data/volumes/media-library/media/

@@ -36,7 +36,7 @@ public class MoveTrackHandler extends BaseTrackHandler implements CommandHandler
 
             try {
 
-                Track track = optionalTrack.get();
+                Track track = optionalTrack.orElseThrow();
 
 //                String originalSubfolder = track.getSubfolder();
 

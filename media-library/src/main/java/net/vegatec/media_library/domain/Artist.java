@@ -1,9 +1,5 @@
 package net.vegatec.media_library.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-//import javax.persistence.Access;
-//import javax.persistence.AccessType;
-//import javax.persistence.Column;
-//import javax.persistence.Embeddable;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.text.Normalizer;
@@ -43,8 +39,8 @@ public class Artist implements Serializable {
 
     @Override
     public int hashCode() {
-//        return Objects.hash(name);
-        return name.hashCode();
+        return Objects.hash(name);
+ //       return name.hashCode();
     }
 
     @Override

@@ -20,14 +20,13 @@
       </button>
       <ul class="dropdown-menu ">
         <li  class="dropdown-item "><a  (click)="trackStore.selectAll()" >Select All</a></li>
-        <!-- <li><a class="dropdown-item" (click)="edit()" [hidden]="trackStore.hasSelections()">Edit</a></li> -->
-        <li class="dropdown-item " *ngIf="trackStore.hasSelections()"
-        routerLink="/track"
-        ><i><fa-icon icon="edit" class="pe-2"></fa-icon></i><a >Edit</a></li>
+      
+        <li class="dropdown-item " *ngIf="trackStore.hasSelections()"  routerLink="/track"><i><fa-icon icon="edit" class="pe-2"></fa-icon></i><a >Edit</a></li>
         <li class="dropdown-item " *ngIf="trackStore.hasSelections()"><i><fa-icon icon="arrow-up" class="pe-2"></fa-icon></i><a  (click)="trackStore.publish()">Publish</a></li>       
-         <li class="dropdown-item " *ngIf="trackStore.hasSelections()"><i><fa-icon icon="arrow-down" class="pe-2"></fa-icon></i><a (click)="trackStore.moveToTrash()">Move to trash</a></li>
-         <li class="dropdown-item " ><i><fa-icon icon="trash" class="pe-2"></fa-icon></i><a  (click)="trackStore.emptyTrash()">Empty trash</a></li>
+        <li class="dropdown-item " *ngIf="trackStore.hasSelections()"><i><fa-icon icon="arrow-down" class="pe-2"></fa-icon></i><a (click)="trackStore.moveToTrash()">Move to trash</a></li>
+        <li class="dropdown-item " ><i><fa-icon icon="trash" class="pe-2"></fa-icon></i><a  (click)="trackStore.emptyTrash()">Empty trash</a></li>
         <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" (click)="trackStore.embedImages()">Embed Images</a></li>
         <li class="dropdown-item "><a  href="#">{{trackStore.hasSelections()}}</a></li>
       </ul>
     </div>

@@ -41,7 +41,7 @@ public class UpdateTrackHandler extends BaseTrackHandler implements CommandHandl
                 try {
 
 
-                    Track track = optionalTrack.get();
+                    Track track = optionalTrack.orElseThrow();
 
                     Path sourcePath= Path.of(applicationProperties.getMediaFolder(), track.getFilePath());
 

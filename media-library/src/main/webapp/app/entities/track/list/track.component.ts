@@ -102,7 +102,8 @@ export class TrackComponent implements OnInit {
 
   onDropFiles(files: IFile[]): void {
 
-    files.forEach(f=> this.fileUploadService.uploadMediaFile(f.file).subscribe() );
+  
+    files.forEach(f=>  this.fileUploadService.uploadMediaFile(f.file).subscribe() );
     
   }
 }

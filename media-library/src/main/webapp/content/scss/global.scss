@@ -825,6 +825,11 @@ li.borderless {
   padding-top: 19px;
   }
 
+  .checkbox input {
+    width: 20px;
+    height: 20px;
+    border: 1px solid rgb(68, 67, 67) ;
+  }
 
   .no-result {
     display: flex;
