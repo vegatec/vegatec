@@ -3,12 +3,14 @@ package net.vegatec.crm.service;
 import java.util.Optional;
 import net.vegatec.crm.domain.Business;
 import net.vegatec.crm.domain.Product;
+import net.vegatec.crm.domain.ProductAdded;
 import net.vegatec.crm.repository.BusinessRepository;
 import net.vegatec.crm.repository.ProductRepository;
 import net.vegatec.crm.service.dto.BusinessDTO;
 import net.vegatec.crm.service.mapper.BusinessMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,10 +31,13 @@ public class BusinessService {
 
     private final ProductRepository productRepository;
 
-    public BusinessService(BusinessRepository businessRepository, BusinessMapper businessMapper, ProductRepository productRepository) {
+    private final ApplicationEventPublisher publisher;
+
+    public BusinessService(BusinessRepository businessRepository, BusinessMapper businessMapper, ProductRepository productRepository, ApplicationEventPublisher publisher) {
         this.businessRepository = businessRepository;
         this.businessMapper = businessMapper;
         this.productRepository = productRepository;
+        this.publisher = publisher;
     }
 
     /**
@@ -120,10 +125,11 @@ public class BusinessService {
             .findById(id)
             .map(existingBusiness -> {
                 productRepository.findById(productId).map(product -> existingBusiness.addProduct(product));
-
+                publisher.publishEvent(new ProductAdded());
                 return existingBusiness;
             })
             .map(businessRepository::save)
+
             .map(businessMapper::toDto);
     }
 
