@@ -188,6 +188,18 @@ export const TracksStore = signalStore(
       },
 
 
+      refreshPaths() {
+       
+        trackService.refreshPaths().pipe(
+          map(response => response.body ),
+
+          catchError(error => of({ error: error.message })),
+        ).subscribe();
+        
+
+      },
+
+
 
  
       emptyTrash() {

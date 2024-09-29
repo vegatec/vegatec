@@ -12,10 +12,7 @@ import net.vegatec.media_library.mediator.SpringMediator;
 import net.vegatec.media_library.repository.TrackRepository;
 import net.vegatec.media_library.service.TrackQueryService;
 import net.vegatec.media_library.service.TrackService;
-import net.vegatec.media_library.service.commands.EmbedImages;
-import net.vegatec.media_library.service.commands.EmptyTrash;
-import net.vegatec.media_library.service.commands.MoveTrack;
-import net.vegatec.media_library.service.commands.UpdateTrack;
+import net.vegatec.media_library.service.commands.*;
 import net.vegatec.media_library.service.criteria.LibrarySearchCriteria;
 import net.vegatec.media_library.service.criteria.TrackCriteria;
 import net.vegatec.media_library.service.dto.TrackDTO;
@@ -308,9 +305,21 @@ public class TrackResource {
     public ResponseEntity embedImages(
 
     ) {
-        log.debug("REST request to empty trash");
+        log.debug("REST request embed images into media files");
 
         mediator.send(new EmbedImages());
+
+        return ResponseEntity.ok().build();
+
+    }
+
+    @PutMapping("/paths")
+    public ResponseEntity refreshPaths(
+
+    ) {
+        log.debug("REST request to refresh file paths for all tracks");
+
+        mediator.send(new RefreshPaths());
 
         return ResponseEntity.ok().build();
 

@@ -4,18 +4,10 @@ import com.mpatric.mp3agic.*;
 import net.vegatec.media_library.config.ApplicationProperties;
 import net.vegatec.media_library.domain.Track;
 import net.vegatec.media_library.mediator.CommandHandler;
-import net.vegatec.media_library.repository.TrackRepository;
 import net.vegatec.media_library.service.commands.EmbedImages;
-import net.vegatec.media_library.service.commands.EmptyTrash;
-import net.vegatec.media_library.service.criteria.TrackCriteria;
-import net.vegatec.media_library.service.mapper.TrackMapper;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Component;
-import tech.jhipster.service.filter.StringFilter;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.file.*;
@@ -40,8 +32,8 @@ public class EmbedImagesHandler extends BaseTrackHandler implements CommandHandl
 
 
         try {
-           travese(Track.INBOX);
-          //  travese(Track.OUTBOX);
+            traverse(Track.INBOX);
+            traverse(Track.OUTBOX);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -50,7 +42,7 @@ public class EmbedImagesHandler extends BaseTrackHandler implements CommandHandl
         return null;
     }
 
-    private void travese(String folder) throws IOException {
+    private void traverse(String folder) throws IOException {
 
         Path path =  Path.of(applicationProperties.getMediaFolder(), folder);
 
@@ -124,6 +116,8 @@ public class EmbedImagesHandler extends BaseTrackHandler implements CommandHandl
                 e.printStackTrace();
             } catch (NotSupportedException e) {
                 e.printStackTrace();
+            }  catch (Exception e) {
+                LOG.error(String.format("audio file: {}, image file {}, error: {}", audioFile.getAbsolutePath(), selectedImageFile.getName(), e.getMessage()));
             }
 
         }
@@ -131,30 +125,7 @@ public class EmbedImagesHandler extends BaseTrackHandler implements CommandHandl
     }
 
 
-    private void transferTimestamps(File audioFile, File tempFile) {
-        try {
-            String command = String.format("/usr/bin/touch \"%s\" -r \"%s\"", tempFile.getAbsolutePath(), audioFile.getAbsolutePath());
-            ProcessBuilder builder = new ProcessBuilder();
-            builder.command("sh", "-c", command);
 
-            builder.directory(new File(System.getProperty("user.home")));
-            Process process = builder.start();
-
-            int exitCode = 0;
-
-            exitCode = process.waitFor();
-            if (exitCode == 0) {
-                //String fileName= audioFile.getAbsolutePath();
-                audioFile.delete();
-                //  tempFile.renameTo(new File(fileName));
-            }
-            assert exitCode == 0;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 
 

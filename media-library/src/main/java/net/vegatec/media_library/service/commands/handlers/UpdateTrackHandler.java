@@ -51,11 +51,13 @@ public class UpdateTrackHandler extends BaseTrackHandler implements CommandHandl
 
                 //    String originalSubfolder = track.getSubfolder();
 
-                    track.subfolder(Track.INBOX);
+                    if (!command.isInPlace())
+                        track.subfolder(Track.INBOX);
 
                     Track result = repository.save(track);
 
                     Path destinationPath= Path.of(applicationProperties.getMediaFolder(), result.getFilePath());
+
 
                     moveFile(sourcePath, destinationPath);
 

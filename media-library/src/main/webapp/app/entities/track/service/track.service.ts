@@ -87,6 +87,13 @@ export class TrackService {
     
   }
 
+  refreshPaths() : Observable<EntityResponseType> {
+    return this.http
+      .put<RestTrack>(`${this.resourceUrl}/paths`, {},  { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
+    
+  }
+
 
   find(id: number): Observable<EntityResponseType> {
     return this.http

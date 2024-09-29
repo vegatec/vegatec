@@ -10,14 +10,22 @@ public class UpdateTrack implements Command<TrackDTO> {
 
 
     private TrackDTO track;
+    private boolean inPlace;
 
     public UpdateTrack(TrackDTO track) {
         this.track = track;
+        this.inPlace = false;
+
+    }
+    public UpdateTrack(TrackDTO track, boolean inPlace) {
+        this.track = track;
+        this.inPlace = inPlace;
 
     }
 
     public TrackDTO getTrack() {
         return track;
     }
+    public boolean isInPlace() {    return  inPlace; }
 
 }

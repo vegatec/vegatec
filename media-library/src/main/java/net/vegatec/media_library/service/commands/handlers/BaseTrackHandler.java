@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.*;
@@ -15,15 +16,6 @@ import java.util.stream.Stream;
 @Component
 public abstract  class BaseTrackHandler  {
     protected static final Logger LOG = LoggerFactory.getLogger(BaseTrackHandler.class);
-//    protected final TrackRepository trackRepository;
-//
-//    protected final ApplicationProperties applicationProperties;
-//
-//    public BaseTrackHandler(TrackRepository repository, ApplicationProperties applicationProperties) {
-//        this.trackRepository = repository;
-//        this.applicationProperties = applicationProperties;
-//    }
-
 
 
     /**
@@ -115,6 +107,7 @@ public abstract  class BaseTrackHandler  {
         removeEmptyFolders(sourcePath.getParent());
 
     }
+
     protected void moveArtworks(Path sourceAlbumPath, Path destAlbumPath) {
         // if is a check in file also check out the artwork
 
@@ -146,6 +139,31 @@ public abstract  class BaseTrackHandler  {
         }
 
 
+    }
+
+    protected void transferTimestamps(File originalFile, File newFile) {
+        try {
+            String command = String.format("/usr/bin/touch \"%s\" -r \"%s\"",  newFile.getAbsolutePath(), originalFile.getAbsolutePath());
+            ProcessBuilder builder = new ProcessBuilder();
+            builder.command("sh", "-c", command);
+
+            builder.directory(new File(System.getProperty("user.home")));
+            Process process = builder.start();
+
+            int exitCode = 0;
+
+            exitCode = process.waitFor();
+            if (exitCode == 0) {
+                //String fileName= audioFile.getAbsolutePath();
+                originalFile.delete();
+                //  tempFile.renameTo(new File(fileName));
+            }
+            assert exitCode == 0;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

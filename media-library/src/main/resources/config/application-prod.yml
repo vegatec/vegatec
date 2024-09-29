@@ -110,5 +110,5 @@ jhipster:
 # ===================================================================
 
 application:
-  mediaFolder: / #/mnt/data/volumes/media-library/media/
+  mediaFolder: /mnt/data/volumes/media-library/media/
 
