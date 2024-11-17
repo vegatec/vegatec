@@ -3,6 +3,7 @@ package net.vegatec.crm.domain;
 import static net.vegatec.crm.domain.ProductTypeTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import net.vegatec.crm.query.domain.ProductType;
 import net.vegatec.crm.web.rest.TestUtil;
 import org.junit.jupiter.api.Test;
 

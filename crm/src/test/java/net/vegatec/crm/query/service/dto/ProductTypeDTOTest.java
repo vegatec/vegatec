@@ -2,6 +2,7 @@ package net.vegatec.crm.service.dto;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import net.vegatec.crm.query.service.dto.ProductTypeDTO;
 import net.vegatec.crm.web.rest.TestUtil;
 import org.junit.jupiter.api.Test;
 

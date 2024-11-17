@@ -6,9 +6,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import net.vegatec.crm.domain.User;
-import net.vegatec.crm.service.dto.AdminUserDTO;
-import net.vegatec.crm.service.dto.UserDTO;
+import net.vegatec.crm.query.domain.User;
+import net.vegatec.crm.query.service.dto.AdminUserDTO;
+import net.vegatec.crm.query.service.dto.UserDTO;
+import net.vegatec.crm.query.service.mapper.UserMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

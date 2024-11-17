@@ -7,6 +7,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import net.vegatec.crm.query.domain.Business;
+import net.vegatec.crm.query.domain.Product;
+import net.vegatec.crm.query.domain.ProductType;
 import net.vegatec.crm.web.rest.TestUtil;
 import org.junit.jupiter.api.Test;
 

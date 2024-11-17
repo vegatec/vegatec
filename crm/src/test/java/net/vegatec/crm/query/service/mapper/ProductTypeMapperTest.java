@@ -1,5 +1,6 @@
 package net.vegatec.crm.service.mapper;
 
+import net.vegatec.crm.query.service.mapper.ProductTypeMapper;
 import org.junit.jupiter.api.BeforeEach;
 
 class ProductTypeMapperTest {

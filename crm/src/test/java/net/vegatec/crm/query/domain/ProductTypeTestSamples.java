@@ -1,5 +1,7 @@
 package net.vegatec.crm.domain;
 
+import net.vegatec.crm.query.domain.ProductType;
+
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
