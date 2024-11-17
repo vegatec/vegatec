@@ -1,16 +1,16 @@
-package net.vegatec.crm.service;
+package net.vegatec.crm.query.service;
 
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 import net.vegatec.crm.config.Constants;
-import net.vegatec.crm.domain.Authority;
-import net.vegatec.crm.domain.User;
-import net.vegatec.crm.repository.AuthorityRepository;
-import net.vegatec.crm.repository.UserRepository;
+import net.vegatec.crm.query.domain.Authority;
+import net.vegatec.crm.query.domain.User;
+import net.vegatec.crm.query.repository.AuthorityRepository;
+import net.vegatec.crm.query.repository.UserRepository;
 import net.vegatec.crm.security.SecurityUtils;
-import net.vegatec.crm.service.dto.AdminUserDTO;
-import net.vegatec.crm.service.dto.UserDTO;
+import net.vegatec.crm.query.service.dto.AdminUserDTO;
+import net.vegatec.crm.query.service.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;

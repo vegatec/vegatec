@@ -1,13 +1,13 @@
-package net.vegatec.crm.service;
+package net.vegatec.crm.query.service;
 
 import java.util.Optional;
-import net.vegatec.crm.domain.Business;
-import net.vegatec.crm.domain.Product;
-import net.vegatec.crm.domain.ProductAdded;
-import net.vegatec.crm.repository.BusinessRepository;
-import net.vegatec.crm.repository.ProductRepository;
-import net.vegatec.crm.service.dto.BusinessDTO;
-import net.vegatec.crm.service.mapper.BusinessMapper;
+import net.vegatec.crm.query.domain.Business;
+import net.vegatec.crm.query.domain.Product;
+import net.vegatec.crm.query.domain.ProductAdded;
+import net.vegatec.crm.query.repository.BusinessRepository;
+import net.vegatec.crm.query.repository.ProductRepository;
+import net.vegatec.crm.query.service.dto.BusinessDTO;
+import net.vegatec.crm.query.service.mapper.BusinessMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link net.vegatec.crm.domain.Business}.
+ * Service Implementation for managing {@link Business}.
  */
 @Service
 @Transactional

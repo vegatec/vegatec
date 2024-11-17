@@ -1,20 +1,18 @@
 package net.vegatec.crm.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.util.*;
 import java.util.function.Consumer;
 import net.vegatec.crm.IntegrationTest;
-import net.vegatec.crm.domain.Authority;
-import net.vegatec.crm.domain.User;
-import net.vegatec.crm.repository.UserRepository;
+import net.vegatec.crm.query.domain.Authority;
+import net.vegatec.crm.query.domain.User;
+import net.vegatec.crm.query.repository.UserRepository;
 import net.vegatec.crm.security.AuthoritiesConstants;
-import net.vegatec.crm.service.dto.AdminUserDTO;
-import net.vegatec.crm.service.mapper.UserMapper;
+import net.vegatec.crm.query.service.dto.AdminUserDTO;
+import net.vegatec.crm.query.service.mapper.UserMapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -7,8 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import jakarta.persistence.EntityManager;
 import net.vegatec.crm.IntegrationTest;
-import net.vegatec.crm.domain.User;
-import net.vegatec.crm.repository.UserRepository;
+import net.vegatec.crm.query.domain.User;
+import net.vegatec.crm.query.repository.UserRepository;
 import net.vegatec.crm.security.AuthoritiesConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

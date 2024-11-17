@@ -1,4 +1,4 @@
-package net.vegatec.crm.service;
+package net.vegatec.crm.query.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

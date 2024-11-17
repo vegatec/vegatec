@@ -1,11 +1,11 @@
-package net.vegatec.crm.service.mapper;
+package net.vegatec.crm.query.service.mapper;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import net.vegatec.crm.domain.Authority;
-import net.vegatec.crm.domain.User;
-import net.vegatec.crm.service.dto.AdminUserDTO;
-import net.vegatec.crm.service.dto.UserDTO;
+import net.vegatec.crm.query.domain.Authority;
+import net.vegatec.crm.query.domain.User;
+import net.vegatec.crm.query.service.dto.AdminUserDTO;
+import net.vegatec.crm.query.service.dto.UserDTO;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

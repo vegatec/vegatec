@@ -7,11 +7,13 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import net.vegatec.crm.repository.ProductRepository;
-import net.vegatec.crm.service.ProductQueryService;
-import net.vegatec.crm.service.ProductService;
-import net.vegatec.crm.service.criteria.ProductCriteria;
-import net.vegatec.crm.service.dto.ProductDTO;
+
+import net.vegatec.crm.query.domain.Product;
+import net.vegatec.crm.query.repository.ProductRepository;
+import net.vegatec.crm.query.service.ProductQueryService;
+import net.vegatec.crm.query.service.ProductService;
+import net.vegatec.crm.query.service.criteria.ProductCriteria;
+import net.vegatec.crm.query.service.dto.ProductDTO;
 import net.vegatec.crm.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +29,7 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link net.vegatec.crm.domain.Product}.
+ * REST controller for managing {@link Product}.
  */
 @RestController
 @RequestMapping("/api/products")

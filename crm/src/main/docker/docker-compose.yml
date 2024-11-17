@@ -1,8 +1,14 @@
 # This configuration is intended for development purpose, it's **your** responsibility to harden it for production
 name: crm
 services:
-  app:
-    image: crm
+  java:
+#    image: crm
+    platform: "linux/x86_64
+    build:
+        context: .
+        dockerfile: Dockerfile
+#    networks:
+#        - test
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=prod,api-docs

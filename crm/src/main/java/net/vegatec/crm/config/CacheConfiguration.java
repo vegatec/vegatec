@@ -1,6 +1,9 @@
 package net.vegatec.crm.config;
 
 import java.time.Duration;
+
+import net.vegatec.crm.query.domain.*;
+import net.vegatec.crm.query.repository.UserRepository;
 import org.ehcache.config.builders.*;
 import org.ehcache.jsr107.Eh107Configuration;
 import org.hibernate.cache.jcache.ConfigSettings;
@@ -43,16 +46,16 @@ public class CacheConfiguration {
     @Bean
     public JCacheManagerCustomizer cacheManagerCustomizer() {
         return cm -> {
-            createCache(cm, net.vegatec.crm.repository.UserRepository.USERS_BY_LOGIN_CACHE);
-            createCache(cm, net.vegatec.crm.repository.UserRepository.USERS_BY_EMAIL_CACHE);
-            createCache(cm, net.vegatec.crm.domain.User.class.getName());
-            createCache(cm, net.vegatec.crm.domain.Authority.class.getName());
-            createCache(cm, net.vegatec.crm.domain.User.class.getName() + ".authorities");
-            createCache(cm, net.vegatec.crm.domain.ProductType.class.getName());
-            createCache(cm, net.vegatec.crm.domain.Business.class.getName());
-            createCache(cm, net.vegatec.crm.domain.Business.class.getName() + ".products");
-            createCache(cm, net.vegatec.crm.domain.Product.class.getName());
-            createCache(cm, net.vegatec.crm.domain.Product.class.getName() + ".components");
+            createCache(cm, UserRepository.USERS_BY_LOGIN_CACHE);
+            createCache(cm, UserRepository.USERS_BY_EMAIL_CACHE);
+            createCache(cm, User.class.getName());
+            createCache(cm, Authority.class.getName());
+            createCache(cm, User.class.getName() + ".authorities");
+            createCache(cm, ProductType.class.getName());
+            createCache(cm, Business.class.getName());
+            createCache(cm, Business.class.getName() + ".products");
+            createCache(cm, Product.class.getName());
+            createCache(cm, Product.class.getName() + ".components");
             // jhipster-needle-ehcache-add-entry
         };
     }

@@ -1,12 +1,14 @@
-package net.vegatec.crm.service.dto;
+package net.vegatec.crm.query.service.dto;
 
 import jakarta.persistence.Lob;
 import jakarta.validation.constraints.*;
+import net.vegatec.crm.query.domain.ProductType;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the {@link net.vegatec.crm.domain.ProductType} entity.
+ * A DTO for the {@link ProductType} entity.
  */
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class ProductTypeDTO implements Serializable {

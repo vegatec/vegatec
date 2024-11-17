@@ -7,10 +7,10 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import net.vegatec.crm.domain.ProductType;
-import net.vegatec.crm.repository.ProductTypeRepository;
-import net.vegatec.crm.service.dto.ProductTypeDTO;
-import net.vegatec.crm.service.mapper.ProductTypeMapper;
+import net.vegatec.crm.query.domain.ProductType;
+import net.vegatec.crm.query.repository.ProductTypeRepository;
+import net.vegatec.crm.query.service.dto.ProductTypeDTO;
+import net.vegatec.crm.query.service.mapper.ProductTypeMapper;
 import net.vegatec.crm.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link net.vegatec.crm.domain.ProductType}.
+ * REST controller for managing {@link ProductType}.
  */
 @RestController
 @RequestMapping("/api/product-types")

@@ -1,4 +1,4 @@
-package net.vegatec.crm.domain;
+package net.vegatec.crm.query.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

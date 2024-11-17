@@ -1,7 +1,7 @@
-package net.vegatec.crm.repository;
+package net.vegatec.crm.query.repository;
 
 import java.util.Optional;
-import net.vegatec.crm.domain.User;
+import net.vegatec.crm.query.domain.User;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.EntityGraph;

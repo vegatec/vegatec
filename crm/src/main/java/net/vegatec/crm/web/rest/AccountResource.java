@@ -2,8 +2,8 @@ package net.vegatec.crm.web.rest;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import net.vegatec.crm.service.UserService;
-import net.vegatec.crm.service.dto.AdminUserDTO;
+import net.vegatec.crm.query.service.UserService;
+import net.vegatec.crm.query.service.dto.AdminUserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AbstractAuthenticationToken;

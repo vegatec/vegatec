@@ -1,11 +1,11 @@
-package net.vegatec.crm.service.mapper;
+package net.vegatec.crm.query.service.mapper;
 
-import net.vegatec.crm.domain.Business;
-import net.vegatec.crm.domain.Product;
-import net.vegatec.crm.domain.ProductType;
-import net.vegatec.crm.service.dto.BusinessDTO;
-import net.vegatec.crm.service.dto.ProductDTO;
-import net.vegatec.crm.service.dto.ProductTypeDTO;
+import net.vegatec.crm.query.domain.Business;
+import net.vegatec.crm.query.domain.Product;
+import net.vegatec.crm.query.domain.ProductType;
+import net.vegatec.crm.query.service.dto.BusinessDTO;
+import net.vegatec.crm.query.service.dto.ProductDTO;
+import net.vegatec.crm.query.service.dto.ProductTypeDTO;
 import org.mapstruct.*;
 
 /**

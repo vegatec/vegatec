@@ -1,4 +1,4 @@
-package net.vegatec.crm.service.mapper;
+package net.vegatec.crm.query.service.mapper;
 
 import java.util.List;
 import org.mapstruct.BeanMapping;

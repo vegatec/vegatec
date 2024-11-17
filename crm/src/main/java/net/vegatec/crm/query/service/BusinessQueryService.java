@@ -1,13 +1,13 @@
-package net.vegatec.crm.service;
+package net.vegatec.crm.query.service;
 
 import jakarta.persistence.criteria.JoinType;
 import java.util.List;
-import net.vegatec.crm.domain.*; // for static metamodels
-import net.vegatec.crm.domain.Business;
-import net.vegatec.crm.repository.BusinessRepository;
-import net.vegatec.crm.service.criteria.BusinessCriteria;
-import net.vegatec.crm.service.dto.BusinessDTO;
-import net.vegatec.crm.service.mapper.BusinessMapper;
+import net.vegatec.crm.query.domain.*; // for static metamodels
+import net.vegatec.crm.query.domain.Business;
+import net.vegatec.crm.query.repository.BusinessRepository;
+import net.vegatec.crm.query.service.criteria.BusinessCriteria;
+import net.vegatec.crm.query.service.dto.BusinessDTO;
+import net.vegatec.crm.query.service.mapper.BusinessMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

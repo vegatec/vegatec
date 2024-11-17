@@ -1,6 +1,6 @@
-package net.vegatec.crm.repository;
+package net.vegatec.crm.query.repository;
 
-import net.vegatec.crm.domain.Authority;
+import net.vegatec.crm.query.domain.Authority;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

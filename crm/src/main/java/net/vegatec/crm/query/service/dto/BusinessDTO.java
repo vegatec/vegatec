@@ -1,11 +1,13 @@
-package net.vegatec.crm.service.dto;
+package net.vegatec.crm.query.service.dto;
 
 import jakarta.validation.constraints.*;
+import net.vegatec.crm.query.domain.Business;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the {@link net.vegatec.crm.domain.Business} entity.
+ * A DTO for the {@link Business} entity.
  */
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class BusinessDTO implements Serializable {

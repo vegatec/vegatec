@@ -1,4 +1,4 @@
-package net.vegatec.crm.service.dto;
+package net.vegatec.crm.query.service.dto;
 
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -6,8 +6,8 @@ import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
 import net.vegatec.crm.config.Constants;
-import net.vegatec.crm.domain.Authority;
-import net.vegatec.crm.domain.User;
+import net.vegatec.crm.query.domain.Authority;
+import net.vegatec.crm.query.domain.User;
 
 /**
  * A DTO representing a user, with his authorities.

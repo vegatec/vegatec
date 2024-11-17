@@ -1,7 +1,7 @@
-package net.vegatec.crm.service.dto;
+package net.vegatec.crm.query.service.dto;
 
 import java.io.Serializable;
-import net.vegatec.crm.domain.User;
+import net.vegatec.crm.query.domain.User;
 
 /**
  * A DTO representing a user, with only the public attributes.

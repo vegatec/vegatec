@@ -1,4 +1,4 @@
 /**
  * Repository layer.
  */
-package net.vegatec.crm.repository;
+package net.vegatec.crm.query.repository;

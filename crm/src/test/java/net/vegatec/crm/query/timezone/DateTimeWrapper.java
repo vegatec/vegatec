@@ -1,4 +1,4 @@
-package net.vegatec.crm.repository.timezone;
+package net.vegatec.crm.query.timezone;
 
 import jakarta.persistence.*;
 import java.io.Serializable;

@@ -1,13 +1,15 @@
-package net.vegatec.crm.service.criteria;
+package net.vegatec.crm.query.service.criteria;
 
 import java.io.Serializable;
 import java.util.Objects;
+
+import net.vegatec.crm.query.domain.Business;
 import org.springdoc.core.annotations.ParameterObject;
 import tech.jhipster.service.Criteria;
 import tech.jhipster.service.filter.*;
 
 /**
- * Criteria class for the {@link net.vegatec.crm.domain.Business} entity. This class is used
+ * Criteria class for the {@link Business} entity. This class is used
  * in {@link net.vegatec.crm.web.rest.BusinessResource} to receive all the possible filtering options from
  * the Http GET request parameters.
  * For example the following could be a valid request:

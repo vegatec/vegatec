@@ -1,4 +1,4 @@
-package net.vegatec.crm.domain;
+package net.vegatec.crm.query.domain;
 
 import net.vegatec.crm.query.domain.ProductType;
 

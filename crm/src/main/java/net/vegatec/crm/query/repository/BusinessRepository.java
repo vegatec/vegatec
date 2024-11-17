@@ -1,6 +1,6 @@
-package net.vegatec.crm.repository;
+package net.vegatec.crm.query.repository;
 
-import net.vegatec.crm.domain.Business;
+import net.vegatec.crm.query.domain.Business;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 

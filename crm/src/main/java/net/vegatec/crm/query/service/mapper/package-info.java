@@ -1,4 +1,4 @@
 /**
  * Data transfer objects mappers.
  */
-package net.vegatec.crm.service.mapper;
+package net.vegatec.crm.query.service.mapper;

@@ -1,8 +1,8 @@
 package net.vegatec.crm.web.rest;
 
 import java.util.*;
-import net.vegatec.crm.service.UserService;
-import net.vegatec.crm.service.dto.UserDTO;
+import net.vegatec.crm.query.service.UserService;
+import net.vegatec.crm.query.service.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

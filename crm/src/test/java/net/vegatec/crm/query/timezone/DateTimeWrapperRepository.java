@@ -1,4 +1,4 @@
-package net.vegatec.crm.repository.timezone;
+package net.vegatec.crm.query.timezone;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

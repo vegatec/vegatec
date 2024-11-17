@@ -1,4 +1,4 @@
 /**
  * Domain objects.
  */
-package net.vegatec.crm.domain;
+package net.vegatec.crm.query.domain;

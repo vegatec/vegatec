@@ -1,8 +1,8 @@
-package net.vegatec.crm.repository;
+package net.vegatec.crm.query.repository;
 
 import java.util.List;
 import java.util.Optional;
-import net.vegatec.crm.domain.Product;
+import net.vegatec.crm.query.domain.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;

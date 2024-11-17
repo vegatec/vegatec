@@ -7,11 +7,13 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import net.vegatec.crm.repository.BusinessRepository;
-import net.vegatec.crm.service.BusinessQueryService;
-import net.vegatec.crm.service.BusinessService;
-import net.vegatec.crm.service.criteria.BusinessCriteria;
-import net.vegatec.crm.service.dto.BusinessDTO;
+
+import net.vegatec.crm.query.domain.Business;
+import net.vegatec.crm.query.repository.BusinessRepository;
+import net.vegatec.crm.query.service.BusinessQueryService;
+import net.vegatec.crm.query.service.BusinessService;
+import net.vegatec.crm.query.service.criteria.BusinessCriteria;
+import net.vegatec.crm.query.service.dto.BusinessDTO;
 import net.vegatec.crm.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +29,7 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link net.vegatec.crm.domain.Business}.
+ * REST controller for managing {@link Business}.
  */
 @RestController
 @RequestMapping("/api/businesses")
