@@ -121,7 +121,7 @@ public class RecursiveFolderMonitor {
     private void startRecursiveWatcher() throws IOException {
         LOG.info("Starting Recursive Watcher");
 
-        LOG.info("Scanning %s ...\n", rootFolder);
+        LOG.info("Scanning {} ...\n", rootFolder);
         registerAll(rootFolder);
         LOG.info("Done.");
 

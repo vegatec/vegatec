@@ -226,22 +226,22 @@ public class TrackImporterService {
                     try {
 
                         if (artwork.exists())
-                            System.out.format("Image file: {0} already exist ", artwork);
+                            logger.info("Image file: {} already exist ", artwork);
                         else {
                             ImageUtils.scale(extractedImageFileName, 256, 256, artwork.getAbsolutePath());
-                            System.out.format("Image file: {0} don't  exist will create a scaled version ", artwork);
+                            logger.info("Image file: {} don't  exist will create a scaled version ", artwork);
 
                         }
 
                         if (thumbnail.exists())
-                            System.out.format("Image file: {0} already exist ", thumbnail);
+                            logger.info("Image file: {} already exist ", thumbnail);
                         else {
                             ImageUtils.scale(extractedImageFileName, 128, 128, thumbnail.getAbsolutePath());
-                            System.out.format("Image file: {0} don't  exist will create a scaled version ", thumbnail);
+                            logger.info("Image file: {} don't  exist will create a scaled version ", thumbnail);
 
                         }
                     }catch (Exception ex) {
-                        System.out.format("Unable to extract artwork from id3 tag of file {0} ", file.getName());
+                        logger.error("Unable to extract artwork from id3 tag of file {} ", file.getName());
                     }
 
                 }
