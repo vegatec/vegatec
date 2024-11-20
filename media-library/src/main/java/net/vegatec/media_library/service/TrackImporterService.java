@@ -20,6 +20,7 @@ import org.springframework.data.domain.*;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import tech.jhipster.service.filter.StringFilter;
 
 import java.io.File;
@@ -165,12 +166,18 @@ public class TrackImporterService {
 
 
                 try {
-                    String year = id3v2Tag.getYear() == null? ((ID3v24Tag)id3v2Tag).getRecordingTime(): id3v2Tag.getYear();
+                //    String year = id3v2Tag.getYear() == null? ((ID3v24Tag)id3v2Tag).getRecordingTime(): id3v2Tag.getYear();
 
-                    releasedYear = Integer.parseInt(year);
+                    String year= id3v2Tag.getYear();
+                    if (ObjectUtils.isEmpty(year)) {
+                        year= ((ID3v24Tag)id3v2Tag).getRecordingTime();
+                    }
+
+                    if (!ObjectUtils.isEmpty(year))
+                        releasedYear = Integer.parseInt(year);
 
                 } catch (Exception e){
-
+                    logger.error("Failed extracting release year because {}", e.getMessage());
                 }
 
                 try {
@@ -215,7 +222,8 @@ public class TrackImporterService {
                     String mimeType = id3v2Tag.getAlbumImageMimeType();
                     // Write image to file - can determine appropriate file extension from the mime type
                     String extractedImageFileName = "album-artwork";
-                    RandomAccessFile extractedImageFile = new RandomAccessFile(extractedImageFileName, "rw");
+                    Path imageFileName =  Path.of(applicationProperties.getMediaFolder(), "temp", extractedImageFileName);
+                    RandomAccessFile extractedImageFile = new RandomAccessFile(imageFileName.toFile(), "rw");
                     extractedImageFile.write(albumImageData);
                     extractedImageFile.close();
 
@@ -228,7 +236,7 @@ public class TrackImporterService {
                         if (artwork.exists())
                             logger.info("Image file: {} already exist ", artwork);
                         else {
-                            ImageUtils.scale(extractedImageFileName, 256, 256, artwork.getAbsolutePath());
+                            ImageUtils.scale(imageFileName.toFile().getAbsolutePath(), 256, 256, artwork.getAbsolutePath());
                             logger.info("Image file: {} don't  exist will create a scaled version ", artwork);
 
                         }
@@ -236,7 +244,7 @@ public class TrackImporterService {
                         if (thumbnail.exists())
                             logger.info("Image file: {} already exist ", thumbnail);
                         else {
-                            ImageUtils.scale(extractedImageFileName, 128, 128, thumbnail.getAbsolutePath());
+                            ImageUtils.scale(imageFileName.toFile().getAbsolutePath(), 128, 128, thumbnail.getAbsolutePath());
                             logger.info("Image file: {} don't  exist will create a scaled version ", thumbnail);
 
                         }
